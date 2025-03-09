@@ -1,23 +1,37 @@
 SRC = minishell.c signal.c
 
-OBJ = $(SRC:.c=.o)
+helper = helper/ft_malloc.c
 
-CFLAGS = -Wall -Wextra
+OBJ = $(SRC:.c=.o) $(helper:.c=.o)
+
+CFLAGS = 
+
+LIBFT = libft/libft.a
 
 ReadLine = -lreadline
 
 NAME = minishell
 
+all : $(LIBFT) $(NAME)
+
+$(LIBFT) :
+	make -C libft
+
 $(NAME) : $(OBJ)
-	cc $(OBJ) $(ReadLine) -o $(NAME)
+	cc $(OBJ) $(ReadLine) $(LIBFT) -o $(NAME)
+
+helper/%.o : helper/%.c minishell.h
+	cc $(CFLAGS) $(ReadLine) -c $< -o $@
 
 %.o : %.c minishell.h
 	cc $(CFLAGS) $(ReadLine) -c $< -o $@
 
-clean :
+clean:
 	$(RM) $(OBJ)
+	make -C libft clean
 
-fclean : clean
+fclean: clean
 	$(RM) $(NAME)
+	make -C libft fclean
 
 re : fclean all
