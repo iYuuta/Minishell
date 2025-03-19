@@ -1,8 +1,10 @@
 SRC = minishell.c signal.c
 
-helper = helper/ft_malloc.c
+helper = helper/ft_malloc.c helper/lst.c
 
-OBJ = $(SRC:.c=.o) $(helper:.c=.o)
+parsing = parsing/parse.c parsing/what_is_it.c
+
+OBJ = $(SRC:.c=.o) $(helper:.c=.o) $(parsing:.c=.o)
 
 CFLAGS = 
 
@@ -18,9 +20,12 @@ $(LIBFT) :
 	make -C libft
 
 $(NAME) : $(OBJ)
-	cc $(OBJ) $(ReadLine) $(LIBFT) -o $(NAME)
+	cc $(CFLAGS) $(OBJ) $(ReadLine) $(LIBFT) -o $(NAME)
 
-helper/%.o : helper/%.c minishell.h
+parsing/%.o : parsing/%.c minishell.h
+	cc $(CFLAGS) $(ReadLine) -c $< -o $@
+
+helper/%.o : helper/%.c minishell.hm
 	cc $(CFLAGS) $(ReadLine) -c $< -o $@
 
 %.o : %.c minishell.h

@@ -32,6 +32,8 @@ void *ft_malloc(size_t size, int flag)
             i++;
         }
         free(collector);
+        collector = NULL;
     }
+    i = 0;
     return (NULL);
 }
