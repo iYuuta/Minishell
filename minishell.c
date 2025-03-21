@@ -22,6 +22,7 @@ int read_shell(char **env, char *head_line)
         else
             parse_args(str);
         free(str);
+        ft_malloc(0, 0);
     }
 }
 int main(int ac, char **av, char **env)
