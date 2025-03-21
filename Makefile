@@ -6,7 +6,7 @@ parsing = parsing/parse.c parsing/what_is_it.c
 
 OBJ = $(SRC:.c=.o) $(helper:.c=.o) $(parsing:.c=.o)
 
-CFLAGS = 
+CFLAGS = -g -fsanitize=address
 
 LIBFT = libft/libft.a
 

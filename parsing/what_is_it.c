@@ -13,16 +13,22 @@ int is_flag(char *str)
 
 int is_operator(char *str)
 {
+    if (!strcmp(str, "||"))
+        return (LOGICAL_OR);
+    if (!strcmp(str, "&&"))
+        return (LOGICAL_AND);
+    if (!strcmp(str, "&"))
+        return (PIPE);
     if (!strcmp(str, "|"))
         return (PIPE);
-    if (!strcmp(str, "<"))
-        return (REDIR_IN);
-    if (!strcmp(str, ">"))
-        return (REDIR_OUT);
     if (!strcmp(str, "<<"))
         return (HEREDOC);
     if (!strcmp(str, ">>"))
         return (REDIR_APPEND);
+    if (!strcmp(str, "<"))
+        return (REDIR_IN);
+    if (!strcmp(str, ">"))
+        return (REDIR_OUT);
     if (*str == '$')
         return (VARIABLE);
     return (WORD);

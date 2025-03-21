@@ -15,7 +15,7 @@ void identify_tokens(t_arg *token)
             token->type = FLAG;
         else
                 token->type = is_operator(token->token);
-        if (token->type == PIPE)
+        if (token->type == PIPE || token->type == LOGICAL_OR || token->type == LOGICAL_AND)
         {
             if (token->next)
             {
@@ -92,7 +92,7 @@ void polish_tokens(t_arg *tokens)
     }
 }
 
-t_arg *tokenize_arg(int ac, char **av)
+t_arg *tokenize_arg(char **av)
 {
     int i;
     char *str;
@@ -101,9 +101,9 @@ t_arg *tokenize_arg(int ac, char **av)
 
     i = -1;
     head = NULL;
-    while (++i < ac)
+    while (av[++i])
     {
-        str = av[i];tmp = ft_lstnew(str);
+        tmp = ft_lstnew(av[i]);
         ft_lstadd_back(&head, tmp);
     }
     identify_tokens(head);
@@ -142,7 +142,7 @@ int get_quote(char *str)
     {
         while (str[i] && str[i] != '"' && str[i] != '\'')
             i++;
-        if (str[i] && (str[++i] == ' ' || str[i] == '\''))
+        if (str[i] && (str[++i] == ' ' || ft_isalnum(str[i])) || ft_strchr("<>|&$", str[i]))
             return (i);
         else if (str[i] == '\'' || str[i] == '\"')
         {
@@ -151,7 +151,7 @@ int get_quote(char *str)
         }
         else
         {
-            while (str[i] != ' ')
+            while (str[i] && str[i] != ' ')
                 i++;
             return (i);
         }
@@ -179,6 +179,97 @@ int get_single_quote(char *str)
     return (i);
 }
 
+int check_operator(char *str, char *set)
+{
+    int i;
+    int j;
+
+    i = -1;
+    while (set[++i])
+    {
+        if (ft_strchr(str, set[i]))
+            return (1);
+    }
+    return (0);
+}
+
+int get_index(char *str, char *set)
+{
+    int i;
+    int j;
+
+    i = -1;
+    if (ft_strchr(set, *str))
+    {
+        while (str[++i])
+        {
+            if (!ft_strchr(set, str[i]))
+                return (i);
+        }
+    }
+    while (str[i] && str[++i])
+    {
+        if (ft_strchr(set, str[i]))
+            return (i);
+    }
+    return (i);
+}
+
+int get_len(char *str, char *set, int start)
+{
+    int i;
+
+    i = 0;
+    while (str[start + i])
+    {
+        if (!ft_strchr(set, str[start + i]))
+            return (i);
+        i++;
+    }
+    return (i);
+}
+
+char **double_split(int ac, char **av)
+{
+    int i, len, l;
+    int s;
+    char **args;
+
+    i = -1;
+    len = 0;
+    s = 0;
+    args = ft_malloc(sizeof(char *) * 300, 1);
+    while (++i < ac)
+    {
+        while (*av[i])
+        {
+            if (av[i][0] == '\'' || av[i][0] == '\"')
+                i++;
+            if (i >= ac)
+                break ;
+            if (av[i] && check_operator(av[i], "<>|&$"))
+            {
+                l = get_index(av[i], "<>|&$");
+                s = get_len(av[i], "<>|&$", l);
+                if (l > 0)
+                    args[len++] = ft_substr(av[i], 0, l);
+                args[len++] = ft_substr(av[i], l, s);
+                av[i] += l + s; // Move past the operator
+            }
+            else
+            {
+                l = 0;
+                while (av[i][l] && !check_operator(&av[i][l], "<>|&$"))
+                    l++;
+                args[len++] = ft_substr(av[i], 0, l);
+                av[i] += l;
+            }
+        }
+    }
+    args[len] = NULL;
+    return (args);
+}
+
 char **split_args(char *str, int *size)
 {
     int i;
@@ -191,19 +282,29 @@ char **split_args(char *str, int *size)
     args = (char **)ft_malloc(sizeof(char *) * 100, 1);
     while (str[i])
     {
+        j = 0;
         while (str[i] == ' ')
             i++;
-        if (str[i] == '"' || str[i] == '\'')
+        if (ft_strchr("\'\"", str[i]))
         {
             j = get_quote(str + i + 1);
-            printf("%d\n", j);
+            printf("len-> %d\n", j);
             arg = ft_substr(str, i, j + 1);
             i += j + 1;
             j = 1;
         }
+        else if (ft_strchr("<>|&$", str[i]))
+        {
+            j = 0;
+            while (ft_strchr("<>|&$", str[i + j]))
+                j++;
+            printf("len-> %d\n", j);
+            arg = ft_substr(str, i, j);  // Extract the operator
+            i += j;  // Move index past the operator
+        }
         else
         {
-            while (str[i + j] && str[i + j] != ' ')
+            while (str[i + j] && str[i + j] != ' ' && !ft_strchr("<>|&$", str[i + j]))
                 j++;
             arg = ft_substr(str, i, j);
             i += j;
@@ -212,10 +313,55 @@ char **split_args(char *str, int *size)
         printf("|%s|\n", arg);
         args[*size] = arg;
         *size += 1;
+        while (str[i] == ' ')
+            i++;
     }
-    // args[*size] = NULL;
+    args[*size] = NULL;
     return (args);
 }
+
+// char **split_args(char *str, int *size)
+// {
+//     int i;
+//     int j;
+//     char **args;
+//     char *arg;
+
+//     i = 0;
+//     j = 0;
+//     args = (char **)ft_malloc(sizeof(char *) * 100, 1);
+//     while (str[i])
+//     {
+//         while (str[i] == ' ')
+//             i++;
+//         if (str[i] == '"' || str[i] == '\'')
+//         {
+//             j = get_quote(str + i + 1);
+//             printf("%d\n", j);
+//             arg = ft_substr(str, i, j + 1);
+//             i += j + 1;
+//             j = 1;
+//         }
+//         else if (str[i] == '<' || str[i] == '>' || str[i] == '|')
+//         {
+//             arg = ft_substr(str, i, 1);  // Extract the operator
+//             i += 1;  // Move index past the operator
+//         }
+//         else
+//         {
+//             while (str[i + j] && str[i + j] != ' ')
+//                 j++;
+//             arg = ft_substr(str, i, j);
+//             i += j;
+//             j = 1;
+//         }
+//         printf("|%s|\n", arg);
+//         args[*size] = arg;
+//         *size += 1;
+//     }
+//     args[*size] = NULL;
+//     return (args);
+// }
 
 t_arg *parse_args(char *str)
 {
@@ -225,10 +371,13 @@ t_arg *parse_args(char *str)
     
     size = 0;
     args = split_args(str, &size);
-    head = tokenize_arg(size, args);
+    // args = double_split(size, args);
+    for (int i = 0; args[i] ; i++)
+        printf("%s\n", args[i]);
+    head = tokenize_arg(args);
     while (head)
     {
-        printf("token->%s    type->%s\n", head->token, token_type_to_string(head->type));
+        printf("token-> %s    type-> %s\n", head->token, token_type_to_string(head->type));
         head = head->next;
     }
     return (head);

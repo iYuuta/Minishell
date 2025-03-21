@@ -11,7 +11,7 @@ void *ft_malloc(size_t size, int flag)
 
     if (!collector)
     {
-        collector = malloc(sizeof(void *) * 1000);
+        collector = malloc(sizeof(void *) * 1200);
         while (i < 1000)
             collector[i++] = NULL;
         i = 0;
