@@ -11,6 +11,13 @@ void handle_signales(int signal)
     }
     else if (signal == SIGQUIT)
     {
+        rl_on_new_line();
+        rl_replace_line("", 0);
+        rl_redisplay();
+    }
+    else if (signal == EOF)
+    {
         printf("\n");
+        exit(0);
     }
 }

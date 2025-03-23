@@ -204,8 +204,8 @@ char **split_args(char *str, int *size)
             j = 0;
             while (ft_strchr("<>|&$", str[i + j]))
                 j++;
-            arg = ft_substr(str, i, j);  // Extract the operator
-            i += j;  // Move index past the operator
+            arg = ft_substr(str, i, j);
+            i += j;
         }
         else
         {
@@ -215,7 +215,7 @@ char **split_args(char *str, int *size)
             i += j;
             j = 1;
         }
-        printf("|%s|\n", arg);
+        // printf("|%s|\n", arg);
         args[*size] = arg;
         *size += 1;
         while (str[i] == ' ')
@@ -234,8 +234,8 @@ t_arg *parse_args(char *str)
     size = 0;
 
     args = split_args(str, &size);
-    for (int i = 0; args[i] ; i++)
-        printf("%s\n", args[i]);
+    // for (int i = 0; args[i] ; i++)
+    //     printf("%s\n", args[i]);
     head = tokenize_arg(args);
     while (head)
     {
