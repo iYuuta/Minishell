@@ -11,14 +11,14 @@ int get_index(char *str, char c, char d)
         {
             nested_index = get_index(str + i, d, c);
             if (nested_index == -1)
-                return -1;  // If we encounter an unclosed nested quote, return -1
+                return -1;
             i += nested_index;
         }
         if (str[i] == c)
-            return (i);  // Found closing quote, return its index
+            return (i);
         i++;
     }
-    return (-1);  // If no closing quote is found, return error
+    return (-1);
 }
 
 int ft_get_quote(char *str, char c)
@@ -27,21 +27,14 @@ int ft_get_quote(char *str, char c)
     char tmp;
 
     tmp = (c == '\'') ? '"' : '\'';
-
     j = get_index(str, c, tmp);
     if (j == -1)
         return (-1);
-    
-    j++;  // Move past closing quote
-
-    // If the next character is another quote, process it
+    j++;
     while (str[j] && ft_strchr("\'\"", str[j]))
         j += ft_get_quote(str + j, str[j]);
-
-    // Continue until the end of the token
     while (str[j] && !ft_strchr(" <>|&$", str[j]))
         j++;
-
     return (j);
 }
 
