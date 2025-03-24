@@ -1,10 +1,12 @@
-SRC = minishell.c signal.c
+SRC = minishell.c
 
 helper = helper/ft_malloc.c helper/lst.c
 
-parsing = parsing/parse.c parsing/what_is_it.c
+signals = signals/signal.c
 
-OBJ = $(SRC:.c=.o) $(helper:.c=.o) $(parsing:.c=.o)
+parsing = parsing/parse.c parsing/handle_quotes.c parsing/syntax_errors.c parsing/tokenize.c
+
+OBJ = $(SRC:.c=.o) $(helper:.c=.o) $(parsing:.c=.o) $(signals:.c=.o)
 
 CFLAGS = 
 
@@ -25,7 +27,10 @@ $(NAME) : $(OBJ)
 parsing/%.o : parsing/%.c minishell.h
 	cc $(CFLAGS) $(ReadLine) -c $< -o $@
 
-helper/%.o : helper/%.c minishell.hm
+helper/%.o : helper/%.c minishell.h
+	cc $(CFLAGS) $(ReadLine) -c $< -o $@
+
+signals/%.o : signals/%.c minishell.h
 	cc $(CFLAGS) $(ReadLine) -c $< -o $@
 
 %.o : %.c minishell.h

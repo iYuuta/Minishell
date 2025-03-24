@@ -1,131 +1,11 @@
 #include "../minishell.h"
 
-void identify_tokens(t_arg *token)
-{
-    int i;
-    int size;
-
-    i = 0;
-    size = ft_lstsize(token);
-    while (i < size)
-    {
-        if (i == 0 && !ft_strchr("<>|&$", token->token[0]))
-            token->type = CMD;
-        else if (is_flag(token->token))
-            token->type = FLAG;
-        else
-            token->type = is_operator(token->token);
-        if (token->type == REDIR_IN || token->type == REDIR_OUT || token->type == REDIR_APPEND)
-        {
-            if (token->next)
-            {
-                token = token->next;
-                i++;
-                token->type = WORD;
-            }
-        }
-        if (token->type == PIPE || token->type == LOGICAL_OR || token->type == LOGICAL_AND)
-        {
-            if (token->next)
-            {
-                token = token->next;
-                i++;
-                token->type = CMD;
-            }
-        }
-        i++;
-        token = token->next;
-    }
-}
-
-int count_quotes(char *str, char impostor)
-{
-    int i;
-    int count;
-
-    i = 0;
-    count = 0;
-    while (str[i])
-    {
-        if (str[i] == impostor)
-            count++;
-        i++;
-    }
-    return (count);
-}
-
-void polish(t_arg *token)
-{
-    char *new;
-    int i;
-    int len;
-
-    i = 0;
-    if (count_quotes(token->token, '\'') % 2 != 0 || count_quotes(token->token, '\"') % 2 != 0)
-    {
-        printf("minishell: syntax error: unclosed quote\n");
-        ft_malloc(0, 0);
-        exit(1);
-    }
-    while (token->token[i])
-    {
-        if (token->token[i] != '\'' && token->token[i] != '\"')
-            len++;
-        i++;
-    }
-    new = ft_malloc(len + 1, 1);
-    i = 0;
-    len = 0;
-    while (token->token[i])
-    {
-        if (token->token[i] != '\'' && token->token[i] != '\"')
-        {
-            new[len] = token->token[i];
-            len++;
-        }
-        i++;
-    }
-    new[len] = '\0';
-    token->token = new;
-}
-
-void polish_tokens(t_arg *tokens)
-{
-    t_arg *tmp;
-
-    tmp = tokens;
-    while (tmp)
-    {
-        if (tmp->type == CMD || tmp->type == FLAG)
-            polish(tmp);
-        tmp = tmp->next;
-    }
-}
-
-t_arg *tokenize_arg(char **av)
-{
-    int i;
-    char *str;
-    t_arg *head;
-    t_arg *tmp;
-
-    i = -1;
-    head = NULL;
-    while (av[++i])
-    {
-        tmp = ft_lstnew(av[i]);
-        ft_lstadd_back(&head, tmp);
-    }
-    identify_tokens(head);
-    polish_tokens(head);
-    return (head);
-}
-
 const char *token_type_to_string(t_token_type type)
 {
     switch (type)
     {
         case WORD: return "WORD";
+        case file: return "file";
         case CMD: return "CMD";
         case FLAG: return "FLAG";
         case PIPE: return "PIPE";
@@ -143,88 +23,6 @@ const char *token_type_to_string(t_token_type type)
     }
 }
 
-int get_quote(char *str, char c)
-{
-    int i;
-    char tmp;
-
-    tmp = '\'';
-    if (c == '\'')
-        tmp = '\"';
-    i = 0;
-    while (str[i])
-    {
-        while (str[i] && str[i] != c)
-            i++;
-        if (str[i] == tmp)
-        {
-            i += get_quote(str + i, tmp);
-        }
-        else if (str[i] && (str[++i] == ' ' || !ft_isalnum(str[i])) || ft_strchr("<>|&$", str[i]))
-            return (i);
-        else if (str[i] == c)
-        {
-            while (str[i] && (str[i] == c))
-                i++;
-        }
-        else
-        {
-            while (str[i] && str[i] != ' ' && !ft_strchr("<>|&$", str[i]))
-                i++;
-            return (i);
-        }
-    }
-    return (i);
-}
-
-char **split_args(char *str, int *size)
-{
-    int i;
-    int j;
-    char **args;
-    char *arg;
-
-    i = 0;
-    j = 0;
-    args = (char **)ft_malloc(sizeof(char *) * 100, 1);
-    while (str[i])
-    {
-        j = 0;
-        while (str[i] == ' ')
-            i++;
-        if (ft_strchr("\'\"", str[i]))
-        {
-            j = get_quote(str + i + 1, str[i]);
-            arg = ft_substr(str, i, j + 1);
-            i += j + 1;
-            j = 1;
-        }
-        else if (ft_strchr("<>|&$", str[i]))
-        {
-            j = 0;
-            while (ft_strchr("<>|&$", str[i + j]))
-                j++;
-            arg = ft_substr(str, i, j);
-            i += j;
-        }
-        else
-        {
-            while (str[i + j] && str[i + j] != ' ' && !ft_strchr("<>|&$", str[i + j]))
-                j++;
-            arg = ft_substr(str, i, j);
-            i += j;
-            j = 1;
-        }
-        // printf("|%s|\n", arg);
-        args[*size] = arg;
-        *size += 1;
-        while (str[i] == ' ')
-            i++;
-    }
-    args[*size] = NULL;
-    return (args);
-}
-
 t_arg *parse_args(char *str)
 {
     t_arg *head = NULL;
@@ -232,10 +30,7 @@ t_arg *parse_args(char *str)
     int size;
     
     size = 0;
-
     args = split_args(str, &size);
-    // for (int i = 0; args[i] ; i++)
-    //     printf("%s\n", args[i]);
     head = tokenize_arg(args);
     while (head)
     {
@@ -244,3 +39,106 @@ t_arg *parse_args(char *str)
     }
     return (head);   
 }
+
+// #include "../minishell.h"
+
+// int get_index(char *str, char c, char d)
+// {
+//     int i;
+//     int nested_index;
+
+//     i = 1;
+//     while (str[i])
+//     {
+//         if (str[i] == d)
+//         {
+//             nested_index = get_index(str + i, d, c);
+//             if (nested_index == -1)
+//                 return -1;
+//             i += nested_index;
+//         }
+//         if (str[i] == c)
+//             return (i);
+//         i++;
+//     }
+//     return -1; // Return -1 if character `c` is not found
+// }
+
+// int ft_get_quote(char *str, char c)
+// {
+//     int i;
+//     int j;
+//     char tmp;
+
+//     i = 0;
+//     j = 0;
+//     tmp = '\''; 
+//     if (c == '\'')
+//         tmp = '"';
+//     j = get_index(str, c, tmp);
+//     if (!str[++j] || (ft_strchr(" <>|&$", str[j])))
+//         return (j);
+//     return (j);
+// }
+
+// // int get_quote(char *str, char c)
+// // {
+// //     int i;
+// //     char tmp;
+
+// //     tmp = '\'';
+// //     if (c == '\'')
+// //         tmp = '\"';
+// //     i = 0;
+// //     while (str[i])
+// //     {
+// //         while (str[i] && str[i] == ' ')
+// //             i++;
+// //         if (str[i] == c)
+// //         {
+// //             i = ft_get_quote(str + i, tmp);
+// //         }
+// //         if (str[i] && (str[++i] == ' ' || !ft_isalnum(str[i])) || ft_strchr("<>|&$", str[i]))
+// //             return (i);
+// //         else if (ft_isalnum(str[i]))
+// //         {
+// //             while (str[i] && ft_isalnum(str[i]))
+// //                 i++;
+// //         }
+// //     }
+// //     return (i);
+// // }
+
+// char **split_args(char *str, int *size)
+// {
+//     int i;
+//     int j;
+//     char **args;
+//     char *arg;
+
+//     i = 0;
+//     j = 0;
+//     args = (char **)ft_malloc(sizeof(char *) * 100, 1);
+//     while (str[i])
+//     {
+//         j = 0;
+//         while (str[i] == ' ')
+//             i++;
+//         while (str[i + j] && !ft_strchr(" <>|&$", str[i + j]))
+//         {
+//             if (str[i + j] == '\'' || str[i] == '\"')
+//                 j = ft_get_quote(str, str[i]);
+//             else
+//                 j++;
+//         }
+//         arg = ft_substr(str, i, j);
+//         i += j;
+//         printf("|%s|\n", arg);
+//         args[*size] = arg;
+//         *size += 1;
+//         while (str[i] == ' ')
+//             i++;
+//     }
+//     args[*size] = NULL;
+//     return (args);
+// }

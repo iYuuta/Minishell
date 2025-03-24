@@ -18,6 +18,7 @@ typedef enum e_token_type
 {
     WORD,
     CMD,
+    file,
     FLAG,
     PIPE,
     REDIR_OUT,
@@ -58,6 +59,11 @@ void	handle_signales(int signal);
 t_arg *parse_args(char *str);
 int is_operator(char *str);
 int is_flag(char *str);
+char **split_args(char *str, int *size);
+void polish(t_arg *token);
+t_arg *tokenize_arg(char **av);
+
+int ft_get_quote(char *str, char c);
 
 /*************************************/
 
