@@ -10,7 +10,7 @@ OBJ = $(SRC:.c=.o) $(helper:.c=.o) $(parsing:.c=.o) $(signals:.c=.o)
 
 CFLAGS = 
 
-LIBFT = libft/libft.a
+LIBFT = libft_dyali/libft.a
 
 ReadLine = -lreadline
 
@@ -19,7 +19,7 @@ NAME = minishell
 all : $(LIBFT) $(NAME)
 
 $(LIBFT) :
-	make -C libft
+	make -C libft_dyali
 
 $(NAME) : $(OBJ)
 	cc $(CFLAGS) $(OBJ) $(ReadLine) $(LIBFT) -o $(NAME)
