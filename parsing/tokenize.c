@@ -79,8 +79,7 @@ void polish_tokens(t_arg *tokens)
     tmp = tokens;
     while (tmp)
     {
-        if (tmp->type == CMD || tmp->type == FLAG)
-            polish(tmp);
+        polish(tmp);
         tmp = tmp->next;
     }
 }

@@ -38,10 +38,10 @@ signals/%.o : signals/%.c minishell.h
 
 clean:
 	$(RM) $(OBJ)
-	make -C libft clean
+	make -C libft_dyali clean
 
 fclean: clean
 	$(RM) $(NAME)
-	make -C libft fclean
+	make -C libft_dyali fclean
 
 re : fclean all

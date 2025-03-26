@@ -1,19 +1,11 @@
 #include "../minishell.h"
 
-int get_index(char *str, char c, char d)
+int get_index(char *str, char c)
 {
     int i = 1;
-    int nested_index;
 
     while (str[i])
     {
-        if (str[i] == d)
-        {
-            nested_index = get_index(str + i, d, c);
-            if (nested_index == -1)
-                return -1;
-            i += nested_index;
-        }
         if (str[i] == c)
             return (i);
         i++;
@@ -21,27 +13,11 @@ int get_index(char *str, char c, char d)
     return (-1);
 }
 
-int ft_get_quote(char *str, char c)
-{
-    int j;
-    char tmp;
-
-    tmp = (c == '\'') ? '"' : '\'';
-    j = get_index(str, c, tmp);
-    if (j == -1)
-        return (-1);
-    j++;
-    while (str[j] && ft_strchr("\'\"", str[j]))
-        j += ft_get_quote(str + j, str[j]);
-    while (str[j] && !ft_strchr(" <>|&$", str[j]))
-        j++;
-    return (j);
-}
-
 char **split_args(char *str, int *size)
 {
     int i;
     int j;
+    int tmp;
     char **args;
     char *arg;
 
@@ -65,16 +41,16 @@ char **split_args(char *str, int *size)
         {
             while (str[i + j] && !ft_strchr(" <>|&$", str[i + j]))
             {
-                if (str[i + j] == '\'' || str[i + j] == '\"')
-                    j = ft_get_quote(str + i + j, str[i + j]) + 1;
-                else
-                    j++;
-               if (j == -1)
-               {
+                if (ft_strchr("\'\"", str[i + j]) && get_index(str + i + j, str[i + j]) == -1)
+                {
                     printf("minishell: syntax error: unclosed quote\n");
                     ft_malloc(0, 0);
                     exit(1);
                 }
+                if (ft_strchr("\'\"", str[i + j]))
+                    j += get_index(str + i + j, str[i + j]) + 1;
+                else
+                    j++;
             }
         }
         arg = ft_substr(str, i, j);
