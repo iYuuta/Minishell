@@ -16,8 +16,7 @@ const char *token_type_to_string(t_token_type type)
         case DQUOTE_STRING: return "DQUOTE_STRING";
         case SQUOTE_STRING: return "SQUOTE_STRING";
         case VARIABLE: return "VARIABLE";
-        case LOGICAL_AND: return "LOGICAL_AND";
-        case LOGICAL_OR: return "LOGICAL_OR";
+        case VAR_ASSING: return "VAR_ASSING";
         case BACKGROUND: return "BACKGROUND";
         default: return "UNKNOWN";
     }

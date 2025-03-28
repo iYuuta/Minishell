@@ -4,11 +4,11 @@ helper = helper/ft_malloc.c helper/lst.c
 
 signals = signals/signal.c
 
-parsing = parsing/parse.c parsing/handle_quotes.c parsing/syntax_errors.c parsing/tokenize.c
+parsing = parsing/parse.c parsing/handle_quotes.c parsing/syntax_errors.c parsing/tokenize.c parsing/here_doc.c
 
 OBJ = $(SRC:.c=.o) $(helper:.c=.o) $(parsing:.c=.o) $(signals:.c=.o)
 
-CFLAGS = 
+CFLAGS = -g -fsanitize=address
 
 LIBFT = libft_dyali/libft.a
 

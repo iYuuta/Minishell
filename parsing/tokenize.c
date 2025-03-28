@@ -2,25 +2,17 @@
 
 int is_flag(char *str)
 {
-    if (!str)
+    if (!str && !(*str))
         return (0);
-    if (str[0] == '\'' || str[0] == '\"')
+    if (*str == '\'' || *str == '\"')
         str++;
-    if (*str == '-' && str[1])
+    if (*str == '-')
         return (1);
     return (0);
 }
 
-int is_operator(char *str)
+int is_redirection(char *str)
 {
-    if (!strcmp(str, "||"))
-        return (LOGICAL_OR);
-    if (!strcmp(str, "&&"))
-        return (LOGICAL_AND);
-    if (!strcmp(str, "&"))
-        return (PIPE);
-    if (!strcmp(str, "|"))
-        return (PIPE);
     if (!strcmp(str, "<<"))
         return (HEREDOC);
     if (!strcmp(str, ">>"))
@@ -29,36 +21,72 @@ int is_operator(char *str)
         return (REDIR_IN);
     if (!strcmp(str, ">"))
         return (REDIR_OUT);
+    return (0);
+}
+
+int is_operator(char *str)
+{
+    if (!strcmp(str, "|"))
+        return (PIPE);
     if (*str == '$')
         return (VARIABLE);
     return (WORD);
 }
 
+t_arg *handle_redir(t_arg *token)
+{
+    if (token->type == HEREDOC)
+        token = read_here_doc(token->next);
+    token = token->next;
+    if (token)
+        token->type = file;
+    return (token);
+}
+
+int variable_assign(t_arg *token)
+{
+    char *assing;
+
+    assing = ft_strchr(token->token, '=');
+    if (!assing || assing == token->token)
+        return (0);
+    printf("hello1\n");
+    if (ft_strchr("\'\" ", *(assing - 1)) || ft_strchr(" ", *(assing + 1)))
+        return (0);
+    printf("hello2\n");
+    return (1);
+}
 void identify_tokens(t_arg *token)
 {
     int i;
-    int size;
 
     i = 0;
-    size = ft_lstsize(token);
-    while (i < size)
+    while (token)
     {
-        if (i == 0 && !ft_strchr("<>|&$", token->token[0]))
+        if (i == 0 && variable_assign(token))
+            token->type = VAR_ASSING;
+        else if (i == 0 && !ft_strchr("<>|&$", token->token[0]))
             token->type = CMD;
         else if (is_flag(token->token))
             token->type = FLAG;
-        else
-            token->type = is_operator(token->token);
-        if (token->type == REDIR_IN || token->type == REDIR_OUT || token->type == REDIR_APPEND)
+        else if (is_redirection(token->token))
         {
-            if (token->next)
+            token->type = is_redirection(token->token);
+            token = handle_redir(token);
+            if (!token)
+                break;
+            if (token->next && !ft_strchr("<>", token->next->token[0]))
             {
                 token = token->next;
-                i++;
-                token->type = file;
+                if (variable_assign(token))
+                    token->type = VAR_ASSING;
+                else
+                    token->type = CMD;
             }
         }
-        if (token->type == PIPE || token->type == LOGICAL_OR || token->type == LOGICAL_AND)
+        else
+            token->type = is_operator(token->token);
+        if (token->type == PIPE)
         {
             if (token->next)
             {
@@ -99,6 +127,6 @@ t_arg *tokenize_arg(char **av)
         ft_lstadd_back(&head, tmp);
     }
     identify_tokens(head);
-    polish_tokens(head);
+    // polish_tokens(head);
     return (head);
 }

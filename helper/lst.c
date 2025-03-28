@@ -9,9 +9,9 @@ t_arg	*ft_lstnew(void *content)
 		return (NULL);
 	strc->token = content;
     strc->type = 1337;
-	strc->branch = NULL;
 	strc->head = NULL;
 	strc->next = NULL;
+	strc->prev = NULL;
 	return (strc);
 }
 
@@ -40,6 +40,7 @@ void	ft_lstadd_back(t_arg **lst, t_arg *new)
 		return ;
 	}
 	temp = ft_lstlast(*lst);
+	new->prev = temp;
 	new->head = (*lst)->head;
 	temp->next = new;
 }

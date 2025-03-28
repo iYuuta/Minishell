@@ -28,8 +28,7 @@ typedef enum e_token_type
     DQUOTE_STRING,
     SQUOTE_STRING,
     VARIABLE,
-    LOGICAL_AND,
-    LOGICAL_OR,
+    VAR_ASSING,
     BACKGROUND,
 }   t_token_type;
 
@@ -44,8 +43,8 @@ typedef struct s_arg
     char *token;
     int  type;
     struct s_arg *next;
+    struct s_arg *prev;
     struct s_arg *head;
-    struct s_arg *branch;
 }           t_arg;
 
 /************** signals **************/
@@ -62,8 +61,7 @@ int is_flag(char *str);
 char **split_args(char *str, int *size);
 void polish(t_arg *token);
 t_arg *tokenize_arg(char **av);
-
-int ft_get_quote(char *str, char c);
+t_arg *read_here_doc(t_arg *token);
 
 /*************************************/
 

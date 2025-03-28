@@ -7,7 +7,8 @@ void polish(t_arg *token)
     int i;
     int len;
 
-    i = 0;while (token->token[i])
+    i = 0;
+    while (token->token[i])
     {
         if (token->token[i] != '\'' && token->token[i] != '\"')
             len++;
@@ -37,4 +38,12 @@ void polish(t_arg *token)
     }
     new[len] = '\0';
     token->token = new;
+}
+
+int check_uncompleted_cmd(t_arg *token)
+{
+    while (token)
+    {
+
+    }
 }
