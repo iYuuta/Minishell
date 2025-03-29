@@ -6,7 +6,9 @@ signals = signals/signal.c
 
 parsing = parsing/parse.c parsing/handle_quotes.c parsing/syntax_errors.c parsing/tokenize.c parsing/here_doc.c
 
-OBJ = $(SRC:.c=.o) $(helper:.c=.o) $(parsing:.c=.o) $(signals:.c=.o)
+execution = execution/execute.c
+
+OBJ = $(SRC:.c=.o) $(helper:.c=.o) $(parsing:.c=.o) $(signals:.c=.o) $(execution:.c=.o)
 
 CFLAGS = -g -fsanitize=address
 
@@ -25,6 +27,9 @@ $(NAME) : $(OBJ)
 	cc $(CFLAGS) $(OBJ) $(ReadLine) $(LIBFT) -o $(NAME)
 
 parsing/%.o : parsing/%.c minishell.h
+	cc $(CFLAGS) $(ReadLine) -c $< -o $@
+
+execution/%.o : execution/%.c minishell.h
 	cc $(CFLAGS) $(ReadLine) -c $< -o $@
 
 helper/%.o : helper/%.c minishell.h

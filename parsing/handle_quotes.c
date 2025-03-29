@@ -42,11 +42,7 @@ char **split_args(char *str, int *size)
             while (str[i + j] && !ft_strchr(" <>|&$", str[i + j]))
             {
                 if (ft_strchr("\'\"", str[i + j]) && get_index(str + i + j, str[i + j]) == -1)
-                {
-                    printf("minishell: syntax error: unclosed quote\n");
-                    ft_malloc(0, 0);
-                    exit(1);
-                }
+                    return (NULL);
                 if (ft_strchr("\'\"", str[i + j]))
                     j += get_index(str + i + j, str[i + j]) + 1;
                 else
@@ -55,7 +51,7 @@ char **split_args(char *str, int *size)
         }
         arg = ft_substr(str, i, j);
         i += j;
-        printf("|%s|\n", arg);
+        // printf("|%s|\n", arg);
         args[*size] = arg;
         *size += 1;
     }

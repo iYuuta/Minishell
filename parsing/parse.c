@@ -30,7 +30,18 @@ t_arg *parse_args(char *str)
     
     size = 0;
     args = split_args(str, &size);
+    if (!args)
+    {
+        printf("bash: syntax error unclosed quotes\n");
+        ft_malloc(0, 0);
+        return (NULL);
+    }
     head = tokenize_arg(args);
+    // if (!check_uncompleted_cmd(head))
+    // {
+    //     ft_malloc(0, 0);
+    //     return (NULL);
+    // }
     while (head)
     {
         printf("token-> %s    type-> %s\n", head->token, token_type_to_string(head->type));

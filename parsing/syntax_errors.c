@@ -42,8 +42,24 @@ void polish(t_arg *token)
 
 int check_uncompleted_cmd(t_arg *token)
 {
+    t_arg *tmp;
+
+    if (token->type == PIPE)
+    {
+        printf("bash: syntax error near unexpected token `|'\n");
+        return (0);
+    }
+    tmp = ft_lstlast(token);
+    if (tmp->type == PIPE || (tmp->type >= REDIR_OUT && tmp->type <= HEREDOC))
+    {
+        printf("bash: syntax error near unexpected token `new line'\n");
+        return (0);
+    }
     while (token)
     {
-
+        if (token->next && token->type >= REDIR_OUT && token->type <= HEREDOC && token->next->type >= REDIR_OUT && token->next->type <= HEREDOC)
+            return (printf("%d->token->type ->token->next->type%d bash: syntax error near unexpected token `%s'\n",token->type, token->next->type, token->token), 0);
+        token = token->next;
     }
+    return (1);
 }

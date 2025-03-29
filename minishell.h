@@ -8,6 +8,7 @@
 #include <signal.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+#include <sys/wait.h>
 
 #define fail 1
 #define success 0
@@ -53,6 +54,11 @@ void	handle_signales(int signal);
 
 /*************************************/
 
+/************* execution *************/
+
+int execution(char *str);
+
+/*************************************/
 /************** parsing **************/
 
 t_arg *parse_args(char *str);
@@ -62,6 +68,7 @@ char **split_args(char *str, int *size);
 void polish(t_arg *token);
 t_arg *tokenize_arg(char **av);
 t_arg *read_here_doc(t_arg *token);
+int check_uncompleted_cmd(t_arg *token);
 
 /*************************************/
 
@@ -71,6 +78,7 @@ void *ft_malloc(size_t size, int flag);
 t_arg	*ft_lstnew(void *content);
 void	ft_lstadd_back(t_arg **lst, t_arg *new);
 int	ft_lstsize(t_arg *lst);
+t_arg	*ft_lstlast(t_arg *lst);
 
 /*********************************** */
 

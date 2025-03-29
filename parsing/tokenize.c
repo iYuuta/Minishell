@@ -35,8 +35,9 @@ int is_operator(char *str)
 
 t_arg *handle_redir(t_arg *token)
 {
-    if (token->type == HEREDOC)
-        token = read_here_doc(token->next);
+    if (token->type == HEREDOC && token->next)
+        token->next = read_here_doc(token->next);
+    // if (token->next && ft_strchr("<>"))
     token = token->next;
     if (token)
         token->type = file;
@@ -88,7 +89,7 @@ void identify_tokens(t_arg *token)
             token->type = is_operator(token->token);
         if (token->type == PIPE)
         {
-            if (token->next)
+            if (token->next && !ft_strchr("<>", token->next->token[0]))
             {
                 token = token->next;
                 i++;

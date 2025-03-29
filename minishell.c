@@ -3,20 +3,18 @@
 int read_shell(char **env, char *head_line)
 {
     char *str;
-    char **tmp;
-    static char **idk;
-    int i;
+    int child_pid;
 
-    i = 0;
-    if (!idk)
-        idk = env;
     while (1)
     {
         str = readline(head_line);
         if (!str)
            return 0;
+        child_pid = fork();
+        if (child_pid == 0)
+            execution(str);
         else
-            parse_args(str);
+            waitpid(child_pid, NULL, 0);
         free(str);
         ft_malloc(0, 0);
     }
