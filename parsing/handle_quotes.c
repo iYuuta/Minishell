@@ -34,7 +34,7 @@ char **split_args(char *str, int *size)
         if (ft_strchr("<>|&$", str[i]))
         {
             j = 1;
-            if (str[i + 1] && ft_strchr("<>|&$", str[i + 1]))
+            if (str[i + 1] && ft_strchr("<>", str[i]) && str[i] == str[i + 1])
                 j = 2;
         }
         else

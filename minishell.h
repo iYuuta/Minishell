@@ -69,6 +69,7 @@ void polish(t_arg *token);
 t_arg *tokenize_arg(char **av);
 t_arg *read_here_doc(t_arg *token);
 int check_uncompleted_cmd(t_arg *token);
+int is_redirection(char *str);
 
 /*************************************/
 

@@ -39,7 +39,7 @@ t_arg *handle_redir(t_arg *token)
         token->next = read_here_doc(token->next);
     // if (token->next && ft_strchr("<>"))
     token = token->next;
-    if (token)
+    if (token && token->prev->type != HEREDOC && token)
         token->type = file;
     return (token);
 }
@@ -51,10 +51,8 @@ int variable_assign(t_arg *token)
     assing = ft_strchr(token->token, '=');
     if (!assing || assing == token->token)
         return (0);
-    printf("hello1\n");
     if (ft_strchr("\'\" ", *(assing - 1)) || ft_strchr(" ", *(assing + 1)))
         return (0);
-    printf("hello2\n");
     return (1);
 }
 void identify_tokens(t_arg *token)

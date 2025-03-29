@@ -10,11 +10,14 @@ int read_shell(char **env, char *head_line)
         str = readline(head_line);
         if (!str)
            return 0;
-        child_pid = fork();
-        if (child_pid == 0)
-            execution(str);
-        else
-            waitpid(child_pid, NULL, 0);
+        if (*str)
+        {
+            child_pid = fork();
+            if (child_pid == 0)
+                execution(str);
+            else
+                waitpid(child_pid, NULL, 0);
+        }
         free(str);
         ft_malloc(0, 0);
     }

@@ -57,8 +57,8 @@ int check_uncompleted_cmd(t_arg *token)
     }
     while (token)
     {
-        if (token->next && token->type >= REDIR_OUT && token->type <= HEREDOC && token->next->type >= REDIR_OUT && token->next->type <= HEREDOC)
-            return (printf("%d->token->type ->token->next->type%d bash: syntax error near unexpected token `%s'\n",token->type, token->next->type, token->token), 0);
+        if (token->next && (is_redirection(token->token) || token->type == PIPE) && (is_redirection(token->next->token) || token->next->type == PIPE))
+            return (printf("bash: syntax error near unexpected token `%s'\n", token->token), 0);
         token = token->next;
     }
     return (1);
