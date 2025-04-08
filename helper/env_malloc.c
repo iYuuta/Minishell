@@ -1,37 +1,47 @@
 #include "../minishell.h"
 
+void stack_env_garbage(t_malloc **lst, t_malloc *new)
+{
+    t_malloc *temp;
+
+    if (!lst || !new)
+        return;
+    if (!*lst)
+    {
+        *lst = new;
+        return;
+    }
+    temp = *lst;
+    while (temp->next)
+        temp = temp->next;
+    temp->next = new;
+}
+
 void *env_malloc(size_t size, int flag)
 {
-    static void **collector;
-    static int i;
+    static t_malloc *collector;
+    t_malloc *tmp;
 
-    if (!collector)
-    {
-        collector = malloc(sizeof(void *) * 1000);
-        if (!collector)
-            return (NULL);
-        while (i < 1000)
-            collector[i++] = NULL;
-        i = 0;
-    }
-    if (flag)
-    {
-        collector[i++] = malloc(size);
-        return (collector[i - 1]);
-    }
-    i = 0;
     if (!flag)
     {
-        while (i < 1000)
+        while (collector)
         {
-            if (collector[i] == NULL)
-                break;
-            free(collector[i]);
-            i++;
+            tmp = collector;
+            collector = collector->next;
+            free(tmp->ptr);
+            free(tmp);
         }
-        free(collector);
-        collector = NULL;
+        return (NULL);
     }
-    i = 0;
-    return (NULL);
+    tmp = malloc(sizeof(t_malloc));
+    if (!tmp)
+        return (NULL);
+    tmp->ptr = malloc(size);
+    if (!tmp->ptr)
+    {
+        free(tmp);
+        return (NULL);
+    }
+    tmp->next = NULL;
+    return (stack_env_garbage(&collector, tmp), tmp->ptr);
 }

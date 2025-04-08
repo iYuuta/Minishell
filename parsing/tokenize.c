@@ -126,6 +126,13 @@ t_arg *tokenize_arg(char **av)
         ft_lstadd_back(&head, tmp);
     }
     identify_tokens(head);
+    tmp = head;
+    while (tmp)
+    {
+        if (tmp->type == VAR_ASSING)
+            head->env = env_innit(tmp);
+        tmp = tmp->next;
+    }
     // polish_tokens(head);
     return (head);
 }

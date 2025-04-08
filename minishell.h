@@ -49,6 +49,7 @@ typedef struct s_arg
 {
     char *token;
     int  type;
+    struct s_env *env;
     struct s_arg *next;
     struct s_arg *prev;
     struct s_arg *head;
@@ -76,6 +77,13 @@ t_arg *tokenize_arg(char **av);
 t_arg *read_here_doc(t_arg *token);
 int check_uncompleted_cmd(t_arg *token);
 int is_redirection(char *str);
+int get_index(char *str, char c);
+
+/*************************************/
+
+/************** envirement ***********/
+
+t_env *env_innit(t_arg *arg);
 
 /*************************************/
 
@@ -83,6 +91,7 @@ int is_redirection(char *str);
 
 void *env_malloc(size_t size, int flag);
 void *ft_malloc(size_t size, int flag);
+void *env_malloc(size_t size, int flag);
 t_arg	*ft_lstnew(void *content);
 void	ft_lstadd_back(t_arg **lst, t_arg *new);
 int	ft_lstsize(t_arg *lst);
