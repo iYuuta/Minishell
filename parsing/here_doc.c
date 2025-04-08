@@ -22,6 +22,7 @@ t_arg *read_here_doc(t_arg *token)
             return (token);
         }
         str = ft_strjoin(str, tmp);
+        str = ft_strjoin(str, "\n");
         free(tmp);
     }
     return (NULL);

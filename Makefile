@@ -10,7 +10,7 @@ execution = execution/execute.c
 
 OBJ = $(SRC:.c=.o) $(helper:.c=.o) $(parsing:.c=.o) $(signals:.c=.o) $(execution:.c=.o)
 
-CFLAGS = -g -fsanitize=address
+CFLAGS = 
 
 LIBFT = libft_dyali/libft.a
 
@@ -27,19 +27,19 @@ $(NAME) : $(OBJ)
 	cc $(CFLAGS) $(OBJ) $(ReadLine) $(LIBFT) -o $(NAME)
 
 parsing/%.o : parsing/%.c minishell.h
-	cc $(CFLAGS) $(ReadLine) -c $< -o $@
+	cc $(CFLAGS) -c $< -o $@
 
 execution/%.o : execution/%.c minishell.h
-	cc $(CFLAGS) $(ReadLine) -c $< -o $@
+	cc $(CFLAGS) -c $< -o $@
 
 helper/%.o : helper/%.c minishell.h
-	cc $(CFLAGS) $(ReadLine) -c $< -o $@
+	cc $(CFLAGS) -c $< -o $@
 
 signals/%.o : signals/%.c minishell.h
-	cc $(CFLAGS) $(ReadLine) -c $< -o $@
+	cc $(CFLAGS) -c $< -o $@
 
 %.o : %.c minishell.h
-	cc $(CFLAGS) $(ReadLine) -c $< -o $@
+	cc $(CFLAGS) -c $< -o $@
 
 clean:
 	$(RM) $(OBJ)

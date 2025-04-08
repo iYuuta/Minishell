@@ -12,6 +12,7 @@ int read_shell(char **env, char *head_line)
            return 0;
         if (*str)
         {
+            add_history(str);
             child_pid = fork();
             if (child_pid == 0)
                 execution(str);

@@ -4,38 +4,50 @@
 //ft_malloc it does the same as regular malloc but it saves the allocate
 //pointer so we can free it later on
 
+void	stack_garbage(t_malloc **lst, t_malloc *new)
+{
+	t_malloc	*temp;
+
+	if (!lst || !new)
+		return ;
+	if (!*lst)
+	{
+		*lst = new;
+		return ;
+	}
+	while (*lst)
+        *lst = (*lst)->next;
+	temp->next = new;
+}
+
 void *ft_malloc(size_t size, int flag)
 {
-    static void **collector;
-    static int i;
+    static t_malloc *collector;
+    t_malloc *tmp;
+    void *ptr;
 
     if (!collector)
     {
-        collector = malloc(sizeof(void *) * 1000);
-        if (!collector)
-            return (NULL);
-        while (i < 1000)
-            collector[i++] = NULL;
-        i = 0;
+        collector = malloc(sizeof(t_malloc));
+        ptr = malloc(size);
+        collector->ptr = ptr;
+        collector->next = NULL;
+        return (ptr);
     }
-    if (flag)
-    {
-        collector[i++] = malloc(size);
-        return (collector[i - 1]);
-    }
-    i = 0;
     if (!flag)
     {
-        while (i < 1000)
+        while (collector)
         {
-            if (collector[i] == NULL)
-                break;
-            free(collector[i]);
-            i++;
+            tmp = collector;
+            collector = collector->next;
+            free(tmp->ptr);
+            free(tmp);
         }
-        free(collector);
-        collector = NULL;
+        return (NULL);
     }
-    i = 0;
-    return (NULL);
+    tmp = malloc(sizeof(t_malloc));
+    ptr = malloc(size);
+    tmp->ptr = ptr;
+    stack_garbage(&collector, tmp);
+    return (ptr);
 }

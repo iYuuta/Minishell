@@ -85,4 +85,5 @@ int execution(char *str)
     if (!arg)
         return (1);
     execute_command(arg);
+    return (0);
 }

@@ -13,8 +13,6 @@
 #define fail 1
 #define success 0
 
-
-
 typedef enum e_token_type
 {
     WORD,
@@ -33,9 +31,17 @@ typedef enum e_token_type
     BACKGROUND,
 }   t_token_type;
 
+typedef struct s_malloc
+{
+    void *ptr;
+    struct s_malloc *next;
+}           t_malloc;
+
+
 typedef struct s_env
 {
-    char *env;
+    char *name;
+    char *arg;
     struct s_env *next;
 }           t_env;
 
@@ -75,6 +81,7 @@ int is_redirection(char *str);
 
 /************** helper ***************/
 
+void *env_malloc(size_t size, int flag);
 void *ft_malloc(size_t size, int flag);
 t_arg	*ft_lstnew(void *content);
 void	ft_lstadd_back(t_arg **lst, t_arg *new);
