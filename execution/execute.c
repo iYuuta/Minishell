@@ -42,7 +42,7 @@ char **get_args(t_arg *arg)
         size++;
         tmp = tmp->next;
     }
-    str = ft_malloc((size + 1) * sizeof(char *), 1);
+    str = ft_malloc((sizme + 1) * sizeof(char *), 1);
     arg = get_cmd(arg->head);
     str[i++] = ft_strjoin("/usr/bin/", arg->token);
     if (size > 1)

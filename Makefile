@@ -6,7 +6,8 @@ signals = signals/signal.c
 
 env_vars = env_vars/init_env.c
 
-parsing = parsing/parse.c parsing/handle_quotes.c parsing/syntax_errors.c parsing/tokenize.c parsing/here_doc.c
+parsing = parsing/parse.c parsing/handle_quotes.c parsing/syntax_errors.c parsing/tokenize.c parsing/here_doc.c \
+		  parsing/expanding.c
 
 execution = execution/execute.c
 

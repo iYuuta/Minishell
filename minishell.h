@@ -78,6 +78,7 @@ t_arg *read_here_doc(t_arg *token);
 int check_uncompleted_cmd(t_arg *token);
 int is_redirection(char *str);
 int get_index(char *str, char c);
+t_arg *expand_vars(t_arg *token);
 
 /*************************************/
 

@@ -133,6 +133,7 @@ t_arg *tokenize_arg(char **av)
             head->env = env_innit(tmp);
         tmp = tmp->next;
     }
+    // expand_vars(head);
     // polish_tokens(head);
     return (head);
 }
