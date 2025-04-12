@@ -48,10 +48,10 @@ t_env *add_to_env(t_env *env, char *var)
 
 	len = get_index(var, '=');
 	new = env_malloc(sizeof(t_env), 1);
-	new->name = new_env(ft_env_substr(var, 0, len));
+	new = new_env(ft_env_substr(var, 0, len));
 	if (!new)
 		return (NULL);
-	new->arg = ft_env_substr(env, len + 1, ft_strlen(env + len + 1));
+	new->arg = ft_env_substr(var, len + 1, ft_strlen(var + len + 1));
 	// if (!new->arg)
 	// 	return (NULL);
 	env_add_back(&env, new);
