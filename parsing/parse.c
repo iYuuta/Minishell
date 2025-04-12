@@ -22,7 +22,7 @@ const char *token_type_to_string(t_token_type type)
     }
 }
 
-t_arg *parse_args(char *str)
+t_arg *parse_args(char *str, t_env *env)
 {
     t_arg *head = NULL;
     char **args;
@@ -36,7 +36,7 @@ t_arg *parse_args(char *str)
         ft_malloc(0, 0);
         return (NULL);
     }
-    head = tokenize_arg(args);
+    head = tokenize_arg(args, env);
     if (!check_uncompleted_cmd(head))
     {
         ft_malloc(0, 0);

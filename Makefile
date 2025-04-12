@@ -4,14 +4,17 @@ helper = helper/ft_malloc.c helper/lst.c helper/env_malloc.c
 
 signals = signals/signal.c
 
-env_vars = env_vars/init_env.c
+built_ins = built_ins/env.c 
+
+env_vars = env_vars/init_env.c env_vars/ft_env_substr.c
 
 parsing = parsing/parse.c parsing/handle_quotes.c parsing/syntax_errors.c parsing/tokenize.c parsing/here_doc.c \
 		  parsing/expanding.c
 
 execution = execution/execute.c
 
-OBJ = $(SRC:.c=.o) $(helper:.c=.o) $(parsing:.c=.o) $(signals:.c=.o) $(execution:.c=.o) $(env_vars:.c=.o)
+OBJ = $(SRC:.c=.o) $(helper:.c=.o) $(parsing:.c=.o) $(signals:.c=.o) \
+	$(execution:.c=.o) $(env_vars:.c=.o) $(built_ins:.c=.o)
 
 CFLAGS = 
 
@@ -30,6 +33,9 @@ $(NAME) : $(OBJ)
 	cc $(CFLAGS) $(OBJ) $(ReadLine) $(LIBFT) -o $(NAME)
 
 parsing/%.o : parsing/%.c minishell.h
+	cc $(CFLAGS) -c $< -o $@
+
+built_ins/%.o : built_ins/%.c minishell.h
 	cc $(CFLAGS) -c $< -o $@
 
 execution/%.o : execution/%.c minishell.h

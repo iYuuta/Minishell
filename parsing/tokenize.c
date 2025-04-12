@@ -111,7 +111,7 @@ void polish_tokens(t_arg *tokens)
     }
 }
 
-t_arg *tokenize_arg(char **av)
+t_arg *tokenize_arg(char **av, t_env *env)
 {
     int i;
     char *str;
@@ -123,17 +123,11 @@ t_arg *tokenize_arg(char **av)
     while (av[++i])
     {
         tmp = ft_lstnew(av[i]);
+        tmp->env = env;
         ft_lstadd_back(&head, tmp);
     }
     identify_tokens(head);
-    tmp = head;
-    while (tmp)
-    {
-        if (tmp->type == VAR_ASSING)
-            head->env = env_innit(tmp);
-        tmp = tmp->next;
-    }
-    // expand_vars(head);
-    // polish_tokens(head);
+    expand_vars(head);
+    polish_tokens(head);
     return (head);
 }

@@ -63,17 +63,24 @@ void	handle_signales(int signal);
 
 /************* execution *************/
 
-int execution(char *str);
+int execution(char *str, t_env *env);
 
 /*************************************/
+
+/************** builtins *************/
+
+int   print_env(t_env *env);
+
+/*************************************/
+
 /************** parsing **************/
 
-t_arg *parse_args(char *str);
+t_arg *parse_args(char *str, t_env *env);
 int is_operator(char *str);
 int is_flag(char *str);
 char **split_args(char *str, int *size);
 void polish(t_arg *token);
-t_arg *tokenize_arg(char **av);
+t_arg *tokenize_arg(char **av, t_env*env);
 t_arg *read_here_doc(t_arg *token);
 int check_uncompleted_cmd(t_arg *token);
 int is_redirection(char *str);
@@ -84,7 +91,9 @@ t_arg *expand_vars(t_arg *token);
 
 /************** envirement ***********/
 
-t_env *env_innit(t_arg *arg);
+t_env *env_init(char **env);
+char	*ft_env_substr(char const *s, unsigned int start, size_t len);
+t_env *add_to_env(t_env *env, char *var);
 
 /*************************************/
 

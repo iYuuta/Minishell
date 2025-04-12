@@ -42,7 +42,7 @@ char **get_args(t_arg *arg)
         size++;
         tmp = tmp->next;
     }
-    str = ft_malloc((sizme + 1) * sizeof(char *), 1);
+    str = ft_malloc((size + 1) * sizeof(char *), 1);
     arg = get_cmd(arg->head);
     str[i++] = ft_strjoin("/usr/bin/", arg->token);
     if (size > 1)
@@ -77,11 +77,17 @@ void execute_command(t_arg *arg)
     }
 }
 
-int execution(char *str)
+int check_builtins(t_arg *token)
+{
+    if (!ft_strncmp(token->token, "env", 3))
+        return (print_env(token->env));
+    return (1);
+}
+int execution(char *str, t_env *env)
 {
     t_arg *arg;
 
-    arg = parse_args(str);
+    arg = parse_args(str, env);
     if (!arg)
         return (1);
     execute_command(arg);

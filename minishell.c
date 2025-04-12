@@ -1,10 +1,13 @@
 #include "minishell.h"
 
-int read_shell(char **env, char *head_line)
+int read_shell(t_env *env, char *head_line)
 {
     char *str;
     int child_pid;
+    static t_env *envirement;
 
+    if (!envirement)
+        envirement = env;
     while (1)
     {
         str = readline(head_line);
@@ -15,7 +18,7 @@ int read_shell(char **env, char *head_line)
             add_history(str);
             child_pid = fork();
             if (child_pid == 0)
-                execution(str);
+                execution(str, envirement);
             else
                 waitpid(child_pid, NULL, 0);
         }
@@ -25,10 +28,15 @@ int read_shell(char **env, char *head_line)
 }
 int main(int ac, char **av, char **env)
 {
+    t_env *envirement;
+
     signal(SIGQUIT, handle_signales);
     signal(SIGINT, handle_signales);
     signal(EOF, handle_signales);
-    if (read_shell(env, "\033[1;34mminishell>> \033[0m") == 1)
+    envirement = env_init(env);
+    if (!envirement)
+        return (1);
+    if (read_shell(envirement, "\033[1;34mminishell>> \033[0m") == 1)
         return (1);
     return (0);
 }
