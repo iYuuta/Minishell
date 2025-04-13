@@ -42,6 +42,7 @@ typedef struct s_env
 {
     char *name;
     char *arg;
+    struct s_env *prev;
     struct s_env *next;
 }           t_env;
 
@@ -69,7 +70,10 @@ int execution(char *str, t_env *env);
 
 /************** builtins *************/
 
-int   print_env(t_env *env);
+int		print_env(t_env *env);
+int		pwd(t_env *env, int fd);
+t_arg	*unset(t_arg *arg);
+int 	export(t_arg *arg);
 
 /*************************************/
 
@@ -94,6 +98,10 @@ t_arg *expand_vars(t_arg *token);
 t_env *env_init(char **env);
 char	*ft_env_substr(char const *s, unsigned int start, size_t len);
 t_env *add_to_env(t_env *env, char *var);
+t_env	*new_env(char *content);
+t_env	*last_env(t_env *lst);
+void	env_add_back(t_env **lst, t_env *new);
+t_env *change_env(t_env *env);
 
 /*************************************/
 

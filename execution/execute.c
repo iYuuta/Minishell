@@ -79,8 +79,14 @@ void execute_command(t_arg *arg)
 
 int check_builtins(t_arg *token)
 {
-    if (!ft_strncmp(token->token, "env", 3))
+    if (!ft_strcmp(token->token, "env"))
         return (print_env(token->env));
+    if (!ft_strcmp(token->token, "pwd"))
+        return (print_env(token->env));
+    if (!ft_strcmp(token->token, "unset"))
+        return (unset(token), 0);
+    if (!ft_strcmp(token->token, "export"))
+        return (export(token->next));
     return (1);
 }
 int execution(char *str, t_env *env)
@@ -90,6 +96,8 @@ int execution(char *str, t_env *env)
     arg = parse_args(str, env);
     if (!arg)
         return (1);
+    if (!check_builtins(arg))
+        return (0);
     execute_command(arg);
     return (0);
 }

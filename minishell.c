@@ -1,15 +1,29 @@
 #include "minishell.h"
 
+t_env *change_env(t_env *env)
+{
+    static t_env *new_env;
+
+    if (env)
+    {
+        new_env = env;
+        return (env);
+    }
+    return (new_env); 
+}
+
 int read_shell(t_env *env, char *head_line)
 {
     char *str;
     int child_pid;
     static t_env *envirement;
 
-    if (!envirement)
-        envirement = env;
     while (1)
     {
+        if (!envirement)
+            envirement = change_env(env);
+        else
+            envirement = change_env(NULL);
         str = readline(head_line);
         if (!str)
            return 0;

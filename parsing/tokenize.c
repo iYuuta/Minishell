@@ -28,8 +28,6 @@ int is_operator(char *str)
 {
     if (!strcmp(str, "|"))
         return (PIPE);
-    if (*str == '$')
-        return (VARIABLE);
     return (WORD);
 }
 
@@ -64,7 +62,7 @@ void identify_tokens(t_arg *token)
     {
         if (i == 0 && variable_assign(token))
             token->type = VAR_ASSING;
-        else if (i == 0 && !ft_strchr("<>|&$", token->token[0]))
+        else if (i == 0 && !ft_strchr("<>", token->token[0]))
             token->type = CMD;
         else if (is_flag(token->token))
             token->type = FLAG;
@@ -128,6 +126,6 @@ t_arg *tokenize_arg(char **av, t_env *env)
     }
     identify_tokens(head);
     expand_vars(head);
-    polish_tokens(head);
+    // polish_tokens(head);
     return (head);
 }

@@ -4,7 +4,7 @@ helper = helper/ft_malloc.c helper/lst.c helper/env_malloc.c
 
 signals = signals/signal.c
 
-built_ins = built_ins/env.c 
+built_ins = built_ins/env.c  built_ins/pwd.c built_ins/unset.c built_ins/export.c
 
 env_vars = env_vars/init_env.c env_vars/ft_env_substr.c
 

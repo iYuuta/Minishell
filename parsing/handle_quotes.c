@@ -31,7 +31,12 @@ char **split_args(char *str, int *size)
             i++;
         if (!str[i])
             break ;
-        if (ft_strchr("<>|&$", str[i]))
+        // if (ft_strchr("$", str[i]))
+        // {
+        //     while (ft_isalpha(str[i + j]))
+        //         j++;
+        // }
+        else if (ft_strchr("<>|&", str[i]))
         {
             j = 1;
             if (str[i + 1] && ft_strchr("<>", str[i]) && str[i] == str[i + 1])
@@ -39,7 +44,7 @@ char **split_args(char *str, int *size)
         }
         else
         {
-            while (str[i + j] && !ft_strchr(" <>|&$", str[i + j]))
+            while (str[i + j] && !ft_strchr(" <>|&", str[i + j]))
             {
                 if (ft_strchr("\'\"", str[i + j]) && get_index(str + i + j, str[i + j]) == -1)
                     return (NULL);

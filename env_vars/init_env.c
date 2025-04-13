@@ -11,6 +11,7 @@ t_env	*new_env(char *content)
 		return (NULL);
 	strc->name = content;
 	strc->next = NULL;
+	strc->prev = NULL;
 	return (strc);
 }
 
@@ -38,6 +39,7 @@ void	env_add_back(t_env **lst, t_env *new)
 		return ;
 	}
 	temp = last_env(*lst);
+	new->prev = temp;
 	temp->next = new;
 }
 
