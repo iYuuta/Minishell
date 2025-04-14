@@ -82,13 +82,14 @@ int check_builtins(t_arg *token)
     if (!ft_strcmp(token->token, "env"))
         return (print_env(token->env));
     if (!ft_strcmp(token->token, "pwd"))
-        return (print_env(token->env));
+        return (pwd(token->env, 1));
     if (!ft_strcmp(token->token, "unset"))
         return (unset(token), 0);
     if (!ft_strcmp(token->token, "export"))
         return (export(token->next));
     return (1);
 }
+
 int execution(char *str, t_env *env)
 {
     t_arg *arg;

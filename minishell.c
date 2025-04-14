@@ -18,6 +18,9 @@ int read_shell(t_env *env, char *head_line)
     int child_pid;
     static t_env *envirement;
 
+    ptr = NULL;
+    signal(SIGQUIT, handle_signales);
+    signal(SIGINT, handle_signales);
     while (1)
     {
         if (!envirement)
@@ -26,7 +29,11 @@ int read_shell(t_env *env, char *head_line)
             envirement = change_env(NULL);
         str = readline(head_line);
         if (!str)
-           return 0;
+        {
+            ft_malloc(0, 0);
+            env_malloc(0, 0);
+            exit(0);
+        }
         if (*str)
         {
             add_history(str);
@@ -40,16 +47,12 @@ int read_shell(t_env *env, char *head_line)
         ft_malloc(0, 0);
     }
 }
+
 int main(int ac, char **av, char **env)
 {
     t_env *envirement;
 
-    signal(SIGQUIT, handle_signales);
-    signal(SIGINT, handle_signales);
-    signal(EOF, handle_signales);
     envirement = env_init(env);
-    if (!envirement)
-        return (1);
     if (read_shell(envirement, "\033[1;34mminishell>> \033[0m") == 1)
         return (1);
     return (0);

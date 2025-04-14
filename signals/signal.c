@@ -15,9 +15,4 @@ void handle_signales(int signal)
         rl_replace_line("", 0);
         rl_redisplay();
     }
-    else if (signal == EOF)
-    {
-        printf("\n");
-        exit(0);
-    }
 }

@@ -69,6 +69,13 @@ t_env *env_init(char **env)
 
     i = 0;
     head = NULL;
+	if (!env || !(*env))
+	{
+		printf("env ain't there\n");
+		head = new_env("");
+		head->arg = ft_strdup("");
+		return (head);
+	}
     while (env[i])
     {
         len = get_index(env[i], '=');
