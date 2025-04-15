@@ -13,7 +13,7 @@ SRC = ft_atoi.c ft_bzero.c ft_calloc.c ft_isalnum.c \
 NAME = libft.a
 OBJ = ${SRC:.c=.o}
 CC = cc
-CF = -Wall -Wextra -Werror -fPIC
+CF = -Wall -Wextra -Werror
 
 all : ${NAME}
 	

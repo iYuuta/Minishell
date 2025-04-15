@@ -17,25 +17,13 @@ t_env *remove_env(t_env *env)
     {
         tmp = env->prev;
         tmp->next = env->next;
-        free(env->arg);
-        free(env->name);
-        free(env);
         return (env_head(tmp));
     }
     else if (env && env->next)
     {
         tmp = env->next;
         tmp->prev = NULL;
-        free(env->arg);
-        free(env->name);
-        free(env);
         return (env_head(tmp));
-    }
-    if (env)
-    {
-        free(env->arg);
-        free(env->name);
-        free(env);
     }
 	return (env_head(env));
 }

@@ -13,20 +13,20 @@ int is_flag(char *str)
 
 int is_redirection(char *str)
 {
-    if (!strcmp(str, "<<"))
+    if (!ft_strcmp(str, "<<"))
         return (HEREDOC);
-    if (!strcmp(str, ">>"))
+    if (!ft_strcmp(str, ">>"))
         return (REDIR_APPEND);
-    if (!strcmp(str, "<"))
+    if (!ft_strcmp(str, "<"))
         return (REDIR_IN);
-    if (!strcmp(str, ">"))
+    if (!ft_strcmp(str, ">"))
         return (REDIR_OUT);
     return (0);
 }
 
 int is_operator(char *str)
 {
-    if (!strcmp(str, "|"))
+    if (!ft_strcmp(str, "|"))
         return (PIPE);
     return (WORD);
 }
@@ -126,6 +126,6 @@ t_arg *tokenize_arg(char **av, t_env *env)
     }
     identify_tokens(head);
     expand_vars(head);
-    // polish_tokens(head);
+    polish_tokens(head);
     return (head);
 }

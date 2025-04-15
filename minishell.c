@@ -18,7 +18,6 @@ int read_shell(t_env *env, char *head_line)
     int child_pid;
     static t_env *envirement;
 
-    ptr = NULL;
     signal(SIGQUIT, handle_signales);
     signal(SIGINT, handle_signales);
     while (1)
@@ -30,7 +29,6 @@ int read_shell(t_env *env, char *head_line)
         str = readline(head_line);
         if (!str)
         {
-            ft_malloc(0, 0);
             env_malloc(0, 0);
             exit(0);
         }

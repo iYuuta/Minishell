@@ -135,26 +135,29 @@ char *selective_expanding(t_env *env, char *str)
     char *strings[3];
     char *new_str;
     int i;
-    int len;
+    int flag;
     int index;
 
     i = 0;
+    flag = 2;
     while (str[i])
     {
-        if (str[i] && str[i] == '\'')
+        if (flag % 2 == 0 && str[i] && str[i] == '\'')
             i += get_index(str + i, '\'');
         else if (str[i] && str[i] == '\"')
-        {
-            new_str = ft_strdup("");
-            index = get_index(str, '$');
-            strings[0] = ft_substr(str, 0, index);
-            strings[1] = ft_substr(str, index, skip_chars(str + index));
-            strings[2] = ft_substr(str, index + skip_chars(str + index), ft_strlen(str + (index + skip_chars(str + index))));
-            strings[1] = expand(env, strings[1] + 1);
-            for (int i = 0; i < 3; i++)
-                new_str = ft_strjoin(new_str, strings[i]);
-            str = new_str;
-        }
+            flag++;
+        // else if (str[i] && str[i] == '\"')
+        // {
+        //     new_str = ft_strdup("");
+        //     index = get_index(str, '$');
+        //     strings[0] = ft_substr(str, 0, index);
+        //     strings[1] = ft_substr(str, index, skip_chars(str + index));
+        //     strings[2] = ft_substr(str, index + skip_chars(str + index), ft_strlen(str + (index + skip_chars(str + index))));
+        //     strings[1] = expand(env, strings[1] + 1);
+        //     for (int i = 0; i < 3; i++)
+        //         new_str = ft_strjoin(new_str, strings[i]);
+        //     str = new_str;
+        // }
         else if (str[i] && str[i] == '$')
         {
             new_str = ft_strdup("");

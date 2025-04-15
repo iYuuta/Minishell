@@ -14,7 +14,7 @@ t_arg *read_here_doc(t_arg *token)
         tmp = readline(">");
         if (!tmp)
             return (token);
-        if (!strcmp(tmp, stop))
+        if (!ft_strcmp(tmp, stop))
         {
             token->type = WORD;
             token->token = str;
