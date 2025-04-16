@@ -73,9 +73,10 @@ int execution(char *str, t_env *env);
 
 int		print_env(t_env *env);
 int		pwd(t_env *env, int fd);
-t_arg	*unset(t_arg *arg);
+int	    unset(t_arg *arg);
 int 	export(t_arg *arg);
 int		exit_shell();
+int     change_directory(t_arg *arg);
 
 /*************************************/
 
@@ -91,7 +92,7 @@ t_arg *read_here_doc(t_arg *token);
 int check_uncompleted_cmd(t_arg *token);
 int is_redirection(char *str);
 int get_index(char *str, char c);
-t_arg *expand_vars(t_arg *token);
+char *expand_vars(char *token, t_env *env);
 
 /*************************************/
 

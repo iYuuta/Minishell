@@ -89,7 +89,9 @@ int check_builtins(t_arg *token)
         return (export(token->next));
 	if (!ft_strcmp(token->token, "exit"))
         return (exit_shell());
-    return (1);
+    if (!ft_strcmp(token->token, "cd"))
+        return (change_directory(token->next));
+    return (2);
 }
 
 int execution(char *str, t_env *env)
@@ -99,7 +101,7 @@ int execution(char *str, t_env *env)
     arg = parse_args(str, env);
     if (!arg)
         return (1);
-    if (!check_builtins(arg))
+    if (check_builtins(arg) != 2)
         return (0);
     execute_command(arg);
     return (0);

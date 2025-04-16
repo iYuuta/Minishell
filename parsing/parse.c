@@ -30,6 +30,7 @@ t_arg *parse_args(char *str, t_env *env)
     int size;
     
     size = 0;
+    str = expand_vars(str, env);
     args = split_args(str, &size);
     if (!args)
     {

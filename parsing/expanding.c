@@ -40,12 +40,15 @@ char *selective_expanding(t_env *env, char *str)
             flag++;
         else if (str[i] && str[i] == '$')
         {
+            printf("%d-> %s\n", i, str + i);
             strings[3] = ft_strdup("");
             strings[0] = ft_substr(str, 0, i);
             strings[1] = ft_substr(str, i, skip_chars(str + i));
             strings[2] = ft_substr(str, i + skip_chars(str + i), ft_strlen(str + (i + skip_chars(str + i))));
             printf("before->%s expand->%s after->%s\n", strings[0], strings[1], strings[2]);
             strings[1] = expand(env, strings[1] + 1);
+            // if (ft_strlen(strings[1]) < 2)
+            //     i = 0;
             for (int k = 0; k < 3; k++)
                 strings[3] = ft_strjoin(strings[3], strings[k]);
             str = strings[3];
@@ -57,20 +60,13 @@ char *selective_expanding(t_env *env, char *str)
     return (str);
 }
 
-t_arg *expand_vars(t_arg *token)
+char *expand_vars(char *token, t_env *env)
 {
-    t_arg *tmp;
+    char *tmp;
     t_arg *var;
     int i;
 
     tmp = token;
-    while (tmp)
-    {
-        if (ft_strchr(tmp->token, '$'))
-        {
-            tmp->token = selective_expanding(token->env, tmp->token);
-        }
-        tmp = tmp->next;
-    }
-    return (token);
+    tmp = selective_expanding(env, tmp);
+    return (tmp);
 }

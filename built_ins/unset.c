@@ -37,7 +37,7 @@ void update_env(t_arg *head, t_env *env)
     }
 }
 
-t_arg *unset(t_arg *arg)
+int unset(t_arg *arg)
 {
     t_env *tmp;
     t_arg *head;
@@ -64,5 +64,5 @@ t_arg *unset(t_arg *arg)
         arg = arg->next;
     }
 	change_env(head->env);
-    return (head);
+    return (0);
 }

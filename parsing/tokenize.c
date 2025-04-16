@@ -125,7 +125,7 @@ t_arg *tokenize_arg(char **av, t_env *env)
         ft_lstadd_back(&head, tmp);
     }
     identify_tokens(head);
-    expand_vars(head);
+    // expand_vars(head);
     polish_tokens(head);
     return (head);
 }
