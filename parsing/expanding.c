@@ -1,5 +1,7 @@
 #include "../minishell.h"
 
+#include "../minishell.h"
+
 int skip_chars(char *str)
 {
     int i;
@@ -9,115 +11,6 @@ int skip_chars(char *str)
         i++;
     return (i);
 }
-
-// int ft_get_index(char *str)
-// {
-//     int i;
-
-//     i = 1;
-//     if (ft_strchr("\'\"", *str))
-//         return (get_index(str, *str) + 1);
-//     while (str[i])
-//     {
-//         if (str[i] == '$')
-//             return (i);
-//         if (ft_strchr("\'\"", str[i]))
-//             return (i);
-//         i++;
-//     }
-//     return (i);
-// }
-
-// int count_words(char *str)
-// {
-//     int words;
-//     int i;
-
-//     words = 0;
-//     i = 0;
-//     while (str[i])
-//     {
-//         if (ft_strchr("\'\"", str[i]))
-//         {
-//             words++;
-//             i = get_index(str + i, str[i]);
-//         }
-//         else if (str[i] == '$')
-//         {
-//             words++;
-//             i = skip_chars(str + i);
-//         }
-//         else
-//         {
-//             words++;
-//             while (str[i] && !ft_strchr("\'\"$", str[i]))
-//                 i++;
-//         }
-//         i++;
-//     }
-//     return (words);
-// }
-
-// char **split_words(char *str)
-// {
-//     char **splitted_str;
-//     int j;
-//     int k;
-//     int i;
-    
-//     i = 0;
-//     k = 0;
-//     j = count_words(str);
-//     printf("%d\n", j);
-//     splitted_str = (char **)ft_malloc(sizeof(char *) * (j + 1), 1);
-//     if (!splitted_str)
-//         return (NULL);
-//     splitted_str[j] = 0;
-//     while (str[i] && k < j)
-//     {
-//         splitted_str[k] = (char *)ft_substr(str, i, ft_get_index(str + i));
-//         if (!splitted_str[k])
-//             return (printf("%d\n", k), NULL);
-//         i += ft_get_index(str + i);
-//         k++;
-//     }
-//     return (splitted_str);
-// }
-
-// char *get_var(t_env *env, char *str)
-// {
-//     t_env *tmp;
-//     char **idk;
-//     char *expanded = NULL;
-//     int i;
-
-//     i = 0;
-//     idk = split_words(str);
-//     if (!idk)
-//         return (write(1, "failed\n", 7), NULL);
-//     while (idk[i])
-//     {
-//         if (idk[i][0] == '$' && idk[i][1])
-//         {
-//             tmp = env;
-//             while (tmp)
-//             {
-//                 if (!ft_strcmp(idk[i] + 1, tmp->name))
-//                     idk[i] = tmp->arg;
-//                 tmp = tmp->next;
-//             }
-//             if (idk[i][0] == '$')
-//                 idk[i] = ft_strdup("");
-//             printf("%s\n", idk[i]);
-//         }
-//         i++;
-//     }
-//     i = 0;
-//     expanded = idk[i];
-//     while (idk[++i])
-//         expanded = ft_strjoin(expanded, idk[i]);
-//     return (expanded);
-// }
 
 char *expand(t_env *env, char *str)
 {
@@ -151,9 +44,10 @@ char *selective_expanding(t_env *env, char *str)
             strings[0] = ft_substr(str, 0, i);
             strings[1] = ft_substr(str, i, skip_chars(str + i));
             strings[2] = ft_substr(str, i + skip_chars(str + i), ft_strlen(str + (i + skip_chars(str + i))));
+            printf("before->%s expand->%s after->%s\n", strings[0], strings[1], strings[2]);
             strings[1] = expand(env, strings[1] + 1);
-            for (int i = 0; i < 3; i++)
-                strings[3] = ft_strjoin(strings[3], strings[i]);
+            for (int k = 0; k < 3; k++)
+                strings[3] = ft_strjoin(strings[3], strings[k]);
             str = strings[3];
         }
         if (!str[i])

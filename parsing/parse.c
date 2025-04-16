@@ -5,6 +5,7 @@ const char *token_type_to_string(t_token_type type)
     switch (type)
     {
         case WORD: return "WORD";
+        case HEREDOCTEXT: return "HEREDOCTEXT";
         case file: return "file";
         case CMD: return "CMD";
         case FLAG: return "FLAG";
@@ -42,11 +43,11 @@ t_arg *parse_args(char *str, t_env *env)
         ft_malloc(0, 0);
         return (NULL);
     }
-    // while (head)
-    // {
-    //     printf("token-> %s    type-> %s\n", head->token, token_type_to_string(head->type));
-    //     head = head->next;
-    // }
+    while (head)
+    {
+        printf("token-> %s    type-> %s\n", head->token, token_type_to_string(head->type));
+        head = head->next;
+    }
     return (head);   
 }
 

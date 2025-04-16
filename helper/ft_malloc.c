@@ -39,12 +39,12 @@ void *ft_malloc(size_t size, int flag)
     }
     tmp = malloc(sizeof(t_malloc));
     if (!tmp)
-        return (NULL);
+        return (printf("ft_malloc failed\n"), NULL);
     tmp->ptr = malloc(size);
     if (!tmp->ptr)
     {
         free(tmp);
-        return (NULL);
+        return (printf("ft_malloc failed\n"), NULL);
     }
     tmp->next = NULL;
     return (stack_garbage(&collector, tmp), tmp->ptr);

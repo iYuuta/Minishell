@@ -1,7 +1,6 @@
 #ifndef MINISHELL_H
 #define MINISHELL_H
 
-#include <stdio.h>
 #include "libft_dyali/libft.h"
 #include <unistd.h>
 #include <stdlib.h>
@@ -9,6 +8,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <sys/wait.h>
+#include <stdio.h>
 
 #define fail 1
 #define success 0
@@ -24,6 +24,7 @@ typedef enum e_token_type
     REDIR_APPEND,
     REDIR_IN,
     HEREDOC,
+    HEREDOCTEXT,
     DQUOTE_STRING,
     SQUOTE_STRING,
     VARIABLE,
