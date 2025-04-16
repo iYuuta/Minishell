@@ -75,6 +75,7 @@ int		print_env(t_env *env);
 int		pwd(t_env *env, int fd);
 t_arg	*unset(t_arg *arg);
 int 	export(t_arg *arg);
+int		exit_shell();
 
 /*************************************/
 

@@ -87,6 +87,8 @@ int check_builtins(t_arg *token)
         return (unset(token), 0);
     if (!ft_strcmp(token->token, "export"))
         return (export(token->next));
+	if (!ft_strcmp(token->token, "exit"))
+        return (exit_shell());
     return (1);
 }
 

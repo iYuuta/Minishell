@@ -35,11 +35,7 @@ int read_shell(t_env *env, char *head_line)
         if (*str)
         {
             add_history(str);
-            child_pid = fork();
-            if (child_pid == 0)
-                execution(str, envirement);
-            else
-                waitpid(child_pid, NULL, 0);
+            execution(str, envirement);
         }
         free(str);
         ft_malloc(0, 0);
