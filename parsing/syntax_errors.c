@@ -8,6 +8,7 @@ void polish(t_arg *token)
     int len;
 
     i = 0;
+    len = 0;
     while (token->token[i])
     {
         if (token->token[i] != '\'' && token->token[i] != '\"')

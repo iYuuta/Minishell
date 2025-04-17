@@ -24,7 +24,7 @@ int is_redirection(char *str)
     return (0);
 }
 
-int is_operator(char *str)
+int is_pipe(char *str)
 {
     if (!ft_strcmp(str, "|"))
         return (PIPE);
@@ -35,24 +35,12 @@ t_arg *handle_redir(t_arg *token)
 {
     if (token->type == HEREDOC && token->next)
         token->next = read_here_doc(token->next);
-    // if (token->next && ft_strchr("<>"))
     token = token->next;
     if (token && token->prev->type != HEREDOC && token)
         token->type = file;
     return (token);
 }
 
-int variable_assign(t_arg *token)
-{
-    char *assing;
-
-    assing = ft_strchr(token->token, '=');
-    if (!assing || assing == token->token)
-        return (0);
-    if (ft_strchr("\'\" ", *(assing - 1)) || ft_strchr(" ", *(assing + 1)))
-        return (0);
-    return (1);
-}
 void identify_tokens(t_arg *token)
 {
     int i;
@@ -60,9 +48,7 @@ void identify_tokens(t_arg *token)
     i = 0;
     while (token)
     {
-        if (i == 0 && variable_assign(token))
-            token->type = VAR_ASSING;
-        else if (i == 0 && !ft_strchr("<>", token->token[0]))
+        if (i == 0 && !ft_strchr("<>", token->token[0]))
             token->type = CMD;
         else if (is_flag(token->token))
             token->type = FLAG;
@@ -72,17 +58,9 @@ void identify_tokens(t_arg *token)
             token = handle_redir(token);
             if (!token)
                 break;
-            if (token->next && !ft_strchr("<>", token->next->token[0]))
-            {
-                token = token->next;
-                if (variable_assign(token))
-                    token->type = VAR_ASSING;
-                else
-                    token->type = CMD;
-            }
         }
         else
-            token->type = is_operator(token->token);
+            token->type = is_pipe(token->token);
         if (token->type == PIPE)
         {
             if (token->next && !ft_strchr("<>", token->next->token[0]))
