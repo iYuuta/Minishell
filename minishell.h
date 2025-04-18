@@ -75,6 +75,7 @@ int		print_env(t_env *env);
 int		pwd(t_env *env, int fd);
 int	    unset(t_arg *arg);
 int 	export(t_arg *arg);
+int     sort_export(t_arg *token);
 int		exit_shell();
 int     change_directory(t_arg *arg);
 
@@ -100,6 +101,8 @@ char *expand_vars(char *token, t_env *env);
 
 t_env *env_init(char **env);
 char	*ft_env_substr(char const *s, unsigned int start, size_t len);
+char	*ft_env_strdup(const char *s1);
+char *ft_env_join(char *s1, char const *s2);
 t_env *add_to_env(t_env *env, char *var);
 t_env	*new_env(char *content);
 t_env	*last_env(t_env *lst);

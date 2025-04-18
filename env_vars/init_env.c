@@ -73,7 +73,7 @@ t_env *env_init(char **env)
 	{
 		printf("env ain't there\n");
 		head = new_env("");
-		head->arg = ft_strdup("");
+		head->arg = ft_env_strdup("");
 		return (head);
 	}
     while (env[i])

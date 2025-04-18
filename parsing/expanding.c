@@ -56,7 +56,7 @@ char *selective_expanding(t_env *env, char *str)
             strings[0] = ft_substr(str, 0, i);
             strings[1] = ft_substr(str, i, skip_chars(str + i));
             strings[2] = ft_substr(str, i + skip_chars(str + i), ft_strlen(str + (i + skip_chars(str + i))));
-            printf("before->%s  expand->%s  after->%s\n", strings[0], strings[1], strings[2]);
+            // printf("before->%s  expand->%s  after->%s\n", strings[0], strings[1], strings[2]);
             strings[1] = expand(env, strings[1] + 1);
             for (int k = 0; k < 3; k++)
                 strings[3] = ft_strjoin(strings[3], strings[k]);

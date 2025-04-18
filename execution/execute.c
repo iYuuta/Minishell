@@ -86,7 +86,7 @@ int check_builtins(t_arg *token)
     if (!ft_strcmp(token->token, "unset"))
         return (unset(token), 0);
     if (!ft_strcmp(token->token, "export"))
-        return (export(token->next));
+        return (export(token));
 	if (!ft_strcmp(token->token, "exit"))
         return (exit_shell());
     if (!ft_strcmp(token->token, "cd"))
