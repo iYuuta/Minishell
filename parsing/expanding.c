@@ -27,7 +27,11 @@ char *expand(t_env *env, char *str)
     while (env)
     {
         if (!ft_strcmp(env->name, str))
+        {
+            if (!env->arg)
+                return (ft_strdup(""));
             return (env->arg);
+        }
         env = env->next;
     }
     return (ft_strdup(""));

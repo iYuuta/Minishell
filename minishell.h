@@ -75,7 +75,6 @@ int		print_env(t_env *env);
 int		pwd(t_env *env, int fd);
 int	    unset(t_arg *arg);
 int 	export(t_arg *arg);
-int     sort_export(t_arg *token);
 int		exit_shell();
 int     change_directory(t_arg *arg);
 
@@ -120,6 +119,10 @@ t_arg	*ft_lstnew(void *content);
 void	ft_lstadd_back(t_arg **lst, t_arg *new);
 int	ft_lstsize(t_arg *lst);
 t_arg	*ft_lstlast(t_arg *lst);
+int     sort_export(t_arg *token);
+int check_export_error(char *str);
+int export_wt_args(t_arg *arg);
+t_env *get_env(t_env *env, char *name);
 
 /*********************************** */
 

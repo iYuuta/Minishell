@@ -9,7 +9,7 @@ t_env	*new_env(char *content)
 	strc = env_malloc(sizeof(t_env), 1);
 	if (!strc)
 		return (NULL);
-	strc->name = content;
+	strc->name = ft_env_strdup(content);
 	strc->next = NULL;
 	strc->prev = NULL;
 	return (strc);

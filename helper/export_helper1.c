@@ -12,11 +12,13 @@ t_env *ft_envdup(t_env *env)
     if (!new->name)
         return (NULL);
     if (!env->arg)
-        new->arg = ft_strdup("");
+        new->arg = NULL;
     else
+    {
         new->arg = ft_strdup(env->arg);
-    if (!new->arg)
-        return (NULL);
+        if (!new->arg)
+            return (NULL);
+    }
     return (new);
 }
 
@@ -47,7 +49,7 @@ t_env *brute_sort(t_env *env)
     t_env *tmp;
     t_env *biggest;
     t_env *new;
-    t_env *visited; // Now stores names, not nodes
+    t_env *visited;
 
     new = NULL;
     visited = NULL;
@@ -59,15 +61,13 @@ t_env *brute_sort(t_env *env)
         {
             if (!ft_lst_contains_name(visited, tmp->name) && 
                 (!biggest || ft_strcmp(tmp->name, biggest->name) < 0))
-            {
                 biggest = tmp;
-            }
             tmp = tmp->next;
         }
         if (!biggest)
             break;
         env_add_back(&new, ft_envdup(biggest));
-        env_add_back(&visited, ft_envdup(biggest)); // Store a copy of the name
+        env_add_back(&visited, ft_envdup(biggest));
     }
     return (new);
 }
@@ -79,7 +79,10 @@ int sort_export(t_arg *token)
     sorted_env = brute_sort(token->env);
     while (sorted_env)
     {
-        printf("declare -x %s=\"%s\"\n", sorted_env->name, sorted_env->arg);
+        printf("declare -x %s", sorted_env->name);
+        if (sorted_env->arg)
+            printf("=\"%s\"", sorted_env->arg);
+        printf("\n");
         sorted_env = sorted_env->next;
     }
     return (0);

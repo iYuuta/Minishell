@@ -6,7 +6,7 @@ int is_flag(char *str)
         return (0);
     if (*str == '\'' || *str == '\"')
         str++;
-    if (*str == '-')
+    if (*str++ == '-' && *str)
         return (1);
     return (0);
 }

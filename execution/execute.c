@@ -90,7 +90,7 @@ int check_builtins(t_arg *token)
 	if (!ft_strcmp(token->token, "exit"))
         return (exit_shell());
     if (!ft_strcmp(token->token, "cd"))
-        return (change_directory(token->next));
+        return (change_directory(token));
     return (2);
 }
 
