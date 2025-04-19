@@ -47,6 +47,16 @@ typedef struct s_env
     struct s_env *next;
 }           t_env;
 
+typedef struct s_command
+{
+	char	*cmd;
+	char	*cmd_args;
+	int		infile;
+	int		outfile;
+	int		outfile_red;
+	struct	s_command *next;
+}	t_cmd;
+
 typedef struct s_arg
 {
     char *token;
@@ -66,6 +76,7 @@ void	handle_signales(int signal);
 /************* execution *************/
 
 int execution(char *str, t_env *env);
+int	init_commands(t_arg *arg, t_cmd **cmds_head);
 
 /*************************************/
 

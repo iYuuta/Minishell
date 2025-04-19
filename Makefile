@@ -4,14 +4,14 @@ helper = helper/ft_malloc.c helper/lst.c helper/env_malloc.c helper/export_helpe
 
 signals = signals/signal.c
 
-built_ins = built_ins/env.c  built_ins/pwd.c built_ins/unset.c built_ins/export.c built_ins/exit.c built_ins/cd.c
+built_ins = built_ins/env.c  built_ins/pwd.c built_ins/unset.c built_ins/export.c built_ins/exit.c built_ins/cd.c built_ins/echo.c
 
 env_vars = env_vars/init_env.c env_vars/ft_env_helper.c
 
 parsing = parsing/parse.c parsing/handle_quotes.c parsing/syntax_errors.c parsing/tokenize.c parsing/here_doc.c \
 		  parsing/expanding.c
 
-execution = execution/execute.c
+execution = execution/execute.c execution/command_initializer.c
 
 OBJ = $(SRC:.c=.o) $(helper:.c=.o) $(parsing:.c=.o) $(signals:.c=.o) \
 	$(execution:.c=.o) $(env_vars:.c=.o) $(built_ins:.c=.o)

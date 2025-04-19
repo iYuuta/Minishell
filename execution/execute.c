@@ -91,13 +91,17 @@ int check_builtins(t_arg *token)
         return (exit_shell());
     if (!ft_strcmp(token->token, "cd"))
         return (change_directory(token));
+	// if (!ft_strcmp(token->token, "echo"))
+    //     return (echo_shell(token->next));
     return (2);
 }
 
 int execution(char *str, t_env *env)
 {
     t_arg *arg;
+	// t_cmd	**cmds;
 
+	// int		cmd_nbr = init_commands(arg, cmds);
     arg = parse_args(str, env);
     if (!arg)
         return (1);

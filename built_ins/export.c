@@ -28,6 +28,7 @@ int add_env(t_env *arg, char *value, char *name)
         return (1);
     new->arg = ft_env_strdup(value);
     env_add_back(&arg, new);
+	return (0);
 }
 
 int export_w_args(t_arg *token, int append, int len)
@@ -53,6 +54,7 @@ int export_w_args(t_arg *token, int append, int len)
         append = over_write(get_env(token->env, arg[0]), arg[1], append);
     if (append)
         return (1);
+	return (0);
 }
 
 int export(t_arg *token)
