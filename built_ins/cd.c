@@ -46,39 +46,6 @@ int change_old_pwd(t_env *env, char *str)
     return (0);
 }
 
-int cd_home(t_arg *arg)
-{
-    t_env *home;
-
-    home = get_env(arg->env, "HOME");
-    if (!home)
-        return (printf("bash: cd: HOME not set\n"), 1);
-    if (chdir(home->arg))
-        return (printf("bash: cd: %s: No such file or directory\n", arg->token), 1);
-    return (0);
-}
-
-int cd_oldpwd(t_arg *arg)
-{
-    t_env *oldpwd;
-    char *pwd;
-
-    pwd = getcwd(NULL, 0);
-    if (!pwd)
-        return (1);
-    oldpwd = get_env(arg->env, "OLDPWD");
-    if (!oldpwd)
-        return (printf("bash: cd: OLDPWD not set\n"), 1);
-    if (chdir(oldpwd->arg))
-        return (printf("bash: cd: %s: No such file or directory\n", arg->token), 1);
-    printf("%s\n", oldpwd->arg);
-    if (change_old_pwd(arg->env, pwd))
-        return (1);
-    if (change_pwd(arg->env))
-        return (1);
-    return (0);
-}
-
 int change_directory(t_arg *arg)
 {
     char *pwd;
@@ -87,10 +54,8 @@ int change_directory(t_arg *arg)
     if (!pwd)
         return (1);
     if (!arg->next || arg->next->type != WORD)
-        return (cd_home(arg));
+        return (ft_putstr_fd("cd only supposts relative or absolute path\n", 2), 1);
     arg = arg->next;
-    if (!ft_strcmp(arg->token, "-"))
-        return (cd_oldpwd(arg));
     if (access(arg->token, X_OK) == -1)
         return (printf("bash: cd: %s: Permission denied\n", arg->token), 1);
     if (chdir(arg->token))

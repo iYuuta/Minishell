@@ -5,7 +5,7 @@ void close_files()
 	int i;
 
 	i = 2;
-	while (++i < OPEN_MAX)
+	while (++i < 1000)
 		close(i);
 }
 

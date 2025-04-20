@@ -16,7 +16,7 @@ execution = execution/execute.c execution/execution_helper.c execution/excev_arg
 OBJ = $(SRC:.c=.o) $(helper:.c=.o) $(parsing:.c=.o) $(signals:.c=.o) \
 	$(execution:.c=.o) $(env_vars:.c=.o) $(built_ins:.c=.o)
 
-CFLAGS = -g -fsanitize=address
+CFLAGS = 
 
 LIBFT = libft_dyali/libft.a
 
@@ -62,6 +62,3 @@ fclean: clean
 	make -C libft_dyali fclean
 
 re : fclean all
-
-
-#env var are not inherited properly if they don't have a value && this < file < idk cat > idk Makefile

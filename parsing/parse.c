@@ -26,6 +26,7 @@ t_cmd *parse_args(char *str, t_env *env)
     
     size = 0;
     str = expand_vars(str, env);
+    str = expand_vars(str, env);
     args = split_args(str, &size);
     if (!args)
     {
@@ -34,11 +35,6 @@ t_cmd *parse_args(char *str, t_env *env)
         return (NULL);
     }
     head = tokenize_arg(args, env);
-    while (head)
-    {
-        printf("token-> %s    type-> %s\n", head->token, token_type_to_string(head->type));
-        head = head->next;
-    }
     cmd = finish_parse(head, env);
     // while (cmd)
     // {

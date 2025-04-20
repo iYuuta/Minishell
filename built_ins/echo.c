@@ -21,7 +21,7 @@ t_arg	*check_new_line(t_arg *arg, int *new_line)
 			else
 				tracker = 0;
 		}
-		if (!tracker)
+		else
 		{
 			tmp->type = WORD;
 			tracker = 0;
