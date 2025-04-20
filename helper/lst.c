@@ -36,6 +36,7 @@ void	ft_lstadd_back(t_arg **lst, t_arg *new)
 	if (!*lst)
 	{
 		*lst = new;
+		(*lst)->next = NULL;
 		new->head = new;
 		return ;
 	}

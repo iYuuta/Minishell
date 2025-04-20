@@ -15,57 +15,65 @@
 
 typedef enum e_token_type
 {
-    WORD,
-    CMD,
-    file,
-    FLAG,
-    PIPE,
-    REDIR_OUT,
-    REDIR_APPEND,
-    REDIR_IN,
-    HEREDOC,
-    HEREDOCTEXT,
-    DQUOTE_STRING,
-    SQUOTE_STRING,
-    VARIABLE,
-    VAR_ASSING,
-    BACKGROUND,
+	WORD,
+	CMD,
+	file,
+	FLAG,
+	PIPE,
+	REDIR_OUT,
+	REDIR_APPEND,
+	REDIR_IN,
+	HEREDOC,
+	HEREDOCTEXT,
+	DQUOTE_STRING,
+	SQUOTE_STRING,
+	VARIABLE,
+	VAR_ASSING,
+	BACKGROUND,
 }   t_token_type;
 
 typedef struct s_malloc
 {
-    void *ptr;
-    struct s_malloc *next;
+	void *ptr;
+	struct s_malloc *next;
 }           t_malloc;
 
 
 typedef struct s_env
 {
-    char *name;
-    char *arg;
-    struct s_env *prev;
-    struct s_env *next;
+	char *name;
+	char *arg;
+	struct s_env *prev;
+	struct s_env *next;
 }           t_env;
-
-typedef struct s_command
-{
-	char	*cmd;
-	char	*cmd_args;
-	int		infile;
-	int		outfile;
-	int		outfile_red;
-	struct	s_command *next;
-}	t_cmd;
 
 typedef struct s_arg
 {
-    char *token;
-    int  type;
-    struct s_env *env;
-    struct s_arg *next;
-    struct s_arg *prev;
-    struct s_arg *head;
+	char *token;
+	int  type;
+	struct s_env *env;
+	struct s_arg *next;
+	struct s_arg *prev;
+	struct s_arg *head;
 }           t_arg;
+
+typedef struct s_file
+{
+	char *file;
+	int type;
+	struct s_file *next;
+}		t_file;
+
+typedef struct s_command
+{
+	struct s_arg		*tokens;
+	struct s_file		*file;
+	struct s_env		*env;
+	int					infile;
+	int					outfile;
+	int					append;
+	struct	s_command	*next;
+}	t_cmd;
 
 /************** signals **************/
 
@@ -93,7 +101,7 @@ int     change_directory(t_arg *arg);
 
 /************** parsing **************/
 
-t_arg *parse_args(char *str, t_env *env);
+t_cmd *parse_args(char *str, t_env *env);
 int is_operator(char *str);
 int is_flag(char *str);
 char **split_args(char *str, int *size);
@@ -104,6 +112,7 @@ int check_uncompleted_cmd(t_arg *token);
 int is_redirection(char *str);
 int get_index(char *str, char c);
 char *expand_vars(char *token, t_env *env);
+t_cmd *finish_parse(t_arg *args, t_env *env);
 
 /*************************************/
 

@@ -48,11 +48,7 @@ void identify_tokens(t_arg *token)
     i = 0;
     while (token)
     {
-        if (i == 0 && !ft_strchr("<>", token->token[0]))
-            token->type = CMD;
-        else if (is_flag(token->token))
-            token->type = FLAG;
-        else if (is_redirection(token->token))
+        if (is_redirection(token->token))
         {
             token->type = is_redirection(token->token);
             token = handle_redir(token);
@@ -61,15 +57,6 @@ void identify_tokens(t_arg *token)
         }
         else
             token->type = is_pipe(token->token);
-        if (token->type == PIPE)
-        {
-            if (token->next && !ft_strchr("<>", token->next->token[0]))
-            {
-                token = token->next;
-                i++;
-                token->type = CMD;
-            }
-        }
         i++;
         token = token->next;
     }
@@ -103,7 +90,6 @@ t_arg *tokenize_arg(char **av, t_env *env)
         ft_lstadd_back(&head, tmp);
     }
     identify_tokens(head);
-    // expand_vars(head);
     polish_tokens(head);
     return (head);
 }

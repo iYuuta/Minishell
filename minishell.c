@@ -47,7 +47,7 @@ int main(int ac, char **av, char **env)
     t_env *envirement;
 
     envirement = env_init(env);
-    if (read_shell(envirement, "\033[1;34mminishell>> \033[0m") == 1)
+    if (read_shell(envirement, "minishell>> ") == 1)
         return (1);
     return (0);
 }

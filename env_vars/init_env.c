@@ -46,16 +46,28 @@ void	env_add_back(t_env **lst, t_env *new)
 t_env *add_to_env(t_env *env, char *var)
 {
 	t_env *new;
+	char *value;
 	int len;
 
-	len = get_index(var, '=');
 	new = env_malloc(sizeof(t_env), 1);
+	if (!new)
+		return (NULL);
+	len = get_index(var, '=');
+	if (len == -1)
+	{
+		len = ft_strlen(var);
+		value = NULL;
+	}
+	else
+	{
+		value = ft_env_substr(var, len + 1, ft_strlen(var + len + 1));
+		if (!value)
+			return (NULL);
+	}
 	new = new_env(ft_env_substr(var, 0, len));
 	if (!new)
 		return (NULL);
-	new->arg = ft_env_substr(var, len + 1, ft_strlen(var + len + 1));
-	// if (!new->arg)
-	// 	return (NULL);
+	new->arg = value;
 	env_add_back(&env, new);
 	return (env);
 }
@@ -71,7 +83,6 @@ t_env *env_init(char **env)
     head = NULL;
 	if (!env || !(*env))
 	{
-		printf("env ain't there\n");
 		head = new_env("");
 		head->arg = ft_env_strdup("");
 		return (head);
@@ -79,12 +90,21 @@ t_env *env_init(char **env)
     while (env[i])
     {
         len = get_index(env[i], '=');
-        tmp = new_env(ft_env_substr(env[i], 0, len));
-        if (!tmp)
-            return (NULL);
-        tmp->arg = ft_env_substr(env[i], len + 1, ft_strlen(env[i] + len + 1));
-        // if (!tmp->arg)
-        //     return (NULL);
+		tmp = new_env(ft_env_substr(env[i], 0, len));
+    	if (!tmp)
+        	return (NULL);
+		if ((len + 1) == ft_strlen(env[i]))
+		{
+			tmp->arg = ft_env_strdup("");
+			if (!tmp->arg)
+				return (NULL);
+		}
+		else
+		{
+        	tmp->arg = ft_env_substr(env[i], len + 1, ft_strlen(env[i] + len + 1));
+        	if (!tmp->arg)
+        	    return (NULL);
+		}
         env_add_back(&head, tmp);
         i++;
     }

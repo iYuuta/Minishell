@@ -23,9 +23,10 @@ const char *token_type_to_string(t_token_type type)
     }
 }
 
-t_arg *parse_args(char *str, t_env *env)
+t_cmd *parse_args(char *str, t_env *env)
 {
     t_arg *head = NULL;
+    t_cmd *cmd;
     char **args;
     int size;
     
@@ -39,16 +40,21 @@ t_arg *parse_args(char *str, t_env *env)
         return (NULL);
     }
     head = tokenize_arg(args, env);
-    // if (!check_uncompleted_cmd(head))
+    cmd = finish_parse(head, env);
+    // while (cmd)
     // {
-    //     ft_malloc(0, 0);
-    //     return (NULL);
+    //     while (cmd->tokens)
+    //     {
+    //         printf("token-> %s    type-> %s\n", cmd->tokens->token, token_type_to_string(cmd->tokens->type));
+    //         cmd->tokens = cmd->tokens->next;
+    //     }
+    //     while (cmd->file)
+    //     {
+    //         printf("file name-> %s    type-> %s\n", cmd->file->file, token_type_to_string(cmd->file->type));
+    //         cmd->file = cmd->file->next;
+    //     }
+    //     cmd = cmd->next;
     // }
-    // while (head)
-    // {
-    //     printf("token-> %s    type-> %s\n", head->token, token_type_to_string(head->type));
-    //     head = head->next;
-    // }
-    return (head);   
+    return (cmd);
 }
 

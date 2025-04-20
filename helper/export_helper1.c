@@ -79,10 +79,13 @@ int sort_export(t_arg *token)
     sorted_env = brute_sort(token->env);
     while (sorted_env)
     {
-        printf("declare -x %s", sorted_env->name);
-        if (sorted_env->arg)
-            printf("=\"%s\"", sorted_env->arg);
-        printf("\n");
+        if (sorted_env->name[0])
+        {
+            printf("declare -x %s", sorted_env->name);
+            if (sorted_env->arg)
+                printf("=\"%s\"", sorted_env->arg);
+            printf("\n");
+        }
         sorted_env = sorted_env->next;
     }
     return (0);
