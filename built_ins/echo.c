@@ -1,50 +1,55 @@
 #include "../minishell.h"
 
-static int	check_new_line(char *str)
+t_arg	*check_new_line(t_arg *arg, int *new_line)
 {
 	int	i;
+	int tracker;
+	t_arg *tmp;
 
 	i = 0;
-	if (str[i] && str[i] == '-')
+	tracker = 1;
+	tmp = arg;
+	while (tmp)
 	{
-		++i;
-		while (str[i] && str[i] == 'n')
-			i++;
-		if (i == (int)ft_strlen(str))
-			return (1);
+		i = 1;
+		if (tmp->type == FLAG && tracker)
+		{
+			while (tmp->token[i] && tmp->token[i] == 'n')
+				i++;
+			if (!tmp->token[i])
+				*new_line = 1;
+			else
+				tracker = 0;
+		}
+		else
+			tmp->type = WORD;
+		tmp = tmp->next;
 	}
-	return (0);
+	if (!(*new_line))
+		return (arg);
+	return (NULL);
 }
 
-static void	write_echo(int count, int i, int new_line, char **args)
+int echo(t_cmd *cmd)
 {
-	while (args[i] && check_new_line(args[i]))
+	int new_line;
+	t_arg *args;
+
+	new_line = 0;
+	args = check_new_line(cmd->tokens, &new_line);
+	if (args)
+		new_line = 1;
+	else
+		args = cmd->tokens;
+	args = args->next;
+	while (args)
 	{
-		++i;
-		new_line = 0;
-	}
-	while (i < count)
-	{
-		write(1, args[i], ft_strlen(args[i]));
-		if (i != count - 1)
+		ft_putstr_fd(args->token, 1);
+		args = args->next;
+		if (cmd->tokens)
 			write(1, " ", 1);
-		++i;
 	}
-	if (new_line)
-		write(1, "\n", 1);
-}
-
-int	ft_echo(char **args)
-{
-	int		count;
-	int		i;
-	int		new_line;
-
-	count = 0;
-	while (args[count])
-		++count;
-	i = 1;
-	new_line = 1;
-	write_echo(count, i, new_line, args);
+	if (!new_line)
+		printf("\n");
 	return (0);
 }

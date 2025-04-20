@@ -100,7 +100,9 @@ t_arg *copy_token(t_arg *token)
 t_arg *refine_token(t_arg *token)
 {
 	t_arg *head;
+	int tracker;
 
+	tracker = 0;
 	head = token;
 	if (token)
 		token->type = CMD;
@@ -108,7 +110,12 @@ t_arg *refine_token(t_arg *token)
 	while (token)
 	{
 		if (token->token[0] == '-' && token->token[1])
+		{
 			token->type = FLAG;
+			tracker = 1;
+		}
+		else if (tracker)
+			break ;
 		token = token->next;
 	}
 	return (head);

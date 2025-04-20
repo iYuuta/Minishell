@@ -14,8 +14,8 @@ int check_builtins(t_cmd *cmd)
         return (exit_shell());
     if (!ft_strcmp(cmd->tokens->token, "cd"))
         return (change_directory(cmd->tokens));
-	// if (!ft_strcmp(token->token, "echo"))
-    //     return (echo_shell(token->next));
+	if (!ft_strcmp(cmd->tokens->token, "echo"))
+        return (echo(cmd));
     return (2);
 }
 

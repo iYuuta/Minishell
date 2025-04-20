@@ -31,11 +31,6 @@ char **split_args(char *str, int *size)
             i++;
         if (!str[i])
             break ;
-        // if (ft_strchr("$", str[i]))
-        // {
-        //     while (ft_isalpha(str[i + j]))
-        //         j++;
-        // }
         else if (ft_strchr("<>|&", str[i]))
         {
             j = 1;
@@ -56,7 +51,6 @@ char **split_args(char *str, int *size)
         }
         arg = ft_substr(str, i, j);
         i += j;
-        // printf("|%s|\n", arg);
         args[*size] = arg;
         *size += 1;
     }

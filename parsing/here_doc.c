@@ -65,11 +65,9 @@ char *expand_heredoc(t_env *env, char *str)
 {
     char *strings[4];
     int i;
-    int flag;
     int index;
 
     i = 0;
-    flag = 2;
     while (str[i])
     {
         if (str[i] && str[i] == '$')
@@ -100,9 +98,9 @@ t_arg *read_here_doc(t_arg *token)
     int flag;
 
     flag = 1;
-    if (!ft_strchr(stop, '\'') && !ft_strchr(stop, '\"'))
-        flag = 0;
     stop = new_stop(token->token);
+    if (!ft_strchr(stop, '\'') || !ft_strchr(stop, '\"'))
+        flag = 0;
     str = ft_strdup("");
     tmp[0] = NULL;
     while (1)
@@ -114,19 +112,19 @@ t_arg *read_here_doc(t_arg *token)
         {
             token->type = HEREDOCTEXT;
             token->token = str;
-            // free(tmp[0]);
+            free(tmp[0]);
             return (token);
         }
         if (flag)
         {
             printf("%s->expand\n", stop);
             tmp[1] = expand_heredoc(token->env, tmp[0]);
-            // free(tmp[0]);
+            free(tmp[0]);
             tmp[0] = tmp[1];
         }
         str = ft_strjoin(str, tmp[0]);
         str = ft_strjoin(str, "\n");
-        // free(tmp[0]);
+        free(tmp[0]);
     }
     return (NULL);
 }

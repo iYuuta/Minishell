@@ -63,7 +63,7 @@ char *selective_expanding(t_env *env, char *str)
             strings[1] = expand(env, strings[1] + 1);
             for (int k = 0; k < 3; k++)
                 strings[3] = ft_strjoin(strings[3], strings[k]);
-            str = strings[3]; 
+            str = strings[3];
             if (!strings[1][0])
                 i--;
         }

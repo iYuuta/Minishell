@@ -92,11 +92,11 @@ int	init_commands(t_arg *arg, t_cmd **cmds_head);
 
 int		print_env(t_env *env);
 int		pwd(t_env *env, int fd);
-int	    unset(t_arg *arg);
-int 	export(t_arg *arg);
+int		unset(t_arg *arg);
+int		export(t_arg *arg);
 int		exit_shell();
-int     change_directory(t_arg *arg);
-
+int		change_directory(t_arg *arg);
+int		echo(t_cmd *cmd);
 /*************************************/
 
 /************** parsing **************/
