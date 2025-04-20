@@ -8,7 +8,7 @@ t_arg	*check_new_line(t_arg *arg, int *new_line)
 
 	i = 0;
 	tracker = 1;
-	tmp = arg;
+	tmp = arg->next;
 	while (tmp)
 	{
 		i = 1;
@@ -22,10 +22,13 @@ t_arg	*check_new_line(t_arg *arg, int *new_line)
 				tracker = 0;
 		}
 		else
+		{
 			tmp->type = WORD;
+			tracker = 0;
+		}
 		tmp = tmp->next;
 	}
-	if (!(*new_line))
+	if (*new_line)
 		return (arg);
 	return (NULL);
 }
@@ -44,12 +47,15 @@ int echo(t_cmd *cmd)
 	args = args->next;
 	while (args)
 	{
-		ft_putstr_fd(args->token, 1);
+		if (args->type == WORD)
+		{
+			ft_putstr_fd(args->token, 1);
+			if (args->next)
+				write(1, " ", 1);
+		}
 		args = args->next;
-		if (cmd->tokens)
-			write(1, " ", 1);
 	}
 	if (!new_line)
-		printf("\n");
+		write(1, "\n", 1);
 	return (0);
 }

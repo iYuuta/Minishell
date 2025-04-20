@@ -110,7 +110,7 @@ t_arg *read_here_doc(t_arg *token)
             return (token);
         if (!ft_strcmp(tmp[0], stop))
         {
-            token->type = HEREDOCTEXT;
+            token->type = file;
             token->token = str;
             free(tmp[0]);
             return (token);

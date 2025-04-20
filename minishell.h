@@ -24,12 +24,6 @@ typedef enum e_token_type
 	REDIR_APPEND,
 	REDIR_IN,
 	HEREDOC,
-	HEREDOCTEXT,
-	DQUOTE_STRING,
-	SQUOTE_STRING,
-	VARIABLE,
-	VAR_ASSING,
-	BACKGROUND,
 }   t_token_type;
 
 typedef struct s_malloc
@@ -84,7 +78,6 @@ void	handle_signales(int signal);
 /************* execution *************/
 
 int execution(char *str, t_env *env);
-int	init_commands(t_arg *arg, t_cmd **cmds_head);
 
 /*************************************/
 

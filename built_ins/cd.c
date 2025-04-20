@@ -91,6 +91,8 @@ int change_directory(t_arg *arg)
     arg = arg->next;
     if (!ft_strcmp(arg->token, "-"))
         return (cd_oldpwd(arg));
+    if (access(arg->token, X_OK) == -1)
+        return (printf("bash: cd: %s: Permission denied\n", arg->token), 1);
     if (chdir(arg->token))
         return (printf("bash: cd: %s: No such file or directory\n", arg->token), 1);
     if (change_old_pwd(arg->env, pwd))

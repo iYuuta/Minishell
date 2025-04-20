@@ -5,7 +5,6 @@ const char *token_type_to_string(t_token_type type)
     switch (type)
     {
         case WORD: return "WORD";
-        case HEREDOCTEXT: return "HEREDOCTEXT";
         case file: return "file";
         case CMD: return "CMD";
         case FLAG: return "FLAG";
@@ -14,11 +13,6 @@ const char *token_type_to_string(t_token_type type)
         case REDIR_APPEND: return "REDIR_APPEND";
         case REDIR_IN: return "REDIR_IN";
         case HEREDOC: return "HEREDOC";
-        case DQUOTE_STRING: return "DQUOTE_STRING";
-        case SQUOTE_STRING: return "SQUOTE_STRING";
-        case VARIABLE: return "VARIABLE";
-        case VAR_ASSING: return "VAR_ASSING";
-        case BACKGROUND: return "BACKGROUND";
         default: return "UNKNOWN";
     }
 }
@@ -33,6 +27,8 @@ t_cmd *parse_args(char *str, t_env *env)
     size = 0;
     str = expand_vars(str, env);
     args = split_args(str, &size);
+    for (int i = 0; args[i]; i++)
+        printf("%s\n", args[i]);
     if (!args)
     {
         printf("bash: syntax error unclosed quotes\n");
@@ -40,6 +36,11 @@ t_cmd *parse_args(char *str, t_env *env)
         return (NULL);
     }
     head = tokenize_arg(args, env);
+    // while (head)
+    // {
+    //     printf("token-> %s    type-> %s\n", head->token, token_type_to_string(head->type));
+    //     head = head->next;
+    // }
     cmd = finish_parse(head, env);
     // while (cmd)
     // {

@@ -45,8 +45,6 @@ int unset(t_arg *arg)
     head = arg;
     while (arg)
     {
-        if (arg->type == PIPE)
-            break ;
         if (arg->type == WORD)
         {
             tmp = arg->env;
