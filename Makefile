@@ -11,7 +11,7 @@ env_vars = env_vars/init_env.c env_vars/ft_env_helper.c
 parsing = parsing/parse.c parsing/handle_quotes.c parsing/syntax_errors.c parsing/tokenize.c parsing/here_doc.c \
 		  parsing/expanding.c parsing/finish_parse.c
 
-execution = execution/execute.c
+execution = execution/execute.c execution/execution_helper.c execution/excev_args.c
 
 OBJ = $(SRC:.c=.o) $(helper:.c=.o) $(parsing:.c=.o) $(signals:.c=.o) \
 	$(execution:.c=.o) $(env_vars:.c=.o) $(built_ins:.c=.o)
