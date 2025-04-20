@@ -9,6 +9,9 @@
 #include <readline/history.h>
 #include <sys/wait.h>
 #include <stdio.h>
+#include <fcntl.h>
+#include <limits.h>
+#include <errno.h>
 
 #define fail 1
 #define success 0
@@ -65,7 +68,6 @@ typedef struct s_command
 	struct s_env		*env;
 	int					infile;
 	int					outfile;
-	int					append;
 	struct	s_command	*next;
 }	t_cmd;
 
@@ -77,7 +79,11 @@ void	handle_signales(int signal);
 
 /************* execution *************/
 
-int execution(char *str, t_env *env);
+int		execution(char *str, t_env *env);
+int		open_files(t_cmd *cmd);
+void	close_files();
+char	*get_cmd(t_cmd *cmd);
+char	**get_args(t_cmd *cmds);
 
 /*************************************/
 
@@ -90,6 +96,7 @@ int		export(t_arg *arg);
 int		exit_shell();
 int		change_directory(t_arg *arg);
 int		echo(t_cmd *cmd);
+
 /*************************************/
 
 /************** parsing **************/

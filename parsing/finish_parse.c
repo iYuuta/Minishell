@@ -129,6 +129,8 @@ t_cmd *get_cmd_arg(t_arg *token)
 	node = ft_malloc(sizeof(t_cmd), 1);
 	if (!node)
 		return (NULL);
+	node->infile = 0;
+	node->outfile = 1;
 	node->tokens = NULL;
 	node->next = NULL;
 	if (get_files(token, &node))
