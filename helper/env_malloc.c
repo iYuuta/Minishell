@@ -35,13 +35,10 @@ void *env_malloc(size_t size, int flag)
     }
     tmp = malloc(sizeof(t_malloc));
     if (!tmp)
-        return (printf("env_malloc failed\n"), NULL);
+        return (ft_malloc(0, 0), exit(1), NULL);
     tmp->ptr = malloc(size);
     if (!tmp->ptr)
-    {
-        free(tmp);
-        return (printf("env_malloc failed\n"), NULL);
-    }
+        return (ft_malloc(0, 0), exit(1), NULL);
     tmp->next = NULL;
     return (stack_env_garbage(&collector, tmp), tmp->ptr);
 }

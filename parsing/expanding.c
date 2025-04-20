@@ -12,37 +12,49 @@ int skip_heredoc(char *str)
     }
     return (i);
 }
+
 int skip_chars(char *str)
 {
     int i;
 
     i = 1;
-    while (str && !ft_strchr("\'\"$", str[i]))
+    while (str && !ft_strchr(" \'\"$", str[i]))
         i++;
     return (i);
 }
 
-char *expand(t_env *env, char *str)
+char *expand_str(char *str, t_env *env, int *i, int skip)
 {
-    while (env)
+    char *strings[4];
+    t_env *variable;
+    int j;
+
+    j = -1;
+    strings[3] = ft_strdup("");
+    strings[0] = ft_substr(str, 0, *i);
+    strings[1] = ft_substr(str, *i, skip);
+    strings[2] = ft_substr(str, *i + skip, ft_strlen(str + (*i + skip)));
+    if (str[*i + 1] && str[*i + 1] == '?')
+        strings[1] = ft_itoa(return_value(0, 0));
+    else
     {
-        if (!ft_strcmp(env->name, str))
-        {
-            if (!env->arg)
-                return (ft_strdup(""));
-            return (env->arg);
-        }
-        env = env->next;
+        variable = get_env(env, strings[1] + 1);
+        if (!variable)
+            strings[1] = ft_strdup("");
+        else
+            strings[1] = variable->arg;
     }
-    return (ft_strdup(""));
+    while (++j < 3)
+        strings[3] = ft_strjoin(strings[3], strings[j]);
+    *i = ft_strlen(strings[0]) + ft_strlen(strings[1]) - 1;
+    return (strings[3]);
 }
 
 char *selective_expanding(t_env *env, char *str)
 {
-    char *strings[4];
     int i;
     int flag;
-    int index;
+    int skip;
 
     i = 0;
     flag = 2;
@@ -56,16 +68,10 @@ char *selective_expanding(t_env *env, char *str)
             flag++;
         else if (str[i] && str[i] == '$')
         {
-            strings[3] = ft_strdup("");
-            strings[0] = ft_substr(str, 0, i);
-            strings[1] = ft_substr(str, i, skip_chars(str + i));
-            strings[2] = ft_substr(str, i + skip_chars(str + i), ft_strlen(str + (i + skip_chars(str + i))));
-            strings[1] = expand(env, strings[1] + 1);
-            for (int k = 0; k < 3; k++)
-                strings[3] = ft_strjoin(strings[3], strings[k]);
-            str = strings[3];
-            if (!strings[1][0])
-                i--;
+            skip = skip_chars(str + i);
+            if (str[i + 1] && str[i + 1] == '?')
+                skip = 2;
+            str = expand_str(str, env, &i, skip);
         }
         i++;
     }

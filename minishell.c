@@ -1,5 +1,14 @@
 #include "minishell.h"
 
+int return_value(int value, int flag)
+{
+    static int r_value;
+
+    if (flag)
+        r_value = value;
+    return (r_value);
+}
+
 t_env *change_env(t_env *env)
 {
     static t_env *new_env;

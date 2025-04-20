@@ -90,6 +90,7 @@ int		export(t_arg *arg);
 int		exit_shell();
 int		change_directory(t_arg *arg);
 int		echo(t_cmd *cmd);
+
 /*************************************/
 
 /************** parsing **************/
@@ -120,6 +121,7 @@ t_env	*new_env(char *content);
 t_env	*last_env(t_env *lst);
 void	env_add_back(t_env **lst, t_env *new);
 t_env *change_env(t_env *env);
+int return_value(int value, int flag);
 
 /*************************************/
 
