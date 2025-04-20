@@ -21,12 +21,18 @@ int check_builtins(t_cmd *cmd)
 
 int execution(char *str, t_env *env)
 {
-    t_cmd *arg;
+    t_cmd *cmds;
+	int pid;
 
-    arg = parse_args(str, env);
-    if (!arg)
+    cmds = parse_args(str, env);
+    if (!cmds)
         return (1);
-    if (check_builtins(arg) != 2)
+	// while (cmds)
+	// {
+	// 	pid = fork;
+	// 	cmds = cmds->next;
+	// }
+    if (check_builtins(cmds) != 2)
         return (0);
     return (0);
 }

@@ -16,12 +16,12 @@ t_arg	*check_new_line(t_arg *arg, int *new_line)
 		{
 			while (tmp->token[i] && tmp->token[i] == 'n')
 				i++;
-			if (!tmp->token[i])
+			if (tmp->token[i] == '\0')
 				*new_line = 1;
 			else
 				tracker = 0;
 		}
-		else
+		if (!tracker)
 		{
 			tmp->type = WORD;
 			tracker = 0;

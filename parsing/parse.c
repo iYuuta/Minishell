@@ -27,8 +27,6 @@ t_cmd *parse_args(char *str, t_env *env)
     size = 0;
     str = expand_vars(str, env);
     args = split_args(str, &size);
-    for (int i = 0; args[i]; i++)
-        printf("%s\n", args[i]);
     if (!args)
     {
         printf("bash: syntax error unclosed quotes\n");
