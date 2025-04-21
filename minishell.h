@@ -15,7 +15,9 @@
 
 #define fail 1
 #define success 0
+#ifndef PATH_MAX
 #define PATH_MAX 4096
+#endif
 
 typedef enum e_token_type
 {

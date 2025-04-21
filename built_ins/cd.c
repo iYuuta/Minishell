@@ -6,14 +6,7 @@ int change_pwd(t_env *env, char *pwd)
 
     cwdiroctory = get_env(env, "PWD");
     if (!cwdiroctory)
-    {
-        cwdiroctory = new_env("PWD");
-        if (!cwdiroctory)
-            return (1);
-        cwdiroctory->arg = ft_env_strdup(pwd);
-        if (!cwdiroctory->arg)
-            return (1);
-    }
+        return (0);
     cwdiroctory->arg = ft_env_strdup(pwd);
     if (!cwdiroctory->arg)
             return (1);
@@ -26,16 +19,7 @@ int change_old_pwd(t_env *env, char *str)
 
     oldpwd = get_env(env, "OLDPWD");
     if (!oldpwd)
-    {
-        oldpwd = new_env("OLDPWD");
-        if (!oldpwd)
-            return (1);
-        oldpwd->arg = ft_env_strdup(str);
-        if (!oldpwd->arg)
-            return (1);
-        env_add_back(&env, oldpwd);
         return (0);
-    }
     oldpwd->arg = ft_env_strdup(str);
     if (!oldpwd->arg)
         return (1);
@@ -55,6 +39,7 @@ int special_case(t_cmd *cmd)
         return (ft_putendl_fd("cd: error retrieving current directory: getcwd:\
             cannot access parent directories: No such file or directory", 2), 1);
     }
+    return (0);
 }
 
 int change_directory(t_cmd *cmd)
@@ -65,7 +50,7 @@ int change_directory(t_cmd *cmd)
         return (ft_putstr_fd("cd only supports relative or absolute path\n", 2), 1);
     if (!getcwd(pwd, PATH_MAX))
         ft_memset(pwd, 0, sizeof(char *));
-    if (!pwd)
+    if (!pwd[0])
         return (1);
     cmd->tokens = cmd->tokens->next;
     if (access(cmd->tokens->token, X_OK) == -1)

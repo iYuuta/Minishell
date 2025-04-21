@@ -19,7 +19,10 @@ t_arg	*check_new_line(t_arg *arg, int *new_line)
 			if (tmp->token[i] == '\0')
 				*new_line = 1;
 			else
+			{
 				tracker = 0;
+				tmp->type = WORD;
+			}
 		}
 		else
 		{

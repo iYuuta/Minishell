@@ -18,7 +18,7 @@ int skip_chars(char *str)
     int i;
 
     i = 1;
-    while (str && !ft_strchr(" \'\"$", str[i]))
+    while (str && (ft_isalnum(str[i]) || str[i] == '_'))
         i++;
     return (i);
 }
