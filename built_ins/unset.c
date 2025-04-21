@@ -13,19 +13,24 @@ t_env *remove_env(t_env *env)
 {
     t_env *tmp;
 
-    if (env && env->prev)
+    if (!env)
+        return (NULL);
+
+    if (env->prev)
     {
         tmp = env->prev;
         tmp->next = env->next;
+        if (env->next)
+            env->next->prev = tmp;
         return (env_head(tmp));
     }
-    else if (env && env->next)
+    else if (env->next)
     {
         tmp = env->next;
         tmp->prev = NULL;
         return (env_head(tmp));
     }
-	return (env_head(env));
+    return (NULL);
 }
 
 void update_env(t_arg *head, t_env *env)
@@ -40,6 +45,7 @@ void update_env(t_arg *head, t_env *env)
 int unset(t_arg *arg)
 {
     t_env *tmp;
+    t_env *next;
     t_arg *head;
 
     head = arg;
@@ -50,17 +56,19 @@ int unset(t_arg *arg)
             tmp = arg->env;
             while (tmp)
             {
+                next = tmp->next;
                 if (!ft_strcmp(tmp->name, arg->token))
                 {
                     arg->head->env = remove_env(tmp);
                     update_env(arg->head, arg->head->env);
-					head = arg->head;
+                    head = arg->head;
+                    break;
                 }
-                tmp = tmp->next;
+                tmp = next;
             }
         }
         arg = arg->next;
     }
-	change_env(head->env);
+    change_env(head->env);
     return (0);
 }

@@ -15,6 +15,7 @@
 
 #define fail 1
 #define success 0
+#define PATH_MAX 4096
 
 typedef enum e_token_type
 {
@@ -90,11 +91,11 @@ char	**get_args(t_cmd *cmds);
 /************** builtins *************/
 
 int		print_env(t_env *env);
-int		pwd(t_env *env, int fd);
+int		pwd(t_env *env);
 int		unset(t_arg *arg);
-int		export(t_arg *arg);
-int		exit_shell();
-int		change_directory(t_arg *arg);
+int 	export(t_cmd *token);
+int		exit_shell(t_arg *arg);
+int		change_directory(t_cmd *arg);
 int		echo(t_cmd *cmd);
 
 /*************************************/
@@ -140,10 +141,11 @@ t_arg	*ft_lstnew(void *content);
 void	ft_lstadd_back(t_arg **lst, t_arg *new);
 int	ft_lstsize(t_arg *lst);
 t_arg	*ft_lstlast(t_arg *lst);
-int     sort_export(t_arg *token);
+int     sort_export(t_cmd *token);
 int check_export_error(char *str);
-int export_wt_args(t_arg *arg);
+int export_wt_args(t_cmd *arg);
 t_env *get_env(t_env *env, char *name);
+int is_exit_valid(char *str);
 
 /*********************************** */
 

@@ -72,11 +72,11 @@ t_env *brute_sort(t_env *env)
     return (new);
 }
 
-int sort_export(t_arg *token)
+int sort_export(t_cmd *cmd)
 {
     t_env *sorted_env;
 
-    sorted_env = brute_sort(token->env);
+    sorted_env = brute_sort(cmd->env);
     while (sorted_env)
     {
         if (sorted_env->name[0])

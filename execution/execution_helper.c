@@ -9,7 +9,7 @@ void close_files()
 		close(i);
 }
 
-void print_error(char *str, char *file)
+static void print_error(char *str, char *file)
 {
 	ft_putstr_fd("bash: ", 2);
 	ft_putstr_fd(file, 2);

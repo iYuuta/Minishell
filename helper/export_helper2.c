@@ -24,15 +24,22 @@ int check_export_error(char *str)
     return (0);
 }
 
-int export_wt_args(t_arg *arg)
+static void printf_error(char *str)
+{
+    ft_putstr_fd("bash: export: `", 2);
+    ft_putstr_fd(str, 2);
+    ft_putendl_fd("': not a valid identifier", 2);
+}
+
+int export_wt_args(t_cmd *arg)
 {
     t_env *new;
     t_env *head;
 
-    if (check_export_error(arg->token))
-        return (printf("bash: export: `%s': not a valid identifier\n", arg->token), 1);
+    if (check_export_error(arg->tokens->token))
+        return (printf_error(arg->tokens->token), 1);
     head = arg->env;
-    new = new_env(arg->token);
+    new = new_env(arg->tokens->token);
     if (!new)
         return (1);
     new->arg = NULL;

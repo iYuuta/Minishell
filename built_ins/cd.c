@@ -1,13 +1,9 @@
 #include "../minishell.h"
 
-int change_pwd(t_env *env)
+int change_pwd(t_env *env, char *pwd)
 {
-    char *pwd;
     t_env *cwdiroctory;
 
-    pwd = getcwd(NULL, 0);
-    if (!pwd)
-        return (1);
     cwdiroctory = get_env(env, "PWD");
     if (!cwdiroctory)
     {
@@ -46,23 +42,39 @@ int change_old_pwd(t_env *env, char *str)
     return (0);
 }
 
-int change_directory(t_arg *arg)
+int special_case(t_cmd *cmd)
 {
-    char *pwd;
+    t_env *pwd;
 
-    pwd = getcwd(NULL, 0);
+    pwd = get_env(cmd->env, "PWD");
     if (!pwd)
         return (1);
-    if (!arg->next || arg->next->type != WORD)
-        return (ft_putstr_fd("cd only supposts relative or absolute path\n", 2), 1);
-    arg = arg->next;
-    if (access(arg->token, X_OK) == -1)
-        return (printf("bash: cd: %s: Permission denied\n", arg->token), 1);
-    if (chdir(arg->token))
-        return (printf("bash: cd: %s: No such file or directory\n", arg->token), 1);
-    if (change_old_pwd(arg->env, pwd))
+    if (!ft_strcmp(cmd->tokens->next->token, ".."))
+    {
+        change_pwd(cmd->env, ft_strjoin(pwd->arg, "/.."));
+        return (ft_putendl_fd("cd: error retrieving current directory: getcwd:\
+            cannot access parent directories: No such file or directory", 2), 1);
+    }
+}
+
+int change_directory(t_cmd *cmd)
+{
+    char pwd[PATH_MAX];
+
+    if (!cmd->tokens->next)
+        return (ft_putstr_fd("cd only supports relative or absolute path\n", 2), 1);
+    if (!getcwd(pwd, PATH_MAX))
+        ft_memset(pwd, 0, sizeof(char *));
+    if (!pwd)
         return (1);
-    if (change_pwd(arg->env))
+    cmd->tokens = cmd->tokens->next;
+    if (access(cmd->tokens->token, X_OK) == -1)
+        return (printf("bash: cd: %s: Permission denied\n", cmd->tokens->token), 1);
+    if (chdir(cmd->tokens->token))
+        return (printf("bash: cd: %s: No such file or directory\n", cmd->tokens->token), 1);
+    if (change_old_pwd(cmd->tokens->env, pwd))
+        return (1);
+    if (change_pwd(cmd->tokens->env, cmd->tokens->token))
         return (1);
     return (0);
 }
