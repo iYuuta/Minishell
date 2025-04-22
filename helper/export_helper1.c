@@ -81,10 +81,15 @@ int sort_export(t_cmd *cmd)
     {
         if (sorted_env->name[0])
         {
-            printf("declare -x %s", sorted_env->name);
+            ft_putstr_fd("declare -x ", cmd->outfile);
+            ft_putstr_fd(sorted_env->name, cmd->outfile);
             if (sorted_env->arg)
-                printf("=\"%s\"", sorted_env->arg);
-            printf("\n");
+			{
+				ft_putstr_fd("=\"", cmd->outfile);
+                ft_putstr_fd(sorted_env->arg, cmd->outfile);
+				ft_putstr_fd("\"", cmd->outfile);
+			}
+            write(cmd->outfile, "\n", 1);
         }
         sorted_env = sorted_env->next;
     }

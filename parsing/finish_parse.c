@@ -131,6 +131,7 @@ t_cmd *get_cmd_arg(t_arg *token)
 		return (NULL);
 	node->infile = 0;
 	node->outfile = 1;
+	node->tube[0] = -1;
 	node->tokens = NULL;
 	node->next = NULL;
 	if (get_files(token, &node))

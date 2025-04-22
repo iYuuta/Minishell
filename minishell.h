@@ -71,6 +71,7 @@ typedef struct s_command
 	struct s_env		*env;
 	int					infile;
 	int					outfile;
+	int					tube[2];
 	struct	s_command	*next;
 }	t_cmd;
 
@@ -92,8 +93,8 @@ char	**get_args(t_cmd *cmds);
 
 /************** builtins *************/
 
-int		print_env(t_env *env);
-int		pwd(t_env *env);
+int		print_env(t_env *env, t_cmd *cmd);
+int		pwd(t_env *env, t_cmd *cmd);
 int		unset(t_arg *arg);
 int 	export(t_cmd *token);
 int		exit_shell(t_arg *arg);
