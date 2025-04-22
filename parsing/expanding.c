@@ -7,7 +7,12 @@ int skip_heredoc(char *str)
     i = 0;
     if (str[i++] == '<' && str[i] == '<')
     {
-        while (str[i] && str[i] != ' ')
+        if (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
+        {
+            while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
+                i++;
+        }
+        while (str[i] && str[i] != ' ' && (str[i] < 9 || str[i] > 13))
             i++;
     }
     return (i);

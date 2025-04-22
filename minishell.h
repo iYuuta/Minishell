@@ -15,12 +15,15 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <time.h>
+#include <dirent.h>
 
 #define fail 1
 #define success 0
 #ifndef PATH_MAX
 #define PATH_MAX 4096
 #endif
+
+#define DEFAULT_PATH "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 
 typedef enum e_token_type
 {
@@ -120,6 +123,7 @@ int is_redirection(char *str);
 int get_index(char *str, char c);
 char *expand_vars(char *token, t_env *env);
 t_cmd *finish_parse(t_arg *args, t_env *env);
+char *wild_card(char *str);
 
 /*************************************/
 
@@ -157,3 +161,6 @@ int is_exit_valid(char *str);
 
 
 #endif
+
+//minishell>> export var="        7"
+// minishell>> export a=$var

@@ -79,7 +79,7 @@ int sort_export(t_cmd *cmd)
     sorted_env = brute_sort(cmd->env);
     while (sorted_env)
     {
-        if (sorted_env->name[0])
+        if (sorted_env->name[0] && sorted_env->name[0] != '_')
         {
             ft_putstr_fd("declare -x ", cmd->outfile);
             ft_putstr_fd(sorted_env->name, cmd->outfile);

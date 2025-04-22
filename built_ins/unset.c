@@ -57,6 +57,8 @@ int unset(t_arg *arg)
             while (tmp)
             {
                 next = tmp->next;
+                if (ft_strcmp(tmp->name, "PATH"))
+                    arg->head->env->arg = ft_env_strdup("");
                 if (!ft_strcmp(tmp->name, arg->token))
                 {
                     arg->head->env = remove_env(tmp);

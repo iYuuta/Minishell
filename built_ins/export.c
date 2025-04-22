@@ -49,7 +49,7 @@ int export_w_args(t_cmd *cmd, int append, int len)
     if (!arg[1])
         return (1);
     if (!get_env(cmd->env, arg[0]))
-        append = add_env(&(cmd->env), arg[1], arg[0]); // Pass the address of cmd->env
+        append = add_env(&(cmd->env), arg[1], arg[0]);
     else
         append = over_write(get_env(cmd->env, arg[0]), arg[1], append);
     if (append)

@@ -30,8 +30,12 @@ char	*get_cmd(t_cmd *cmd)
 	char	*tmp;
 	char	*command;
 	char	**paths;
+	t_env *PATH;
 
-	paths = ft_split(get_env(cmd->env, "PATH")->arg, ':');
+	PATH = get_env(cmd->env, "PATH");
+	if (!PATH)
+		PATH = cmd->env;
+	paths = ft_split(PATH->arg, ':');
 	if (!cmd->tokens->token || !(*cmd->tokens->token))
 		return (NULL);
 	if (cmd->tokens->token[0] == '/' || cmd->tokens->token[0] == '.')

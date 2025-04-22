@@ -8,6 +8,8 @@ t_env *get_env(t_env *env, char *name)
             return (env);
         env = env->next;
     }
+    if (env && !ft_strcmp(env->name, name))
+        return (env);
     return (NULL);
 }
 

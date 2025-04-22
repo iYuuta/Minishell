@@ -66,21 +66,21 @@ char *expand_heredoc(t_env *env, char *str)
     char *strings[4];
     int i;
     int index;
+    int j;
 
     i = 0;
     while (str[i])
     {
         if (str[i] && str[i] == '$')
         {
+            j = -1;
             strings[3] = ft_strdup("");
             strings[0] = ft_substr(str, 0, i);
             strings[1] = ft_substr(str, i, skip_chars_heredoc(str + i));
             strings[2] = ft_substr(str, i + skip_chars_heredoc(str + i), ft_strlen(str + (i + skip_chars_heredoc(str + i))));
             strings[1] = get_var_heredoc(env, strings[1] + 1);
-            if (!strings[0] || !strings[1] || !strings[2] || !strings[3])
-                return (printf("malloc failed\n"), NULL);
-            for (int i = 0; i < 3; i++)
-                strings[3] = ft_strjoin(strings[3], strings[i]);
+            while (++j < 3)
+                strings[3] = ft_strjoin(strings[3], strings[j]);
             str = strings[3];
         }
         if (!str[i])
@@ -117,7 +117,6 @@ t_arg *read_here_doc(t_arg *token)
         }
         if (flag)
         {
-            printf("%s->expand\n", stop);
             tmp[1] = expand_heredoc(token->env, tmp[0]);
             free(tmp[0]);
             tmp[0] = tmp[1];

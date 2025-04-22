@@ -27,11 +27,11 @@ char **split_args(char *str, int *size)
     while (str[i])
     {
         j = 0;
-        while (str[i] == ' ')
+        while (str[i] && (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13)))
             i++;
         if (!str[i])
             break ;
-        else if (ft_strchr("<>|&", str[i]))
+        else if (ft_strchr("<>|", str[i]))
         {
             j = 1;
             if (str[i + 1] && ft_strchr("<>", str[i]) && str[i] == str[i + 1])
@@ -39,7 +39,7 @@ char **split_args(char *str, int *size)
         }
         else
         {
-            while (str[i + j] && !ft_strchr(" <>|&", str[i + j]))
+            while (str[i + j] && !ft_strchr(" <>|", str[i + j]) && (str[i] < 9 || str[i] > 13))
             {
                 if (ft_strchr("\'\"", str[i + j]) && get_index(str + i + j, str[i + j]) == -1)
                     return (NULL);

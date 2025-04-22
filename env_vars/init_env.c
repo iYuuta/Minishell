@@ -1,46 +1,51 @@
 #include "../minishell.h"
 
-t_env	*new_env(char *content)
+char *get_str(int i)
 {
-	t_env	*strc;
+	static char *str;
 
-    if (!content)
-        return (NULL);
-	strc = env_malloc(sizeof(t_env), 1);
-	if (!strc)
+	if (i == 3)
+		str = getcwd(NULL, 0);
+	if (i == 0)
+		return ("");
+	if (i == 1)
+		return (DEFAULT_PATH);
+	if (i == 2)
+		return ("PWD");
+	if (i == 3)
+		return (str);
+	if (i == 4)
+		return ("SHLVL");
+	if (i == 5)
+		return ("1");
+	if (i == 6)
+		return ("OLDPWD");
+	if (i == 7)
 		return (NULL);
-	strc->name = ft_env_strdup(content);
-	strc->next = NULL;
-	strc->prev = NULL;
-	return (strc);
+	if (i == 8)
+		return ("_");
+	if (i == 9)
+		return ("/usr/bin/env");
+	return (NULL);
 }
 
-t_env	*last_env(t_env *lst)
+t_env *uninitialized_env(void)
 {
-	t_env	*temp;
+	int i;
+	t_env *head;
+	t_env *tmp;
 
-	if (!lst)
-		return (NULL);
-	temp = lst;
-	while (temp->next)
-		temp = temp->next;
-	return (temp);
-}
-
-void	env_add_back(t_env **lst, t_env *new)
-{
-	t_env	*temp;
-
-	if (!lst || !new)
-		return ;
-	if (!*lst)
+	i = 0;
+	head = NULL;
+	while (i < 10)
 	{
-		*lst = new;
-		return ;
+		tmp = new_env(get_str(i));
+		i++;
+		tmp->arg = get_str(i);
+		env_add_back(&head, tmp);
+		i++;
 	}
-	temp = last_env(*lst);
-	new->prev = temp;
-	temp->next = new;
+	return (head);
 }
 
 t_env *add_to_env(t_env *env, char *var)
@@ -82,11 +87,7 @@ t_env *env_init(char **env)
     i = 0;
     head = NULL;
 	if (!env || !(*env))
-	{
-		head = new_env("");
-		head->arg = ft_env_strdup("");
-		return (head);
-	}
+		return (uninitialized_env());
     while (env[i])
     {
         len = get_index(env[i], '=');
