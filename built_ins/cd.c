@@ -32,34 +32,66 @@ int special_case(t_cmd *cmd)
 
     pwd = get_env(cmd->env, "PWD");
     if (!pwd)
-        return (1);
+        return (0);
     if (!ft_strcmp(cmd->tokens->next->token, ".."))
     {
         change_pwd(cmd->env, ft_strjoin(pwd->arg, "/.."));
-        return (ft_putendl_fd("cd: error retrieving current directory: getcwd:\
-            cannot access parent directories: No such file or directory", 2), 1);
+        if (chdir(".."))
+            return (0);
+        if (!getcwd(NULL, 0))
+            ft_putendl_fd("cd: error retrieving current directory: getcwd: \
+cannot access parent directories: No such file or directory", 2);
     }
     return (0);
+}
+
+static void printf_error(char *file, char *str)
+{
+    ft_putstr_fd("bash: cd: ", 2);
+    ft_putstr_fd(file, 2);
+    ft_putendl_fd(str, 2);
+}
+
+int check_file(char *file)
+{
+    struct stat info;
+
+    if (stat(file, &info) == -1)
+    {
+        perror(file);
+        return (0);
+    }
+    if (!S_ISDIR(info.st_mode))
+    {
+        printf_error(file, ": Not a directory");
+        return (0);
+    }
+    if (access(file, X_OK))
+    {
+        printf_error(file, ": Permission denied");
+        return (0);
+    }
+    return (1);
 }
 
 int change_directory(t_cmd *cmd)
 {
     char pwd[PATH_MAX];
+    int type;
 
     if (!cmd->tokens->next)
         return (ft_putstr_fd("cd only supports relative or absolute path\n", 2), 1);
     if (!getcwd(pwd, PATH_MAX))
-        ft_memset(pwd, 0, sizeof(char *));
-    if (!pwd[0])
-        return (1);
+        return (special_case(cmd));
     cmd->tokens = cmd->tokens->next;
-    if (access(cmd->tokens->token, X_OK) == -1)
-        return (printf("bash: cd: %s: Permission denied\n", cmd->tokens->token), 1);
+    if (!check_file(cmd->tokens->token))
+        return (1);
     if (chdir(cmd->tokens->token))
-        return (printf("bash: cd: %s: No such file or directory\n", cmd->tokens->token), 1);
+        return (printf_error(cmd->tokens->token, " No such file or directory"), 1);
     if (change_old_pwd(cmd->tokens->env, pwd))
         return (1);
-    if (change_pwd(cmd->tokens->env, cmd->tokens->token))
+    getcwd(pwd, PATH_MAX);
+    if (change_pwd(cmd->tokens->env, pwd))
         return (1);
     return (0);
 }

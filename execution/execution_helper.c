@@ -36,19 +36,19 @@ int open_files(t_cmd *cmd)
 		{
 			cmd->outfile = open(cmd->file->file, O_TRUNC | O_CREAT | O_WRONLY, 0644);
 			if (cmd->outfile == -1)
-				return (print_erno_error(cmd), close_files(), 1);
+				return (print_erno_error(cmd), close_files(), return_value(1, 1), 1);
 		}
 		else if (cmd->file->type == REDIR_IN)
 		{
 			cmd->infile = open(cmd->file->file, O_RDONLY);
 			if (cmd->infile == -1)
-				return (print_erno_error(cmd), close_files(), 1);
+				return (print_erno_error(cmd), close_files(), return_value(1, 1), 1);
 		}
 		if (cmd->file->type == REDIR_APPEND)
 		{
 			cmd->outfile = open(cmd->file->file, O_APPEND | O_CREAT | O_WRONLY, 0644);
 			if (cmd->infile == -1)
-				return (print_erno_error(cmd), close_files(), 1);
+				return (print_erno_error(cmd), close_files(), return_value(1, 1), 1);
 		}
 		cmd->file = cmd->file->next;
 	}

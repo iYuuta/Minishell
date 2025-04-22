@@ -12,6 +12,9 @@
 #include <fcntl.h>
 #include <limits.h>
 #include <errno.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <time.h>
 
 #define fail 1
 #define success 0
