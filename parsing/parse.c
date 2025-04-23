@@ -33,8 +33,8 @@ t_cmd *parse_args(char *str, t_env *env)
         return (NULL);
     }
     args = split_args(str, &size);
-    if (syntax_error(args))
-        return (ft_malloc(0, 0), (NULL));
+    // if (syntax_error(args))
+    //     return (ft_malloc(0, 0), (NULL));
     head = tokenize_arg(args, env);
     cmd = finish_parse(head, env);
     // wild_card(NULL);

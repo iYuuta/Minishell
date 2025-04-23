@@ -17,8 +17,6 @@
 #include <time.h>
 #include <dirent.h>
 
-#define fail 1
-#define success 0
 #ifndef PATH_MAX
 #define PATH_MAX 4096
 #endif
@@ -161,7 +159,4 @@ char **oldenv(char **env);
 
 /*********************************** */
 
-
 #endif
-
-//minishell>> echo '"$"USER'   '$"USER'$PATH'"'
