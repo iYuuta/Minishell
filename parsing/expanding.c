@@ -71,7 +71,7 @@ char *selective_expanding(t_env *env, char *str)
             i += get_index(str + i, '\'');
         else if (str[i] && str[i] == '\"')
             flag++;
-        else if (str[i] && str[i] == '$')
+        else if (str[i] && str[i] == '$' && str[i + 1] && !ft_strchr("%%^=+./", str[i + 1]))
         {
             skip = skip_chars(str + i);
             if (str[i + 1] && str[i + 1] == '?')

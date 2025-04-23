@@ -36,6 +36,7 @@ typedef enum e_token_type
 	REDIR_APPEND,
 	REDIR_IN,
 	HEREDOC,
+	WILDCARD,
 }   t_token_type;
 
 typedef struct s_malloc
@@ -115,7 +116,7 @@ t_cmd *parse_args(char *str, t_env *env);
 int is_operator(char *str);
 int is_flag(char *str);
 char **split_args(char *str, int *size);
-void polish(t_arg *token);
+char *polish(char *token);
 t_arg *tokenize_arg(char **av, t_env*env);
 t_arg *read_here_doc(t_arg *token);
 int check_uncompleted_cmd(t_arg *token);
@@ -163,5 +164,4 @@ char **oldenv(char **env);
 
 #endif
 
-//minishell>> export var="        7"
-// minishell>> export a=$var
+//minishell>> echo '"$"USER'   '$"USER'$PATH'"'

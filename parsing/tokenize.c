@@ -26,6 +26,8 @@ int is_redirection(char *str)
 
 int is_pipe(char *str)
 {
+    // if (ft_strchr(str, "*"))
+    //     return (WILDCARD);
     if (!ft_strcmp(str, "|"))
         return (PIPE);
     return (WORD);
@@ -69,7 +71,7 @@ void polish_tokens(t_arg *tokens)
     tmp = tokens;
     while (tmp)
     {
-        polish(tmp);
+        tmp->token = polish(tmp->token);
         tmp = tmp->next;
     }
 }
