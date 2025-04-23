@@ -57,7 +57,7 @@ char *expand_str(char *str, t_env *env, int *i, int skip)
     strings[3] = ft_strdup("");
     strings[0] = ft_substr(str, 0, *i);
     strings[1] = ft_substr(str, *i, skip);
-    if (*i > 1 && str[*i - 1] == '=')
+    if (*i > 1 && str[*i - 1] == '=' || str[*i - 1] == '\"')
         flag = 1;
     strings[2] = ft_substr(str, *i + skip, ft_strlen(str + (*i + skip)));
     if (str[*i + 1] && str[*i + 1] == '?')

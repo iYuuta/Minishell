@@ -69,8 +69,6 @@ int get_files(t_arg *token, t_cmd **node)
 		if (token->type == REDIR_IN || token->type == REDIR_OUT || token->type == REDIR_APPEND || token->type == HEREDOC)
 		{
 			tmp = ft_malloc(sizeof(t_file), 1);
-			if (!tmp)
-				return (1);
 			tmp->type = token->type;
 			tmp->file = token->next->token;
 			tmp->next = NULL;
@@ -86,8 +84,6 @@ t_arg *copy_token(t_arg *token)
 	t_arg *copy;
 
 	copy = ft_malloc(sizeof(t_arg), 1);
-	if (!copy)
-		return (NULL);
 	copy->head = NULL;
 	copy->token = token->token;
 	copy->type = token->type;
@@ -127,13 +123,9 @@ t_cmd *get_cmd_arg(t_arg *token)
 	t_arg *tmp;
 
 	node = ft_malloc(sizeof(t_cmd), 1);
-	if (!node)
-		return (NULL);
-	node->infile = 0;
+	ft_memset(node, 0, sizeof(t_cmd));
 	node->outfile = 1;
 	node->tube[0] = -1;
-	node->tokens = NULL;
-	node->next = NULL;
 	if (get_files(token, &node))
 		return (NULL);
 	while (token && token->type != PIPE)
