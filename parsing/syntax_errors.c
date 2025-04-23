@@ -7,13 +7,13 @@ int check_uncompleted_cmd(t_arg *token)
     if (token->type == PIPE)
     {
         printf("bash: syntax error near unexpected token `|'\n");
-        return (0);
+        return (1);
     }
     tmp = ft_lstlast(token);
     if (tmp->type == PIPE || (tmp->type >= REDIR_OUT && tmp->type <= HEREDOC))
     {
         printf("bash: syntax error near unexpected token `new line'\n");
-        return (0);
+        return (1);
     }
     while (token)
     {
@@ -21,5 +21,5 @@ int check_uncompleted_cmd(t_arg *token)
             return (printf("bash: syntax error near unexpected token `%s'\n", token->token), 0);
         token = token->next;
     }
-    return (1);
+    return (0);
 }

@@ -83,7 +83,8 @@ void polish_tokens(t_arg *tokens)
     tmp = tokens;
     while (tmp)
     {
-        tmp->token = polish(tmp->token);
+        if (tmp->type != HEREDOC)
+            tmp->token = polish(tmp->token);
         tmp = tmp->next;
     }
 }

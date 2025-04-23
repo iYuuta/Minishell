@@ -5,15 +5,15 @@ int skip_heredoc(char *str)
     int i;
 
     i = 0;
-    if (str[i++] == '<' && str[i] == '<')
+    if (str[i++] == '<' && str[++i] && str[i] == '<')
     {
-        if (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
+        if (str[i] && str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
         {
-            while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
+            while (str[i] && str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
                 i++;
         }
         while (str[i] && str[i] != ' ' && (str[i] < 9 || str[i] > 13))
-            i++;
+                i++;
     }
     return (i);
 }
@@ -82,8 +82,6 @@ char *expand_vars(t_env *env, char *str)
     {
         if (str[i] == '<')
             i += skip_heredoc(str + i);
-        if (flag % 2 == 0 && str[i] && str[i] == '\'' && get_index(str + i, '\'') == -1)
-                return (NULL);
         if (flag % 2 == 0 && str[i] && str[i] == '\'' && get_index(str + i, '\'') != -1)
             i += get_index(str + i, '\'');
         else if (str[i] && str[i] == '\"')
@@ -98,4 +96,3 @@ char *expand_vars(t_env *env, char *str)
     }
     return (str);
 }
-

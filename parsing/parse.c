@@ -17,6 +17,24 @@ const char *token_type_to_string(t_token_type type)
     }
 }
 
+int check_quotes(char *str)
+{
+    int i;
+
+    i = 0;
+    while (str[i])
+    {
+        if (str[i] == '\"' || str[i] == '\'')
+        {
+            if (get_index(str + i, str[i]) == -1)
+                return (1);
+            i += get_index(str + i, str[i]);
+        }
+        i++;
+    }
+    return (0);
+}
+
 t_cmd *parse_args(char *str, t_env *env)
 {
     t_arg *head = NULL;
@@ -25,19 +43,18 @@ t_cmd *parse_args(char *str, t_env *env)
     int size;
 
     size = 0;
-    str = expand_vars(env, str);
-    if (!str)
+    if (check_quotes(str))
     {
         ft_putstr_fd("bash: syntax error unclosed quotes\n", 2);
         ft_malloc(0, 0);
         return (NULL);
     }
+    str = expand_vars(env, str);
     args = split_args(str, &size);
-    // if (syntax_error(args))
-    //     return (ft_malloc(0, 0), (NULL));
     head = tokenize_arg(args, env);
+    // if (check_uncompleted_cmd(head))
+    //     return (ft_malloc(0, 0), (NULL));
     cmd = finish_parse(head, env);
-    // wild_card(NULL);
     // while (cmd)
     // {
     //     while (cmd->tokens)

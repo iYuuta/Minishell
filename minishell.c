@@ -39,6 +39,10 @@ int read_shell(t_env *env, char *head_line)
     signal(SIGINT, handle_signales);
     while (1)
     {
+        if (return_value(0, 0) == 0)
+            head_line = "\033[1;32m➜\033[0;34m  minishell>>\033[0m ";
+        else
+            head_line = "\033[0;31m➜\033[0;34m  minishell>>\033[0m ";
         if (!envirement)
             envirement = change_env(env);
         else

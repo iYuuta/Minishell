@@ -122,7 +122,6 @@ int is_redirection(char *str);
 int get_index(char *str, char c);
 char *expand_vars(t_env *env, char *str);
 t_cmd *finish_parse(t_arg *args, t_env *env);
-char *wild_card(char *str);
 
 /*************************************/
 
