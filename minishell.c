@@ -1,5 +1,14 @@
 #include "minishell.h"
 
+char **oldenv(char **env)
+{
+	static char **envirement;
+
+	if (env)
+		envirement = env;
+	return (envirement);
+}
+
 int return_value(int value, int flag)
 {
     static int r_value;
@@ -24,7 +33,6 @@ t_env *change_env(t_env *env)
 int read_shell(t_env *env, char *head_line)
 {
     char *str;
-    int child_pid;
     static t_env *envirement;
 
     signal(SIGQUIT, handle_signales);
@@ -55,6 +63,7 @@ int main(int ac, char **av, char **env)
 {
     t_env *envirement;
 
+	oldenv(env);
     envirement = env_init(env);
     if (read_shell(envirement, "minishell>> ") == 1)
         return (1);
