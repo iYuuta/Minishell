@@ -42,10 +42,16 @@ void update_env(t_arg *head, t_env *env)
     }
 }
 
+t_arg *unset_var(t_arg *head, t_env *var)
+{
+    head->head->env = remove_env(var);
+    update_env(head->head, head->head->env);
+    head = head->head;
+}
+
 int unset(t_arg *arg)
 {
     t_env *tmp;
-    t_env *next;
     t_arg *head;
 
     head = arg;
@@ -56,17 +62,14 @@ int unset(t_arg *arg)
             tmp = arg->env;
             while (tmp)
             {
-                next = tmp->next;
                 if (ft_strcmp(tmp->name, "PATH"))
                     arg->head->env->arg = ft_env_strdup("");
                 if (!ft_strcmp(tmp->name, arg->token))
                 {
-                    arg->head->env = remove_env(tmp);
-                    update_env(arg->head, arg->head->env);
-                    head = arg->head;
-                    break;
+                    head = unset_var(head, tmp);
+                    break ;
                 }
-                tmp = next;
+                tmp = tmp->next;
             }
         }
         arg = arg->next;

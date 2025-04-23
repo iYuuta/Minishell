@@ -27,7 +27,7 @@ long	custom_atoi(const char *str)
 
 static void print_error(char *str, int flag)
 {
-	ft_putstr_fd("bash: exit:", 2);
+	ft_putstr_fd("minishell: exit:", 2);
 	ft_putstr_fd(str, 2);
 	if (flag)
 		ft_putendl_fd(": numeric argument required", 2);

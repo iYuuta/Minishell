@@ -47,7 +47,7 @@ cannot access parent directories: No such file or directory", 2);
 
 static void printf_error(char *file, char *str)
 {
-    ft_putstr_fd("bash: cd: ", 2);
+    ft_putstr_fd("minishell: cd: ", 2);
     ft_putstr_fd(file, 2);
     ft_putendl_fd(str, 2);
 }
@@ -82,7 +82,7 @@ int change_directory(t_cmd *cmd)
     if (!cmd->tokens->next)
         return (ft_putstr_fd("cd only supports relative or absolute path\n", 2), 1);
     if (cmd->tokens->next->next)
-        return (ft_putstr_fd("bash: cd: too many arguments\n", 2), 1);
+        return (ft_putstr_fd("minishell: cd: too many arguments\n", 2), 1);
     if (!getcwd(pwd, PATH_MAX))
         return (special_case(cmd));
     cmd->tokens = cmd->tokens->next;

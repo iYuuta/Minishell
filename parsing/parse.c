@@ -25,14 +25,16 @@ t_cmd *parse_args(char *str, t_env *env)
     int size;
 
     size = 0;
-    str = expand_vars(str, env);
-    args = split_args(str, &size);
-    if (!args)
+    str = expand_vars(env, str);
+    if (!str)
     {
-        printf("bash: syntax error unclosed quotes\n");
+        ft_putstr_fd("bash: syntax error unclosed quotes\n", 2);
         ft_malloc(0, 0);
         return (NULL);
     }
+    args = split_args(str, &size);
+    if (syntax_error(args))
+        return (ft_malloc(0, 0), (NULL));
     head = tokenize_arg(args, env);
     cmd = finish_parse(head, env);
     // wild_card(NULL);

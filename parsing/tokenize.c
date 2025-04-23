@@ -24,9 +24,21 @@ int is_redirection(char *str)
     return (0);
 }
 
+// int is_wildcard(char *str)
+// {
+//     int i;
+
+//     i = 0;
+//     while (str[i])
+//     {
+//         if (str[i] == '\'' || str[i] == '\"')
+//             i += get_index()
+//     }
+// }
+
 int is_pipe(char *str)
 {
-    // if (ft_strchr(str, "*"))
+    // if (is_wildcard(str))
     //     return (WILDCARD);
     if (!ft_strcmp(str, "|"))
         return (PIPE);

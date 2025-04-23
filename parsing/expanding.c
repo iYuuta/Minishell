@@ -28,46 +28,63 @@ int skip_chars(char *str)
     return (i);
 }
 
+char *selective_expanding(char *str, t_env *env, int flag)
+{
+    t_env *variable;
+
+
+    variable = get_env(env, str + 1);
+    if (!variable)
+        str = ft_strdup("");
+    else
+        str = variable->arg;
+    if (flag)
+    {
+        str = ft_strjoin("\"", str);
+        str = ft_strjoin(str, "\"");
+    }
+    return (str);
+}
+
 char *expand_str(char *str, t_env *env, int *i, int skip)
 {
     char *strings[4];
-    t_env *variable;
     int j;
+    int flag;
 
     j = -1;
+    flag = 0;
     strings[3] = ft_strdup("");
     strings[0] = ft_substr(str, 0, *i);
     strings[1] = ft_substr(str, *i, skip);
+    if (*i > 1 && str[*i - 1] == '=')
+        flag = 1;
     strings[2] = ft_substr(str, *i + skip, ft_strlen(str + (*i + skip)));
     if (str[*i + 1] && str[*i + 1] == '?')
         strings[1] = ft_itoa(return_value(0, 0));
     else
-    {
-        variable = get_env(env, strings[1] + 1);
-        if (!variable)
-            strings[1] = ft_strdup("");
-        else
-            strings[1] = variable->arg;
-    }
+        strings[1] = selective_expanding(strings[1], env, flag);
     while (++j < 3)
         strings[3] = ft_strjoin(strings[3], strings[j]);
     *i = ft_strlen(strings[0]) + ft_strlen(strings[1]) - 1;
     return (strings[3]);
 }
 
-char *selective_expanding(t_env *env, char *str)
+char *expand_vars(t_env *env, char *str)
 {
     int i;
     int flag;
     int skip;
 
-    i = 0;
+    i = -1;
     flag = 2;
-    while (str[i])
+    while (str[++i])
     {
         if (str[i] == '<')
             i += skip_heredoc(str + i);
-        if (flag % 2 == 0 && str[i] && str[i] == '\'')
+        if (flag % 2 == 0 && str[i] && str[i] == '\'' && get_index(str + i, '\'') == -1)
+                return (NULL);
+        if (flag % 2 == 0 && str[i] && str[i] == '\'' && get_index(str + i, '\'') != -1)
             i += get_index(str + i, '\'');
         else if (str[i] && str[i] == '\"')
             flag++;
@@ -78,18 +95,7 @@ char *selective_expanding(t_env *env, char *str)
                 skip = 2;
             str = expand_str(str, env, &i, skip);
         }
-        i++;
     }
     return (str);
 }
 
-char *expand_vars(char *token, t_env *env)
-{
-    char *tmp;
-    t_arg *var;
-    int i;
-
-    tmp = token;
-    tmp = selective_expanding(env, tmp);
-    return (tmp);
-}

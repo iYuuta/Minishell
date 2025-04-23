@@ -1,5 +1,6 @@
 #include "../minishell.h"
 
+
 t_arg	*check_new_line(t_arg *arg, int *new_line)
 {
 	int	i;
