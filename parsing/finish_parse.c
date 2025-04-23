@@ -72,7 +72,10 @@ int get_files(t_arg *token, t_cmd **node)
 			if (!tmp)
 				return (1);
 			tmp->type = token->type;
-			tmp->file = token->next->token;
+			if (tmp->type == HEREDOC)
+				tmp->file = token->token;
+			else
+				tmp->file = token->next->token;
 			tmp->next = NULL;
 			stack_files(&((*node)->file), tmp);
 		}

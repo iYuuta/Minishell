@@ -41,11 +41,14 @@ void close_all_pipes(t_cmd *cmd)
 int execute_command(t_cmd *cmd, int *prev_pipe_in)
 {
 	int pid;
+	if (open_files(cmd))
+		return (1);
 	int value = check_builtins(cmd);
 	int new_pipe[2];
 
 	new_pipe[0] = -1;
 	new_pipe[1] = -1;
+
 	if (cmd->next && pipe(new_pipe) < 0)
 		return (perror("pipe"), 1);
 	if (value == 2)
