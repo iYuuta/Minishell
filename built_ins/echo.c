@@ -55,11 +55,11 @@ int echo(t_cmd *cmd)
 		{
 			ft_putstr_fd(args->token, cmd->outfile);
 			if (args->next)
-				write(cmd->outfile, " ", 1);
+				write(1, " ", cmd->outfile);
 		}
 		args = args->next;
 	}
 	if (!new_line)
-		write(cmd->outfile, "\n", 1);
+		write(1, "\n", cmd->outfile);
 	return (0);
 }

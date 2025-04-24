@@ -89,7 +89,7 @@ int sort_export(t_cmd *cmd)
                 ft_putstr_fd(sorted_env->arg, cmd->outfile);
 				ft_putstr_fd("\"", cmd->outfile);
 			}
-            write(cmd->outfile, "\n", 1);
+            write(1, "\n", cmd->outfile);
         }
         sorted_env = sorted_env->next;
     }

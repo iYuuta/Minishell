@@ -30,7 +30,7 @@ static void print_error(char *str, int flag)
 	ft_putstr_fd("minishell: exit:", 2);
 	ft_putstr_fd(str, 2);
 	if (flag)
-		ft_putendl_fd(": numeric argument required", 2);
+		ft_putendl_fd(": numeric cmd->tokensument required", 2);
 	else
 		write(2, "\n", 1);
 }
@@ -48,26 +48,27 @@ int is_exit_valid(char *str)
 	return (0);
 }
 
-int	exit_shell(t_arg *arg)
+int	exit_shell(t_cmd *cmd)
 {
 	long exit_status;
 
 	exit_status = 0;
-	ft_putendl_fd("exit", 2);
-	if (arg->next)
+	if (cmd->infile == 0 && cmd->outfile == 1)
+		ft_putendl_fd("exit", 1);
+	if (cmd->tokens->next)
 	{
-		exit_status = custom_atoi(arg->next->token);
-		if (is_exit_valid(arg->next->token) || (exit_status == 69 && ft_strcmp("69", arg->next->token)))
+		exit_status = custom_atoi(cmd->tokens->next->token);
+		if (is_exit_valid(cmd->tokens->next->token) || (exit_status == 69 && ft_strcmp("69", cmd->tokens->next->token)))
 		{
-			print_error(arg->next->token, 1);
+			print_error(cmd->tokens->next->token, 1);
 			exit_status = 2;
 		}
 		if (exit_status > 255 || exit_status < 0)
 			exit_status = exit_status % 256;
 	}
-	else if (arg->next && arg->next->next)
+	else if (cmd->tokens->next && cmd->tokens->next->next)
 	{
-		print_error(" too many arguments", 0);
+		print_error(" too many cmd->tokensuments", 0);
 		exit (1);
 	}
 	ft_malloc(0, 0);

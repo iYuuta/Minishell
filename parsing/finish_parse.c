@@ -134,7 +134,6 @@ t_cmd *get_cmd_arg(t_arg *token)
 		return (NULL);
 	node->infile = 0;
 	node->outfile = 1;
-	node->tube[0] = -1;
 	node->tokens = NULL;
 	node->next = NULL;
 	if (get_files(token, &node))
@@ -158,23 +157,26 @@ t_cmd *get_cmd_arg(t_arg *token)
 t_cmd *finish_parse(t_arg *args, t_env *env)
 {
 	int nb;
+	int i;
 	t_cmd *head;
 	t_cmd *tmp;
 
+	i = 0;
 	head = NULL;
 	nb = count_cmds(args);
-	while (nb > 0)
+	while (i < nb)
 	{
 		tmp = get_cmd_arg(args);
 		if (!tmp)
 			return (NULL);
 		tmp->env = env;
+		tmp->number = i + 1;
 		cmd_add_back(&head, tmp);
 		while (args && args->type != PIPE)
 			args = args->next;
 		if (args)
 			args = args->next;
-		nb--;
+		i++;
 	}
 	return (head);
 }

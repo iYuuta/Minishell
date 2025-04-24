@@ -55,20 +55,20 @@ t_cmd *parse_args(char *str, t_env *env)
     // if (check_uncompleted_cmd(head))
     //     return (ft_malloc(0, 0), (NULL));
     cmd = finish_parse(head, env);
-    while (cmd)
-    {
-        while (cmd->tokens)
-        {
-            printf("token-> %s    type-> %s\n", cmd->tokens->token, token_type_to_string(cmd->tokens->type));
-            cmd->tokens = cmd->tokens->next;
-        }
-        while (cmd->file)
-        {
-            printf("file name-> %s    type-> %s\n", cmd->file->file, token_type_to_string(cmd->file->type));
-            cmd->file = cmd->file->next;
-        }
-        cmd = cmd->next;
-    }
+    // while (cmd)
+    // {
+    //     while (cmd->tokens)
+    //     {
+    //         printf("token-> %s    type-> %s\n", cmd->tokens->token, token_type_to_string(cmd->tokens->type));
+    //         cmd->tokens = cmd->tokens->next;
+    //     }
+    //     while (cmd->file)
+    //     {
+    //         printf("file name-> %s    type-> %s\n", cmd->file->file, token_type_to_string(cmd->file->type));
+    //         cmd->file = cmd->file->next;
+    //     }
+    //     cmd = cmd->next;
+    // }
     return (cmd);
 }
 

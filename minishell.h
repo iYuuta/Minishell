@@ -74,9 +74,9 @@ typedef struct s_command
 	struct s_arg		*tokens;
 	struct s_file		*file;
 	struct s_env		*env;
+	int					number;
 	int					infile;
 	int					outfile;
-	int					tube[2];
 	struct	s_command	*next;
 }	t_cmd;
 
@@ -102,7 +102,7 @@ int		print_env(t_env *env, t_cmd *cmd);
 int		pwd(t_env *env, t_cmd *cmd);
 int		unset(t_arg *arg);
 int 	export(t_cmd *token);
-int		exit_shell(t_arg *arg);
+int		exit_shell(t_cmd *arg);
 int		change_directory(t_cmd *arg);
 int		echo(t_cmd *cmd);
 

@@ -47,6 +47,7 @@ t_arg *unset_var(t_arg *head, t_env *var)
     head->head->env = remove_env(var);
     update_env(head->head, head->head->env);
     head = head->head;
+	return (0);
 }
 
 int unset(t_arg *arg)

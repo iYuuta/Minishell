@@ -1,7 +1,24 @@
 #include "../minishell.h"
 
-int check_builtins(t_cmd *cmd)
+int is_builtin(t_cmd *cmd)
 {
+	char *name;
+
+	name = NULL;
+	if (cmd->tokens && cmd->tokens->token)
+		name = cmd->tokens->token;
+	if (name && (!ft_strcmp(name, "env") || !ft_strcmp(name, "pwd") || 
+	!ft_strcmp(name, "unset") || !ft_strcmp(name, "export") || !ft_strcmp(name, "exit") 
+	|| !ft_strcmp(name, "cd") || !ft_strcmp(name, "echo")))
+	{
+		return (1);
+	}
+	return (0);
+}
+
+int execute_builtins(t_cmd *cmd, int fd)
+{
+	cmd->outfile = fd;
 	if (cmd->tokens && !ft_strcmp(cmd->tokens->token, "env"))
 		return (print_env(cmd->env, cmd));
 	if (cmd->tokens && !ft_strcmp(cmd->tokens->token, "pwd"))
@@ -11,7 +28,7 @@ int check_builtins(t_cmd *cmd)
 	if (cmd->tokens && !ft_strcmp(cmd->tokens->token, "export"))
 		return (export(cmd));
 	if (cmd->tokens && !ft_strcmp(cmd->tokens->token, "exit"))
-		return (exit_shell(cmd->tokens));
+		return (exit_shell(cmd));
 	if (cmd->tokens && !ft_strcmp(cmd->tokens->token, "cd"))
 		return (change_directory(cmd));
 	if (cmd->tokens && !ft_strcmp(cmd->tokens->token, "echo"))
@@ -19,23 +36,11 @@ int check_builtins(t_cmd *cmd)
 	return (2);
 }
 
-int	open_pipes(t_cmd *cmd)
+int execute_single_command(t_cmd *cmd)
 {
-	if (cmd->next == NULL)
-		return (0);
-	if (pipe(cmd->next->tube) < 0)
-		return (perror("Pipe"), 1);
+	execute_builtins(cmd, cmd->outfile);
+	close_files();
 	return (0);
-}
-
-void close_all_pipes(t_cmd *cmd)
-{
-	while (cmd)
-	{
-		if (cmd->tube[0] != -1) close(cmd->tube[0]);
-		if (cmd->tube[1] != -1) close(cmd->tube[1]);
-		cmd = cmd->next;
-	}
 }
 
 int execute_command(t_cmd *cmd, int *prev_pipe_in)
@@ -43,16 +48,16 @@ int execute_command(t_cmd *cmd, int *prev_pipe_in)
 	int pid;
 	if (open_files(cmd))
 		return (1);
-	int value = check_builtins(cmd);
+	if (cmd->next == NULL && cmd->number == 1 && is_builtin(cmd))
+		return (execute_single_command(cmd));
+	int value;
 	int new_pipe[2];
 
 	new_pipe[0] = -1;
 	new_pipe[1] = -1;
-
+	value = 0;
 	if (cmd->next && pipe(new_pipe) < 0)
 		return (perror("pipe"), 1);
-	if (value == 2)
-	{
 		pid = fork();
 		if (pid < 0)
 			return (perror("fork"), 1);
@@ -83,12 +88,17 @@ int execute_command(t_cmd *cmd, int *prev_pipe_in)
 				close(new_pipe[0]);
 				close(new_pipe[1]);
 			}
-			close_all_pipes(cmd);
+			value = execute_builtins(cmd, 1);
+			if (value == 2)
+			{
 			char **args = get_args(cmd);
 			char *path = get_cmd(cmd);
 			execve(path, args, oldenv(NULL));
 			perror("execve");
 			exit(127);
+			}
+			else
+				exit(0);
 		}
 		else
 		{
@@ -99,14 +109,6 @@ int execute_command(t_cmd *cmd, int *prev_pipe_in)
 			if (new_pipe[1] != -1)
 				close(new_pipe[1]);
 		}
-	}
-	else
-	{
-		if (*prev_pipe_in != -1)
-			close(*prev_pipe_in);
-		if (new_pipe[0] != -1) close(new_pipe[0]);
-		if (new_pipe[1] != -1) close(new_pipe[1]);
-	}
 	return (value);
 }
 
