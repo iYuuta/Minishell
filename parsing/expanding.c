@@ -27,6 +27,8 @@ int skip_chars(char *str)
     int i;
 
     i = 1;
+    if (str[i] && str[i] == '?')
+        return (2);
     while (str && (ft_isalnum(str[i]) || str[i] == '_'))
         i++;
     return (i);
@@ -118,8 +120,6 @@ char *expand_vars(t_env *env, char *str, int exp)
         else if (str[i] && str[i] == '$' && str[i + 1] && !ft_strchr("%%$^=+./\" ", str[i + 1]))
         {
             skip = skip_chars(str + i);
-            if (str[i + 1] && str[i + 1] == '?')
-                skip = 2;
             str = expand_str(str, env, &i, skip);
         }
         if (i == -1 || !str[i])

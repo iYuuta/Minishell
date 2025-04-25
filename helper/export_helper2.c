@@ -42,8 +42,6 @@ int export_wt_args(t_cmd *arg)
         return (printf_error(arg->tokens->token), 1);
     head = arg->env;
     new = new_env(arg->tokens->token);
-    if (!new)
-        return (1);
     new->arg = NULL;
     new->next = NULL;
     env_add_back(&head, new);

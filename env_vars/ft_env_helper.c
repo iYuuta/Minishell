@@ -13,8 +13,6 @@ char *ft_env_join(char *s1, char const *s2)
 		return (ft_env_strdup(""));
 	size = ft_strlen(s1) + ft_strlen(s2);
 	str = (char *)env_malloc((size + 1) * sizeof(char), 1);
-	if (!str)
-		return (NULL);
 	i = 0;
 	while (s1[i])
 	{
@@ -35,8 +33,6 @@ char	*ft_env_strdup(const char *s1)
 
 	len = (ft_strlen(s1) + 1);
 	dup = (char *)env_malloc(len * sizeof(char), 1);
-	if (!dup)
-		return (NULL);
 	ft_strlcpy(dup, s1, len);
 	return (dup);
 }
@@ -56,8 +52,6 @@ char	*ft_env_substr(char const *s, unsigned int start, size_t len)
 	if (len > slen - start)
 		len = slen - start;
 	str = (char *)env_malloc((len + 1) * sizeof(char), 1);
-	if (!str)
-		return (NULL);
 	while (i < len)
 	{
 		str[i] = s[start + i];

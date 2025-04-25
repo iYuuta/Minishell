@@ -182,6 +182,25 @@ t_arg *expand_token(t_arg *token, char *str)
 	return (token);
 }
 
+/*t_arg *get_new_token(t_arg *token, int *i)
+{
+	int flag;
+	t_arg *tmp;
+
+	flag = 0;
+	if (*i == 0 && !ft_strcmp(token->token, "export"))
+	{
+		(*i)++;
+		flag = 1;
+	}
+	tmp = copy_token(token);
+	if (!flag && ft_strchr(token->token, '$'))
+		tmp = expand_token(token, tmp->token);
+	else if (!flag)
+		tmp->token = polish(tmp->token);
+	return (tmp);
+}
+
 t_cmd *get_cmd_arg(t_arg *token)
 {
 	t_cmd *node;
@@ -190,8 +209,34 @@ t_cmd *get_cmd_arg(t_arg *token)
 	int flag = 0;
 
 	node = ft_malloc(sizeof(t_cmd), 1);
-	if (!node)
+	node->infile = 0;
+	node->outfile = 1;
+	node->tokens = NULL;
+	node->next = NULL;
+	if (get_files(token, &node))
 		return (NULL);
+	while (token && token->type != PIPE)
+	{
+		if (token->type == WORD)
+		{
+			tmp = get_new_token(token, &i);
+			ft_lstadd_back(&(node->tokens), tmp);
+		}
+		token = token->next;
+	}
+	if (node->tokens)
+		node->tokens = refine_token(node->tokens);
+	return (node);
+}*/
+
+t_cmd *get_cmd_arg(t_arg *token)
+{
+	t_cmd *node;
+	t_arg *tmp;
+	int i = 0;
+	int flag = 0;
+
+	node = ft_malloc(sizeof(t_cmd), 1);
 	node->infile = 0;
 	node->outfile = 1;
 	node->tokens = NULL;
