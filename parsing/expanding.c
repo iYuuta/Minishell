@@ -1,22 +1,26 @@
 #include "../minishell.h"
 
-int skip_heredoc(char *str)
+int skip_redirections(char *str)
 {
     int i;
 
     i = 0;
-    if (str[i++] == '<' && str[++i] && str[i] == '<')
+    if (str[i] && ft_strchr("><", str[i]))
     {
+        i++;
+        if (str[i] && ft_strchr("><", str[i]))
+            i++;
         if (str[i] && str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
         {
             while (str[i] && str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
                 i++;
         }
         while (str[i] && str[i] != ' ' && (str[i] < 9 || str[i] > 13))
-                i++;
+            i++;
     }
     return (i);
 }
+
 
 int skip_chars(char *str)
 {
@@ -64,13 +68,36 @@ char *expand_str(char *str, t_env *env, int *i, int skip)
         strings[1] = ft_itoa(return_value(0, 0));
     else
         strings[1] = selective_expanding(strings[1], env, flag);
+    if (strings[1] && (ft_strchr(strings[1], '\'') || ft_strchr(strings[1], '\"')))
+    {
+        strings[1] = ft_strjoin("\"", strings[1]);
+        strings[1] = ft_strjoin(strings[1], "\"");
+    }
     while (++j < 3)
         strings[3] = ft_strjoin(strings[3], strings[j]);
     *i = ft_strlen(strings[0]) + ft_strlen(strings[1]) - 1;
     return (strings[3]);
 }
 
-char *expand_vars(t_env *env, char *str)
+int skip_assigning(char *str)
+{
+    int i;
+
+    i = 1;
+    while (str[i])
+    {
+        if (ft_strchr("\'\"", str[i]))
+            i += get_index(str + i, str[i]);
+        if (!str[i])
+            break ;
+        if (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
+            return (i);
+        i++;
+    }
+    return (i);
+}
+
+char *expand_vars(t_env *env, char *str, int exp)
 {
     int i;
     int flag;
@@ -80,9 +107,11 @@ char *expand_vars(t_env *env, char *str)
     flag = 2;
     while (str[++i])
     {
-        if (str[i] == '<')
-            i += skip_heredoc(str + i);
-        if (flag % 2 == 0 && str[i] && str[i] == '\'' && get_index(str + i, '\'') != -1)
+        if (flag % 2 == 0 && ft_strchr("><", str[i]))
+            i += skip_redirections(str + i);
+        else if (exp && flag % 2 == 0 && str[i] == '=')
+            i += skip_assigning(str + i);
+        else if (flag % 2 == 0 && str[i] && str[i] == '\'')
             i += get_index(str + i, '\'');
         else if (str[i] && str[i] == '\"')
             flag++;
@@ -93,6 +122,8 @@ char *expand_vars(t_env *env, char *str)
                 skip = 2;
             str = expand_str(str, env, &i, skip);
         }
+        if (i == -1 || !str[i])
+            break ;
     }
     return (str);
 }

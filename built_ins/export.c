@@ -46,6 +46,8 @@ int export_w_args(t_cmd *cmd, int append, int len)
         arg[1] = ft_env_substr(cmd->tokens->token, len + 1, ft_strlen(cmd->tokens->token + len + 1));
     else
         arg[1] = ft_env_strdup("");
+    if (ft_strchr(arg[1], '$'))
+        arg[1] = expand_vars(cmd->env, arg[1], 1);
     if (!arg[1])
         return (1);
     if (!get_env(cmd->env, arg[0]))

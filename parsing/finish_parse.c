@@ -59,11 +59,45 @@ void	stack_files(t_file **lst, t_file *new)
 	*lst = new;
 }
 
+int is_ambiguous(char *str)
+{
+	int i;
+
+	i = 0;
+	while (str[i] && str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
+		i++;
+	if (!str[i])
+		return (1);
+	while (str[i] && str[i] != ' ' && (str[i] < 9 || str[i] > 13))
+		i++;
+	if (!str[i])
+		return (0);
+	return (1);
+}
+
+int check_files(t_arg *args)
+{
+	while (args)
+	{
+		if (args->type != WORD && args->type != HEREDOC && ft_strchr(args->token, '$'))
+		{
+			args->token = expand_vars(args->env, args->token, 1);
+			if (!args->token || !args->token[0] || is_ambiguous(args->token))
+				return (ft_putendl_fd("bash: ambiguous redirect", 2), 1);
+			args->token = ft_strtrim(args->token, " ");
+		}
+		args = args->next;
+	}
+	return (0);
+}
+
 int get_files(t_arg *token, t_cmd **node)
 {
 	t_file *tmp;
 
 	(*node)->file = NULL;
+	if (check_files(token))
+		return (1);
 	while (token && token->type != PIPE)
 	{
 		if (token->type == REDIR_IN || token->type == REDIR_OUT || token->type == REDIR_APPEND || token->type == HEREDOC)
@@ -72,10 +106,9 @@ int get_files(t_arg *token, t_cmd **node)
 			if (!tmp)
 				return (1);
 			tmp->type = token->type;
+			tmp->file = token->next->token;
 			if (tmp->type == HEREDOC)
-				tmp->file = token->token;
-			else
-				tmp->file = token->next->token;
+				token = token->next;
 			tmp->next = NULL;
 			stack_files(&((*node)->file), tmp);
 		}
@@ -89,8 +122,6 @@ t_arg *copy_token(t_arg *token)
 	t_arg *copy;
 
 	copy = ft_malloc(sizeof(t_arg), 1);
-	if (!copy)
-		return (NULL);
 	copy->head = NULL;
 	copy->token = token->token;
 	copy->type = token->type;
@@ -124,10 +155,36 @@ t_arg *refine_token(t_arg *token)
 	return (head);
 }
 
+t_arg *expand_token(t_arg *token, char *str)
+{
+	char **args;
+	t_arg *tmp;
+	int i;
+
+	i = 0;
+	str = expand_vars(token->env, str, 0);
+	str = ft_strtrim(str, " ");
+	args = ft_split(str, ' ');
+	while (args[i])
+	{
+		if (i == 0)
+			token = ft_lstnew(args[i]);
+		else
+		{
+			tmp = ft_lstnew(args[i]);
+			ft_lstadd_back(&token, tmp);
+		}
+		i++;
+	}
+	return (token);
+}
+
 t_cmd *get_cmd_arg(t_arg *token)
 {
 	t_cmd *node;
 	t_arg *tmp;
+	int i = 0;
+	int flag = 0;
 
 	node = ft_malloc(sizeof(t_cmd), 1);
 	if (!node)
@@ -142,9 +199,14 @@ t_cmd *get_cmd_arg(t_arg *token)
 	{
 		if (token->type == WORD)
 		{
+			if (i == 0 && !ft_strcmp(token->token, "export"))
+			{
+				i++;
+				flag = 1;
+			}
 			tmp = copy_token(token);
-			if (!tmp)
-				return (NULL);
+			if (!flag && ft_strchr(token->token, '$'))
+				tmp = expand_token(token, tmp->token);
 			ft_lstadd_back(&(node->tokens), tmp);
 		}
 		token = token->next;

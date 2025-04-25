@@ -49,9 +49,11 @@ t_cmd *parse_args(char *str, t_env *env)
         ft_malloc(0, 0);
         return (NULL);
     }
-    str = expand_vars(env, str);
+    str = expand_vars(env, str, 1);
     args = split_args(str, &size);
     head = tokenize_arg(args, env);
+    if (!head)
+        return (NULL);
     // if (check_uncompleted_cmd(head))
     //     return (ft_malloc(0, 0), (NULL));
     cmd = finish_parse(head, env);

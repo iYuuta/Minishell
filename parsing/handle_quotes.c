@@ -23,6 +23,8 @@ char	*handle_operators(char *str, int *j)
 
 char	*handle_normal_word(char *str, int *j)
 {
+	char *word;
+
 	*j = 0;
 	while (str[*j] && !ft_strchr(" <>|", str[*j]) && (str[*j] < 9 || str[*j] > 13))
 	{

@@ -50,6 +50,18 @@ int open_files(t_cmd *cmd)
 			if (cmd->infile == -1)
 				return (print_erno_error(cmd), close_files(), return_value(1, 1), 1);
 		}
+		if (cmd->file->type == HEREDOC)
+		{
+			cmd->infile = open(".HEREDOC.txt", O_CREAT | O_RDWR, 0666);
+			if (cmd->infile == -1)
+				return (print_erno_error(cmd), close_files(), return_value(1, 1), 1);
+			write(cmd->infile, cmd->file->file, ft_strlen(cmd->file->file));
+			close(cmd->infile);
+			cmd->infile = open(".HEREDOC.txt", O_RDWR, 0666);
+			if (cmd->infile == -1)
+				return (print_erno_error(cmd), close_files(), return_value(1, 1), 1);
+			unlink(".HEREDOC.txt");
+		}
 		cmd->file = cmd->file->next;
 	}
 	return (0);

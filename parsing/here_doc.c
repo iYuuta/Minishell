@@ -106,16 +106,16 @@ t_arg *read_here_doc(t_arg *token)
     {
         tmp[0] = readline(">");
         if (!tmp[0])
-            return (token);
+            return (token->type = HEREDOC, token->token = str, token);
         if (!ft_strcmp(tmp[0], stop))
-            return ( token->type = HEREDOC, token->token = str, free(tmp[0]), token);
+            return (token->type = HEREDOC, token->token = str, free(tmp[0]), token);
         if (flag)
-        {
             tmp[1] = expand_heredoc(token->env, tmp[0]);
-            tmp[0] = tmp[1];
-        }
-        str = ft_strjoin(str, tmp[0]);
+        else
+            tmp[1] = tmp[0];
+        str = ft_strjoin(str, tmp[1]);
         str = ft_strjoin(str, "\n");
+        free (tmp[0]);
     }
     return (NULL);
 }

@@ -120,7 +120,7 @@ t_arg *read_here_doc(t_arg *token);
 int check_uncompleted_cmd(t_arg *token);
 int is_redirection(char *str);
 int get_index(char *str, char c);
-char *expand_vars(t_env *env, char *str);
+char *expand_vars(t_env *env, char *str, int exp);
 t_cmd *finish_parse(t_arg *args, t_env *env);
 
 /*************************************/
