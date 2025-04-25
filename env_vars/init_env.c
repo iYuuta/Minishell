@@ -80,6 +80,11 @@ t_env *env_init(char **env)
     head = NULL;
 	if (!env || !(*env))
 		return (uninitialized_env());
+	else
+	{
+		head = new_env("");
+		head->arg = ft_env_strdup(DEFAULT_PATH);
+	}
     while (env[i])
     {
         len = get_index(env[i], '=');
