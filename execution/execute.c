@@ -39,7 +39,7 @@ int execute_builtins(t_cmd *cmd, int fd)
 int execute_single_command(t_cmd *cmd)
 {
 	execute_builtins(cmd, cmd->outfile);
-	close_files();
+	close_files(0, 0);
 	return (0);
 }
 

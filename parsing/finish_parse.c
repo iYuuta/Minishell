@@ -107,6 +107,8 @@ int get_files(t_arg *token, t_cmd **node)
 				return (1);
 			tmp->type = token->type;
 			tmp->file = token->next->token;
+			if (tmp->type != HEREDOC)
+				tmp->file = polish(tmp->file);
 			if (tmp->type == HEREDOC)
 				token = token->next;
 			tmp->next = NULL;
@@ -167,6 +169,7 @@ t_arg *expand_token(t_arg *token, char *str)
 	args = ft_split(str, ' ');
 	while (args[i])
 	{
+		args[i] = polish(args[i]);
 		if (i == 0)
 			token = ft_lstnew(args[i]);
 		else
@@ -207,6 +210,8 @@ t_cmd *get_cmd_arg(t_arg *token)
 			tmp = copy_token(token);
 			if (!flag && ft_strchr(token->token, '$'))
 				tmp = expand_token(token, tmp->token);
+			else if (!flag)
+				tmp->token = polish(tmp->token);
 			ft_lstadd_back(&(node->tokens), tmp);
 		}
 		token = token->next;

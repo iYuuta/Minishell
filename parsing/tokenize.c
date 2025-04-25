@@ -76,18 +76,6 @@ void identify_tokens(t_arg *token)
     }
 }
 
-void polish_tokens(t_arg *tokens)
-{
-    t_arg *tmp;
-
-    tmp = tokens;
-    while (tmp)
-    {
-        if (tmp->type != HEREDOC)
-            tmp->token = polish(tmp->token);
-        tmp = tmp->next;
-    }
-}
 
 t_arg *tokenize_arg(char **av, t_env *env)
 {
@@ -105,6 +93,5 @@ t_arg *tokenize_arg(char **av, t_env *env)
         ft_lstadd_back(&head, tmp);
     }
     identify_tokens(head);
-    polish_tokens(head);
     return (head);
 }

@@ -1,12 +1,30 @@
 #include "../minishell.h"
 
-void close_files()
+void close_files(int file, int flag)
 {
-	int i;
+    static int *fd;
+    static int index;
+    int i;
 
-	i = 2;
-	while (++i < 1000)
-		close(i);
+    i = -1;
+    if (flag && !fd)
+        fd = malloc(sizeof(int) * 1024);
+	if (flag && !fd)
+	{
+		ft_putendl_fd("malloc failed", 2);
+		ft_malloc(0, 0);
+		env_malloc(0, 0);
+		exit(1);
+	}
+    if (!flag)
+    {
+        while (++i < index)
+            close(fd[i]);
+		index = 0;
+		return ;
+    }
+    fd[index] = file;
+    index++;
 }
 
 static void print_error(char *str, char *file)
@@ -34,34 +52,39 @@ int open_files(t_cmd *cmd)
 	{
 		if (cmd->file->type == REDIR_OUT)
 		{
-			cmd->outfile = open(cmd->file->file, O_TRUNC | O_CREAT | O_WRONLY, 0644);
+			tmp = open(cmd->file->file, O_TRUNC | O_CREAT | O_WRONLY, 0644);
+			cmd->outfile = tmp;
 			if (cmd->outfile == -1)
-				return (print_erno_error(cmd), close_files(), return_value(1, 1), 1);
+				return (print_erno_error(cmd), close_files(0, 0), return_value(1, 1), 1);
 		}
 		else if (cmd->file->type == REDIR_IN)
 		{
-			cmd->infile = open(cmd->file->file, O_RDONLY);
+			tmp = open(cmd->file->file, O_RDONLY);
+			cmd->infile = tmp;
 			if (cmd->infile == -1)
-				return (print_erno_error(cmd), close_files(), return_value(1, 1), 1);
+				return (print_erno_error(cmd), close_files(0, 0), return_value(1, 1), 1);
 		}
 		if (cmd->file->type == REDIR_APPEND)
 		{
-			cmd->outfile = open(cmd->file->file, O_APPEND | O_CREAT | O_WRONLY, 0644);
+			tmp = open(cmd->file->file, O_APPEND | O_CREAT | O_WRONLY, 0644);
+			cmd->outfile = tmp;
 			if (cmd->infile == -1)
-				return (print_erno_error(cmd), close_files(), return_value(1, 1), 1);
+				return (print_erno_error(cmd), close_files(0, 0), return_value(1, 1), 1);
 		}
 		if (cmd->file->type == HEREDOC)
 		{
 			cmd->infile = open(".HEREDOC.txt", O_CREAT | O_RDWR, 0666);
 			if (cmd->infile == -1)
-				return (print_erno_error(cmd), close_files(), return_value(1, 1), 1);
+				return (print_erno_error(cmd), close_files(0, 0), return_value(1, 1), 1);
 			write(cmd->infile, cmd->file->file, ft_strlen(cmd->file->file));
 			close(cmd->infile);
-			cmd->infile = open(".HEREDOC.txt", O_RDWR, 0666);
+			tmp = open(".HEREDOC.txt", O_RDWR, 0666);
+			cmd->infile = tmp;
 			if (cmd->infile == -1)
-				return (print_erno_error(cmd), close_files(), return_value(1, 1), 1);
+				return (print_erno_error(cmd), close_files(0, 0), return_value(1, 1), 1);
 			unlink(".HEREDOC.txt");
 		}
+		close_files(tmp, 1);
 		cmd->file = cmd->file->next;
 	}
 	return (0);

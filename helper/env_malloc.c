@@ -31,6 +31,7 @@ void *env_malloc(size_t size, int flag)
             free(tmp->ptr);
             free(tmp);
         }
+        close_files(0, 0);
         return (NULL);
     }
     tmp = malloc(sizeof(t_malloc));
