@@ -32,6 +32,8 @@ char	*get_cmd(t_cmd *cmd)
 	char	**paths;
 	t_env *PATH;
 
+	if (access(cmd->tokens->token, F_OK | X_OK) == 0)
+		return (cmd->tokens->token);
 	PATH = get_env(cmd->env, "PATH");
 	if (!PATH)
 		PATH = cmd->env;

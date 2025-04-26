@@ -25,7 +25,7 @@
 #define DEFAULT_PATH "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 
 
-static int ctrl;
+extern int g_ctrl;
 
 typedef enum e_token_type
 {

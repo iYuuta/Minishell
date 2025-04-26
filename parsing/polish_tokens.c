@@ -13,18 +13,17 @@ int polished_strlen(char *token)
     {
         if (c != 0 && token[i] == c)
         {
-            len--;
+            len++;
             c = 0;
         }
-        else if (c == 0 && token[i] == '\'' || token[i] == '\"')
+        else if (c == 0 && (token[i] == '\'' || token[i] == '\"'))
         {
-            len--;
+            len++;
             c = token[i];
         }
-        len++;
         i++;
     }
-    return (len);
+    return (i - len);
 }
 
 char *polish(char *token)
