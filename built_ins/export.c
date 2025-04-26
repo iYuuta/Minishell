@@ -31,6 +31,12 @@ int add_env(t_env **env, char *value, char *name)
     return (0);
 }
 
+void print_error(char *str)
+{
+    ft_putstr_fd("minishell: export: `", 2);
+    ft_putstr_fd(str, 2);
+    ft_putstr_fd("': not a valid identifier\n", 2);
+}
 int export_w_args(t_cmd *cmd, int append, int len)
 {
     char *arg[2];
@@ -39,7 +45,7 @@ int export_w_args(t_cmd *cmd, int append, int len)
         append = 1;
     arg[0] = ft_env_substr(cmd->tokens->token, 0, len - append);
     if (check_export_error(arg[0]))
-        return (printf("bash: export: `%s': not a valid identifier\n", cmd->tokens->token), 1);
+        return (print_error(cmd->tokens->token), 1);
     if ((len + 1) != ft_strlen(cmd->tokens->token))
         arg[1] = ft_env_substr(cmd->tokens->token, len + 1, ft_strlen(cmd->tokens->token + len + 1));
     else

@@ -30,14 +30,14 @@ int special_case(t_cmd *cmd)
 {
     t_env *pwd;
 
+    if (chdir(cmd->tokens->next->token))
+        return (0);
     pwd = get_env(cmd->env, "PWD");
     if (!pwd)
         return (0);
     if (!ft_strcmp(cmd->tokens->next->token, ".."))
     {
         change_pwd(cmd->env, ft_strjoin(pwd->arg, "/.."));
-        if (chdir(".."))
-            return (0);
         if (!getcwd(NULL, 0))
             ft_putendl_fd("cd: error retrieving current directory: getcwd: \
 cannot access parent directories: No such file or directory", 2);

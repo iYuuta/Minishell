@@ -28,7 +28,7 @@ int check_export_error(char *str)
 
 static void printf_error(char *str)
 {
-    ft_putstr_fd("bash: export: `", 2);
+    ft_putstr_fd("minishell: export: `", 2);
     ft_putstr_fd(str, 2);
     ft_putendl_fd("': not a valid identifier", 2);
 }

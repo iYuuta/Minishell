@@ -83,7 +83,7 @@ int check_files(t_arg *args)
 		{
 			args->token = expand_vars(args->env, args->token, 1);
 			if (!args->token || !args->token[0] || is_ambiguous(args->token))
-				return (ft_putendl_fd("bash: ambiguous redirect", 2), 1);
+				return (ft_putendl_fd("minishell: ambiguous redirect", 2), 1);
 			args->token = ft_strtrim(args->token, " ");
 		}
 		args = args->next;

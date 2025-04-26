@@ -107,7 +107,7 @@ char *read_here_doc(char *token, t_env *env)
     {
         tmp[0] = readline("> ");
         if (!tmp[0])
-            return (ft_putendl_fd("bash: warning: here-document delimited by end-of-file", 2), token = str, token);
+            return (ft_putendl_fd("minishell: warning: here-document delimited by end-of-file", 2), token = str, token);
         if (g_ctrl == 1)
             return (free(tmp[0]), NULL);
         if (!ft_strcmp(tmp[0], stop))

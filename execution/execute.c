@@ -127,7 +127,7 @@ int execution(char *str, t_env *env)
 	int last_status = 0;
 
 	if (!cmds)
-		return 1;
+		return (1);
 	while (current)
 	{
 		execute_command(current, &prev_pipe_in);

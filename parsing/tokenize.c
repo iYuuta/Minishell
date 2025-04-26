@@ -44,13 +44,13 @@ static void print_error(char *str, int flag)
     if (flag)
     {
         return_value(2, 1);
-        ft_putstr_fd("bash: syntax error near unexpected token `", 2);
+        ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
         ft_putstr_fd(str, 2);
     }
     else
     {
         return_value(126, 1);
-        ft_putstr_fd("bash: ", 2);
+        ft_putstr_fd("minishell: ", 2);
         ft_putstr_fd(str, 2);
         ft_putendl_fd(": Is a directory", 2);
         return ;
@@ -64,7 +64,8 @@ int check_first_arg(char *str)
 
     if (!ft_strcmp(str, "|"))
         return (print_error(str, 1), 1);
-    stat(str, &info);
+    if (stat(str, &info) == -1)
+        return (0);
     if (S_ISDIR(info.st_mode))
         return (print_error(str, 0), 1);
     return (0);

@@ -45,7 +45,7 @@ t_cmd *parse_args(char *str, t_env *env)
     size = 0;
     if (check_quotes(str))
     {
-        ft_putstr_fd("bash: syntax error unclosed quotes\n", 2);
+        ft_putstr_fd("minishell: syntax error unclosed quotes\n", 2);
         ft_malloc(0, 0);
         return (NULL);
     }

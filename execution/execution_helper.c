@@ -29,7 +29,7 @@ void close_files(int file, int flag)
 
 static void print_error(char *str, char *file)
 {
-	ft_putstr_fd("bash: ", 2);
+	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(file, 2);
 	ft_putendl_fd(str, 2);
 }
