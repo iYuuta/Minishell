@@ -115,7 +115,7 @@ int execute_command(t_cmd *cmd, int *prev_pipe_in)
 			if (new_pipe[1] != -1)
 				close(new_pipe[1]);
 		}
-	return (value);
+	return (close_files(0, 0), value);
 }
 
 int execution(char *str, t_env *env)

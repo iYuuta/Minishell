@@ -79,7 +79,7 @@ int check_files(t_arg *args)
 {
 	while (args)
 	{
-		if (args->type != WORD && args->type != HEREDOC && ft_strchr(args->token, '$'))
+		if (args->type != WORD && args->prev && args->prev->type != HEREDOC && ft_strchr(args->token, '$'))
 		{
 			args->token = expand_vars(args->env, args->token, 1);
 			if (!args->token || !args->token[0] || is_ambiguous(args->token))

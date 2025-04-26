@@ -90,7 +90,7 @@ char *expand_heredoc(t_env *env, char *str)
     return (str);
 }
 
-t_arg *read_here_doc(t_arg *token)
+char *read_here_doc(char *token, t_env *env)
 {
     char *stop;
     char *str;
@@ -98,21 +98,22 @@ t_arg *read_here_doc(t_arg *token)
     int flag;
 
     flag = 1;
-    if (ft_strchr(token->token, '\'') || ft_strchr(token->token, '\"'))
+    if (ft_strchr(token, '\'') || ft_strchr(token, '\"'))
         flag = 0;
-    stop = polish(token->token);
+    stop = polish(token);
     str = ft_strdup("");
+    ctrl = 3;
     while (1)
     {
+        tmp[0] = readline("> ");
         if (ctrl == 1)
             return (NULL);
-        tmp[0] = readline(">");
         if (!tmp[0])
-            return (token->type = HEREDOC, token->token = str, token);
+            return (ft_putendl_fd("bash: warning: here-document delimited by end-of-file", 2), token = str, token);
         if (!ft_strcmp(tmp[0], stop))
-            return (token->type = HEREDOC, token->token = str, free(tmp[0]), token);
+            return (token = str, free(tmp[0]), token);
         if (flag)
-            tmp[1] = expand_heredoc(token->env, tmp[0]);
+            tmp[1] = expand_heredoc(env, tmp[0]);
         else
             tmp[1] = tmp[0];
         str = ft_strjoin(str, tmp[1]);

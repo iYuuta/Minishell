@@ -33,10 +33,8 @@ int is_pipe(char *str)
 
 t_arg *handle_redir(t_arg *token)
 {
-    if (token->type == HEREDOC && token->next)
-        token->next = read_here_doc(token->next);
     token = token->next;
-    if (token && token->prev->type != HEREDOC && token)
+    if (token)
         token->type = file;
     return (token);
 }

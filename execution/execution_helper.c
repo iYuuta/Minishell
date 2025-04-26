@@ -73,6 +73,9 @@ int open_files(t_cmd *cmd)
 		}
 		if (cmd->file->type == HEREDOC)
 		{
+			cmd->file->file = read_here_doc(cmd->file->file, cmd->env);
+			if (!(cmd->file->file))
+				return (1);
 			cmd->infile = open(".HEREDOC.txt", O_CREAT | O_RDWR, 0666);
 			if (cmd->infile == -1)
 				return (print_erno_error(cmd), close_files(0, 0), return_value(1, 1), 1);

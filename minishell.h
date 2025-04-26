@@ -7,13 +7,14 @@
 #include <signal.h>
 #include <readline/readline.h>
 #include <readline/history.h>
-#include <sys/wait.h>
 #include <stdio.h>
 #include <fcntl.h>
 #include <limits.h>
 #include <errno.h>
+#include <sys/wait.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <sys/ioctl.h>
 #include <time.h>
 #include <dirent.h>
 
@@ -119,7 +120,7 @@ int is_flag(char *str);
 char **split_args(char *str, int *size);
 char *polish(char *token);
 t_arg *tokenize_arg(char **av, t_env*env);
-t_arg *read_here_doc(t_arg *token);
+char *read_here_doc(char *token, t_env *env);
 int check_uncompleted_cmd(t_arg *token);
 int is_redirection(char *str);
 int get_index(char *str, char c);
