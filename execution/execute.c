@@ -51,7 +51,7 @@ int execute_command(t_cmd *cmd, int *prev_pipe_in)
 	if (open_files(cmd))
 		return (1);
 	if (!cmd->tokens)
-		return (0);
+		return (close_files(0, 0), 0);
 	if (cmd->next == NULL && cmd->number == 1 && is_builtin(cmd))
 		return (execute_single_command(cmd));
 	int value;
@@ -104,7 +104,7 @@ int execute_command(t_cmd *cmd, int *prev_pipe_in)
 				exit(127);
 			}
 			else
-				exit(0);
+				exit(value);
 		}
 		else
 		{
@@ -130,7 +130,7 @@ int execution(char *str, t_env *env)
 		return 1;
 	while (current)
 	{
-		last_status = execute_command(current, &prev_pipe_in);
+		execute_command(current, &prev_pipe_in);
 		current = current->next;
 	}
 	while (waitpid(-1, &status, 0) > 0)
