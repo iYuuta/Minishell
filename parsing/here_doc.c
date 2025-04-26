@@ -106,10 +106,10 @@ char *read_here_doc(char *token, t_env *env)
     while (1)
     {
         tmp[0] = readline("> ");
-        if (g_ctrl == 1)
-            return (NULL);
         if (!tmp[0])
             return (ft_putendl_fd("bash: warning: here-document delimited by end-of-file", 2), token = str, token);
+        if (g_ctrl == 1)
+            return (free(tmp[0]), NULL);
         if (!ft_strcmp(tmp[0], stop))
             return (token = str, free(tmp[0]), token);
         if (flag)

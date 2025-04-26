@@ -38,7 +38,6 @@ typedef enum e_token_type
 	REDIR_APPEND,
 	REDIR_IN,
 	HEREDOC,
-	WILDCARD,
 }   t_token_type;
 
 typedef struct s_malloc

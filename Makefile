@@ -8,7 +8,7 @@ built_ins = built_ins/env.c  built_ins/pwd.c built_ins/unset.c built_ins/export.
 
 env_vars = env_vars/init_env.c env_vars/ft_env_helper.c env_vars/env_helpers.c
 
-parsing = parsing/parse.c parsing/handle_quotes.c parsing/syntax_errors.c parsing/tokenize.c parsing/here_doc.c \
+parsing = parsing/parse.c parsing/handle_quotes.c parsing/tokenize.c parsing/here_doc.c \
 		  parsing/expanding.c parsing/finish_parse.c parsing/polish_tokens.c
 
 execution = execution/execute.c execution/execution_helper.c execution/excev_args.c

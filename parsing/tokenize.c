@@ -39,29 +39,52 @@ t_arg *handle_redir(t_arg *token)
     return (token);
 }
 
-static void print_error(char *str)
+static void print_error(char *str, int flag)
 {
-    return_value(2, 1);
-    ft_putstr_fd("bash: syntax error near unexpected token `", 2);
-    ft_putstr_fd(str, 2);
-    write(2, "\'\n", 2);
+    if (flag)
+    {
+        return_value(2, 1);
+        ft_putstr_fd("bash: syntax error near unexpected token `", 2);
+        ft_putstr_fd(str, 2);
+    }
+    else
+    {
+        return_value(126, 1);
+        ft_putstr_fd("bash: ", 2);
+        ft_putstr_fd(str, 2);
+        ft_putendl_fd(": Is a directory", 2);
+        return ;
+    }
+    write(2, "\n", 2);
+}
+
+int check_first_arg(char *str)
+{
+    struct stat info;
+
+    if (!ft_strcmp(str, "|"))
+        return (print_error(str, 1), 1);
+    stat(str, &info);
+    if (S_ISDIR(info.st_mode))
+        return (print_error(str, 0), 1);
+    return (0);
 }
 
 int identify_tokens(t_arg *token)
 {
-    if (token && !ft_strcmp(token->token, "|"))
-        return (print_error(token->token), 1);
+    if (token && check_first_arg(token->token))
+        return (1);
     while (token)
     {
         if (!ft_strcmp(token->token, "||") || !ft_strcmp(token->token, "&&"))
-            return (print_error(token->token), 1);
+            return (print_error(token->token, 1), 1);
         if (is_redirection(token->token))
         {
             token->type = is_redirection(token->token);
             if (!token->next)
-                return (print_error("new line"), 1);
+                return (print_error("new line", 1), 1);
             if (is_redirection(token->next->token))
-                return (print_error(token->next->token), 1);
+                return (print_error(token->next->token, 1), 1);
             token = handle_redir(token);
             if (!token)
                 break;
@@ -69,7 +92,7 @@ int identify_tokens(t_arg *token)
         else
             token->type = is_pipe(token->token);
         if (token->type == PIPE && (!token->next || !ft_strcmp(token->next->token, "|")))
-            return (print_error(token->token), 1);
+            return (print_error(token->token, 1), 1);
         token = token->next;
     }
     return (0);

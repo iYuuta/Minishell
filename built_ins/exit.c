@@ -53,7 +53,7 @@ int	exit_shell(t_cmd *cmd)
 	long exit_status;
 
 	exit_status = 0;
-	if (cmd->infile == 0 && cmd->outfile == 1)
+	if (!cmd->next && cmd->number == 1)
 		ft_putendl_fd("exit", 1);
 	if (cmd->tokens->next)
 	{
