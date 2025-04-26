@@ -43,6 +43,7 @@ t_arg *handle_redir(t_arg *token)
 
 static void print_error(char *str)
 {
+    return_value(2, 1);
     ft_putstr_fd("bash: syntax error near unexpected token `", 2);
     ft_putstr_fd(str, 2);
     write(2, "\'\n", 2);
@@ -60,7 +61,7 @@ int identify_tokens(t_arg *token)
         {
             token->type = is_redirection(token->token);
             if (!token->next)
-                return (ft_putendl_fd("bash: syntax error near unexpected token `newline'", 2), 1);
+                return (print_error("new line"), 1);
             if (is_redirection(token->next->token))
                 return (print_error(token->next->token), 1);
             token = handle_redir(token);

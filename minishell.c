@@ -31,6 +31,7 @@ int read_shell(t_env *env, char *head_line)
         if (!str)
         {
             env_malloc(0, 0);
+            ft_putendl_fd("exit", 2);
             exit(0);
         }
         if (*str)

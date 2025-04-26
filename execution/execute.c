@@ -95,11 +95,13 @@ int execute_command(t_cmd *cmd, int *prev_pipe_in)
 			value = execute_builtins(cmd, 1);
 			if (value == 2)
 			{
-			char **args = get_args(cmd);
-			char *path = get_cmd(cmd);
-			execve(path, args, oldenv(NULL));
-			perror("execve");
-			exit(127);
+				char **args = get_args(cmd);
+				char *path = get_cmd(cmd);
+				if (!path || !args || !(*args))
+					exit(127);
+				execve(path, args, oldenv(NULL));
+				perror("execve");
+				exit(127);
 			}
 			else
 				exit(0);

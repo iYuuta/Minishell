@@ -52,5 +52,10 @@ char	*get_cmd(t_cmd *cmd)
 			return (command);
 		paths++;
 	}
-	return (NULL);
+	*paths = getcwd(NULL, 0);
+	tmp = ft_strjoin(*paths, "/");
+	command = ft_strjoin(tmp, cmd->tokens->token);
+	if (access(command, F_OK | X_OK) == 0)
+		return (command);
+	return (ft_putstr_fd(cmd->tokens->token, 2), ft_putendl_fd(": command not found", 2), NULL);
 }
