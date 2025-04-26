@@ -40,6 +40,8 @@ char *selective_expanding(char *str, t_env *env, int flag)
 
 
     variable = get_env(env, str + 1);
+    if (!ft_strcmp(str + 1, "PATH") && !variable)
+        variable = env;
     if (!variable)
         str = ft_strdup("");
     else

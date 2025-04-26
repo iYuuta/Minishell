@@ -24,22 +24,8 @@ int is_redirection(char *str)
     return (0);
 }
 
-// int is_wildcard(char *str)
-// {
-//     int i;
-
-//     i = 0;
-//     while (str[i])
-//     {
-//         if (str[i] == '\'' || str[i] == '\"')
-//             i += get_index()
-//     }
-// }
-
 int is_pipe(char *str)
 {
-    // if (is_wildcard(str))
-    //     return (WILDCARD);
     if (!ft_strcmp(str, "|"))
         return (PIPE);
     return (WORD);
@@ -55,25 +41,39 @@ t_arg *handle_redir(t_arg *token)
     return (token);
 }
 
-void identify_tokens(t_arg *token)
+static void print_error(char *str)
 {
-    int i;
+    ft_putstr_fd("bash: syntax error near unexpected token `", 2);
+    ft_putstr_fd(str, 2);
+    write(2, "\'\n", 2);
+}
 
-    i = 0;
+int identify_tokens(t_arg *token)
+{
+    if (token && !ft_strcmp(token->token, "|"))
+        return (print_error(token->token), 1);
     while (token)
     {
+        if (!ft_strcmp(token->token, "||") || !ft_strcmp(token->token, "&&"))
+            return (print_error(token->token), 1);
         if (is_redirection(token->token))
         {
             token->type = is_redirection(token->token);
+            if (!token->next)
+                return (ft_putendl_fd("bash: syntax error near unexpected token `newline'", 2), 1);
+            if (is_redirection(token->next->token))
+                return (print_error(token->next->token), 1);
             token = handle_redir(token);
             if (!token)
                 break;
         }
         else
             token->type = is_pipe(token->token);
-        i++;
+        if (token->type == PIPE && (!token->next || !ft_strcmp(token->next->token, "|")))
+            return (print_error(token->token), 1);
         token = token->next;
     }
+    return (0);
 }
 
 
@@ -92,6 +92,7 @@ t_arg *tokenize_arg(char **av, t_env *env)
         tmp->env = env;
         ft_lstadd_back(&head, tmp);
     }
-    identify_tokens(head);
+    if (identify_tokens(head))
+        return (NULL);
     return (head);
 }

@@ -253,7 +253,7 @@ t_cmd *get_cmd_arg(t_arg *token)
 				flag = 1;
 			}
 			tmp = copy_token(token);
-			if (!flag && ft_strchr(token->token, '$'))
+			if (!flag && ft_strchr(token->token, '$') && ft_strchr(token->token, '='))
 				tmp = expand_token(token, tmp->token);
 			else if (!flag)
 				tmp->token = polish(tmp->token);
