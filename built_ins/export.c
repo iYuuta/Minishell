@@ -38,8 +38,6 @@ int export_w_args(t_cmd *cmd, int append, int len)
     if (len > 0 && cmd->tokens->token[len - 1] == '+')
         append = 1;
     arg[0] = ft_env_substr(cmd->tokens->token, 0, len - append);
-    if (!arg[0])
-        return (1);
     if (check_export_error(arg[0]))
         return (printf("bash: export: `%s': not a valid identifier\n", cmd->tokens->token), 1);
     if ((len + 1) != ft_strlen(cmd->tokens->token))
@@ -47,7 +45,8 @@ int export_w_args(t_cmd *cmd, int append, int len)
     else
         arg[1] = ft_env_strdup("");
     if (ft_strchr(arg[1], '$'))
-        arg[1] = polish(expand_vars(cmd->env, arg[1], 1));
+        arg[1] = expand_vars(cmd->env, arg[1], 1);
+    arg[1] = polish(arg[1]);
     if (!arg[1])
         return (1);
     if (!get_env(cmd->env, arg[0]))

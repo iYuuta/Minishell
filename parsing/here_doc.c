@@ -104,6 +104,8 @@ t_arg *read_here_doc(t_arg *token)
     str = ft_strdup("");
     while (1)
     {
+        if (ctrl == 1)
+            return (NULL);
         tmp[0] = readline(">");
         if (!tmp[0])
             return (token->type = HEREDOC, token->token = str, token);

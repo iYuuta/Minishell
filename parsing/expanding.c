@@ -46,11 +46,6 @@ char *selective_expanding(char *str, t_env *env, int flag)
         str = ft_strdup("");
     else
         str = variable->arg;
-    if (flag)
-    {
-        str = ft_strjoin("\"", str);
-        str = ft_strjoin(str, "\"");
-    }
     return (str);
 }
 
@@ -65,18 +60,16 @@ char *expand_str(char *str, t_env *env, int *i, int skip)
     strings[3] = ft_strdup("");
     strings[0] = ft_substr(str, 0, *i);
     strings[1] = ft_substr(str, *i, skip);
-    if (*i > 1 && str[*i - 1] == '=')
-        flag = 1;
     strings[2] = ft_substr(str, *i + skip, ft_strlen(str + (*i + skip)));
     if (str[*i + 1] && str[*i + 1] == '?')
         strings[1] = ft_itoa(return_value(0, 0));
     else
         strings[1] = selective_expanding(strings[1], env, flag);
-    if (strings[1] && (ft_strchr(strings[1], '\'') || ft_strchr(strings[1], '\"')))
-    {
-        strings[1] = ft_strjoin("\"", strings[1]);
-        strings[1] = ft_strjoin(strings[1], "\"");
-    }
+    // if (strings[1] && (ft_strchr(strings[1], '\'') || ft_strchr(strings[1], '\"')))
+    // {
+    //     strings[1] = ft_strjoin("\"", strings[1]);
+    //     strings[1] = ft_strjoin(strings[1], "\"");
+    // }
     while (++j < 3)
         strings[3] = ft_strjoin(strings[3], strings[j]);
     *i = ft_strlen(strings[0]) + ft_strlen(strings[1]) - 1;
@@ -119,7 +112,7 @@ char *expand_vars(t_env *env, char *str, int exp)
             i += get_index(str + i, '\'');
         else if (str[i] && str[i] == '\"')
             flag++;
-        else if (str[i] && str[i] == '$' && str[i + 1] && !ft_strchr("%%$^=+./\" ", str[i + 1]))
+        else if (str[i] && str[i] == '$' && str[i + 1] && !ft_strchr("%%$^=+./\"\' ", str[i + 1]))
         {
             skip = skip_chars(str + i);
             str = expand_str(str, env, &i, skip);

@@ -38,9 +38,11 @@ int execute_builtins(t_cmd *cmd, int fd)
 
 int execute_single_command(t_cmd *cmd)
 {
-	execute_builtins(cmd, cmd->outfile);
+	int value;
+
+	value = execute_builtins(cmd, cmd->outfile);
 	close_files(0, 0);
-	return (0);
+	return (value);
 }
 
 int execute_command(t_cmd *cmd, int *prev_pipe_in)
@@ -48,6 +50,8 @@ int execute_command(t_cmd *cmd, int *prev_pipe_in)
 	int pid;
 	if (open_files(cmd))
 		return (1);
+	if (!cmd->tokens)
+		return (0);
 	if (cmd->next == NULL && cmd->number == 1 && is_builtin(cmd))
 		return (execute_single_command(cmd));
 	int value;

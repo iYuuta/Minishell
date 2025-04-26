@@ -4,6 +4,7 @@ void handle_signales(int signal)
 {
     if (signal == SIGINT)
     {
+        // ctrl = 1;
         return_value(130, 1);
         write(1, "\n", 1);
         rl_on_new_line();
