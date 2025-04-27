@@ -30,7 +30,7 @@ static void	print_error(char *str, int flag)
 	ft_putstr_fd("minishell: exit:", 2);
 	ft_putstr_fd(str, 2);
 	if (flag)
-		ft_putendl_fd(": numeric cmd->tokensument required", 2);
+		ft_putendl_fd(": numeric argument required", 2);
 	else
 		write(2, "\n", 1);
 }
@@ -48,6 +48,13 @@ int	is_exit_valid(char *str)
 	return (0);
 }
 
+void	free_mem(int status)
+{
+	ft_malloc(0, 0);
+	env_malloc(0, 0);
+	exit(status);
+}
+
 int	exit_shell(t_cmd *cmd)
 {
 	long	exit_status;
@@ -62,17 +69,14 @@ int	exit_shell(t_cmd *cmd)
 			|| (exit_status == 69 && ft_strcmp("69", cmd->tokens->next->token)))
 		{
 			print_error(cmd->tokens->next->token, 1);
-			exit_status = 2;
+			free_mem(2);
 		}
 		if (exit_status > 255 || exit_status < 0)
 			exit_status = exit_status % 256;
 	}
-	else if (cmd->tokens->next && cmd->tokens->next->next)
-	{
-		print_error(" too many cmd->tokensuments", 0);
-		exit (1);
-	}
-	ft_malloc(0, 0);
-	env_malloc(0, 0);
-	exit(exit_status);
+	if (cmd->tokens->next && cmd->tokens->next->next)
+		return (print_error(" too many argments", 0), exit(1), 1);
+	else
+		return (ft_malloc(0, 0), env_malloc(0, 0), free_mem(exit_status), 0);
+	return (0);
 }

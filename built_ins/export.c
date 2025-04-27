@@ -46,14 +46,14 @@ int	export_w_args(t_cmd *cmd, int append, int len)
 		append = 1;
 	arg[0] = ft_env_sub(cmd->tokens->token, 0, len - append);
 	if (check_export_error(arg[0]))
-		return (print_error(cmd->tokens->token), 1);
+		return (print_error(cmd->tokens->token), -1);
 	if ((len + 1) != ft_strlen(cmd->tokens->token))
 		arg[1] = ft_env_sub(cmd->tokens->token,
 				len + 1, ft_strlen(cmd->tokens->token + len + 1));
 	else
 		arg[1] = ft_env_strdup("");
 	if (ft_strchr(arg[1], '$'))
-		arg[1] = expand_vars(cmd->env, arg[1], 1);
+		arg[1] = expand_vars(cmd->env, arg[1], 0);
 	arg[1] = polish(arg[1]);
 	if (!arg[1])
 		return (1);

@@ -7,7 +7,8 @@ char	*store_pwd(char *pwd)
 	if (!oldpwd)
 	{
 		oldpwd = env_malloc(PATH_MAX, 1);
-		getcwd(oldpwd, PATH_MAX);
+		if (!getcwd(oldpwd, PATH_MAX))
+			oldpwd = NULL;
 	}
 	if (pwd)
 		oldpwd = ft_env_strdup(pwd);

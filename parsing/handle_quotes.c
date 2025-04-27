@@ -2,9 +2,9 @@
 
 int	get_index(char *str, char c)
 {
-	int i;
+	int	i;
 
-	i = 0;
+	i = 1;
 	while (str[i])
 	{
 		if (str[i] == c)
@@ -24,10 +24,11 @@ char	*handle_operators(char *str, int *j)
 
 char	*handle_normal_word(char *str, int *j)
 {
-	char *word;
+	char	*word;
 
 	*j = 0;
-	while (str[*j] && !ft_strchr(" <>|&", str[*j]) && (str[*j] < 9 || str[*j] > 13))
+	while (str[*j] && !ft_strchr(" <>|&", str[*j])
+		&& (str[*j] < 9 || str[*j] > 13))
 	{
 		if (ft_strchr("\'\"", str[*j]) && get_index(str + *j, str[*j]) == -1)
 			return (NULL);

@@ -11,7 +11,7 @@ int	pwd(t_env *env, t_cmd *cmd)
 	{
 		back_up = store_pwd(NULL);
 		if (!back_up)
-			return (1);
+			return (ft_putendl_fd("cannot retrieve cwd", 2), 1);
 		ft_putendl_fd(back_up, cmd->outfile);
 	}
 	return (0);

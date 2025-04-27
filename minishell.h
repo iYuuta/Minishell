@@ -126,6 +126,15 @@ int		is_redirection(char *str);
 int		get_index(char *str, char c);
 char	*expand_vars(t_env *env, char *str, int exp);
 t_cmd	*finish_parse(t_arg *args, t_env *env);
+char	*expand_str(char *str, t_env *env, int *i, int skip);
+int		get_files(t_arg *token, t_cmd **node);
+void	cmd_add_back(t_cmd **lst, t_cmd *new);
+t_arg	*copy_token(t_arg *token);
+char	*expand_heredoc(t_env *env, char *str);
+t_arg	*refine_token(t_arg *token);
+int		is_flag(char *str);
+int		is_redirection(char *str);
+int		is_pipe(char *str);
 
 /*************************************/
 
