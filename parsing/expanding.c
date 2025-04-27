@@ -43,7 +43,7 @@ char *selective_expanding(char *str, t_env *env)
     if (!ft_strcmp(str + 1, "PATH") && !variable)
         variable = env;
     if (!variable)
-        str = ft_strdup("");
+        str = ft_strdup("\0");
     else
         str = variable->arg;
     return (str);
@@ -66,6 +66,8 @@ char *expand_str(char *str, t_env *env, int *i, int skip)
     while (++j < 3)
         strings[3] = ft_strjoin(strings[3], strings[j]);
     *i = ft_strlen(strings[0]) + ft_strlen(strings[1]) - 1;
+    if (*i < 0)
+        *i = 0;
     return (strings[3]);
 }
 

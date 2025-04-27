@@ -1,5 +1,19 @@
 #include "minishell.h"
 
+char *store_pwd(char *pwd)
+{
+	static char *oldpwd;
+
+    if (!oldpwd)
+    {
+        oldpwd = env_malloc(PATH_MAX, 1);
+        getcwd(oldpwd, PATH_MAX);
+    }
+	if (pwd)
+        oldpwd = ft_env_strdup(pwd);
+    return (oldpwd);
+}
+
 char **oldenv(char **env)
 {
 	static char **envirement;
@@ -49,6 +63,7 @@ int main(int ac, char **av, char **env)
     t_env *envirement;
 
 	oldenv(env);
+    store_pwd(NULL);
     envirement = env_init(env);
     if (read_shell(envirement, "minishell>> ") == 1)
         return (1);

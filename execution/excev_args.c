@@ -38,8 +38,10 @@ char	*get_cmd(t_cmd *cmd)
 	if (!PATH)
 		PATH = cmd->env;
 	paths = ft_split(PATH->arg, ':');
-	if (!cmd->tokens->token || !(*cmd->tokens->token))
+	if (!cmd->tokens->token)
 		return (NULL);
+	if (!(*cmd->tokens->token))
+		return (ft_putstr_fd(cmd->tokens->token, 2), ft_putendl_fd(": command not found", 2), NULL);
 	if (cmd->tokens->token[0] == '/' || cmd->tokens->token[0] == '.')
 	{
 		if (access(cmd->tokens->token, F_OK | X_OK) == 0)

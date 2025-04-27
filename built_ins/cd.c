@@ -4,6 +4,7 @@ int change_pwd(t_env *env, char *pwd)
 {
     t_env *cwdiroctory;
 
+    store_pwd(pwd);
     cwdiroctory = get_env(env, "PWD");
     if (!cwdiroctory)
         return (0);
@@ -28,16 +29,14 @@ int change_old_pwd(t_env *env, char *str)
 
 int special_case(t_cmd *cmd)
 {
-    t_env *pwd;
+    char *pwd;
 
-    if (chdir(cmd->tokens->next->token))
-        return (0);
-    pwd = get_env(cmd->env, "PWD");
-    if (!pwd)
-        return (0);
+    pwd = store_pwd(NULL);
     if (!ft_strcmp(cmd->tokens->next->token, ".."))
     {
-        change_pwd(cmd->env, ft_strjoin(pwd->arg, "/.."));
+        if (chdir(cmd->tokens->next->token))
+            return (0);
+        change_pwd(cmd->env, ft_strjoin(pwd, "/.."));
         if (!getcwd(NULL, 0))
             ft_putendl_fd("cd: error retrieving current directory: getcwd: \
 cannot access parent directories: No such file or directory", 2);

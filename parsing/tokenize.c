@@ -66,7 +66,7 @@ int check_first_arg(char *str)
         return (print_error(str, 1), 1);
     if (stat(str, &info) == -1)
         return (0);
-    if (S_ISDIR(info.st_mode))
+    if (ft_strchr(str, '/') && S_ISDIR(info.st_mode))
         return (print_error(str, 0), 1);
     return (0);
 }
