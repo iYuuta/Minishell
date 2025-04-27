@@ -1,6 +1,6 @@
 #include "../minishell.h"
 
-char *ft_env_join(char *s1, char const *s2)
+char	*ft_env_join(char *s1, char const *s2)
 {
 	size_t	i;
 	size_t	j;
@@ -37,7 +37,7 @@ char	*ft_env_strdup(const char *s1)
 	return (dup);
 }
 
-char	*ft_env_substr(char const *s, unsigned int start, size_t len)
+char	*ft_env_sub(char const *s, unsigned int start, size_t len)
 {
 	size_t	i;
 	size_t	slen;

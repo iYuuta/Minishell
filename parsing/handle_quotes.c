@@ -1,16 +1,17 @@
 #include "../minishell.h"
 
-int get_index(char *str, char c)
+int	get_index(char *str, char c)
 {
-    int i = 1;
+	int i;
 
-    while (str[i])
-    {
-        if (str[i] == c)
-            return (i);
-        i++;
-    }
-    return (-1);
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == c)
+			return (i);
+		i++;
+	}
+	return (-1);
 }
 
 char	*handle_operators(char *str, int *j)

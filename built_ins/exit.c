@@ -2,8 +2,8 @@
 
 long	custom_atoi(const char *str)
 {
-	int			i;
-	int			sign;
+	int		i;
+	int		sign;
 	long	result;
 
 	i = 0;
@@ -18,14 +18,14 @@ long	custom_atoi(const char *str)
 	while (str[i] && str[i] >= '0' && str[i] <= '9')
 	{
 		if (result > (9223372036854775807 - (str[i] - 48)) / 10)
-				return (69);
+			return (69);
 		result = (result * 10) + (str[i] - 48);
 		i++;
 	}
 	return (result * sign);
 }
 
-static void print_error(char *str, int flag)
+static void	print_error(char *str, int flag)
 {
 	ft_putstr_fd("minishell: exit:", 2);
 	ft_putstr_fd(str, 2);
@@ -35,7 +35,7 @@ static void print_error(char *str, int flag)
 		write(2, "\n", 1);
 }
 
-int is_exit_valid(char *str)
+int	is_exit_valid(char *str)
 {
 	if (*str && *str == '-')
 		str++;
@@ -50,7 +50,7 @@ int is_exit_valid(char *str)
 
 int	exit_shell(t_cmd *cmd)
 {
-	long exit_status;
+	long	exit_status;
 
 	exit_status = 0;
 	if (!cmd->next && cmd->number == 1)
@@ -58,7 +58,8 @@ int	exit_shell(t_cmd *cmd)
 	if (cmd->tokens->next)
 	{
 		exit_status = custom_atoi(cmd->tokens->next->token);
-		if (is_exit_valid(cmd->tokens->next->token) || (exit_status == 69 && ft_strcmp("69", cmd->tokens->next->token)))
+		if (is_exit_valid(cmd->tokens->next->token)
+			|| (exit_status == 69 && ft_strcmp("69", cmd->tokens->next->token)))
 		{
 			print_error(cmd->tokens->next->token, 1);
 			exit_status = 2;

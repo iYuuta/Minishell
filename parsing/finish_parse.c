@@ -2,7 +2,7 @@
 
 t_cmd	*last_cmd(t_cmd *lst)
 {
-	t_cmd *temp;
+	t_cmd	*temp;
 
 	if (!lst)
 		return (NULL);
@@ -30,12 +30,12 @@ void	cmd_add_back(t_cmd **lst, t_cmd *new)
 
 int	count_cmds(t_arg *arg)
 {
-	int nb;
+	int	nb;
 
 	nb = 1;
 	while (arg)
 	{
-		if(arg->type == PIPE && arg->next != NULL)
+		if (arg->type == PIPE && arg->next != NULL)
 			nb++;
 		arg = arg->next;
 	}
@@ -59,7 +59,7 @@ void	stack_files(t_file **lst, t_file *new)
 	*lst = new;
 }
 
-int is_ambiguous(char *str)
+int	is_ambiguous(char *str)
 {
 	int i;
 
@@ -75,7 +75,7 @@ int is_ambiguous(char *str)
 	return (1);
 }
 
-int check_files(t_arg *args)
+int	check_files(t_arg *args)
 {
 	while (args)
 	{
@@ -91,9 +91,9 @@ int check_files(t_arg *args)
 	return (0);
 }
 
-int get_files(t_arg *token, t_cmd **node)
+int	get_files(t_arg *token, t_cmd **node)
 {
-	t_file *tmp;
+	t_file	*tmp;
 
 	(*node)->file = NULL;
 	if (check_files(token))
@@ -119,9 +119,9 @@ int get_files(t_arg *token, t_cmd **node)
 	return (0);
 }
 
-t_arg *copy_token(t_arg *token)
+t_arg	*copy_token(t_arg *token)
 {
-	t_arg *copy;
+	t_arg	*copy;
 
 	copy = ft_malloc(sizeof(t_arg), 1);
 	copy->head = NULL;
@@ -133,10 +133,10 @@ t_arg *copy_token(t_arg *token)
 	return (copy);
 }
 
-t_arg *refine_token(t_arg *token)
+t_arg	*refine_token(t_arg *token)
 {
-	t_arg *head;
-	int tracker;
+	t_arg	*head;
+	int		tracker;
 
 	tracker = 0;
 	head = token;
@@ -157,11 +157,11 @@ t_arg *refine_token(t_arg *token)
 	return (head);
 }
 
-t_arg *expand_token(t_arg *token, char *str)
+t_arg	*expand_token(t_arg *token, char *str)
 {
-	char **args;
-	t_arg *tmp;
-	int i;
+	char	**args;
+	t_arg	*tmp;
+	int		i;
 
 	i = 0;
 	str = expand_vars(token->env, str, 0);
@@ -229,13 +229,15 @@ t_cmd *get_cmd_arg(t_arg *token)
 	return (node);
 }*/
 
-t_cmd *get_cmd_arg(t_arg *token)
+t_cmd	*get_cmd_arg(t_arg *token)
 {
-	t_cmd *node;
-	t_arg *tmp;
-	int i = 0;
-	int flag = 0;
+	t_cmd	*node;
+	t_arg	*tmp;
+	int		i;
+	int		flag;
 
+	i = 0;
+	flag = 0;
 	node = ft_malloc(sizeof(t_cmd), 1);
 	node->infile = 0;
 	node->outfile = 1;
@@ -266,12 +268,12 @@ t_cmd *get_cmd_arg(t_arg *token)
 	return (node);
 }
 
-t_cmd *finish_parse(t_arg *args, t_env *env)
+t_cmd	*finish_parse(t_arg *args, t_env *env)
 {
-	int nb;
-	int i;
-	t_cmd *head;
-	t_cmd *tmp;
+	int		nb;
+	int		i;
+	t_cmd	*head;
+	t_cmd	*tmp;
 
 	i = 0;
 	head = NULL;

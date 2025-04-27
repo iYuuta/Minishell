@@ -1,19 +1,14 @@
 #include "../minishell.h"
 
-
-t_arg	*check_new_line(t_arg *arg, int *new_line)
+void	new_line_loop(t_arg *tmp, int *new_line, int *tracker)
 {
 	int	i;
-	int tracker;
-	t_arg *tmp;
 
 	i = 0;
-	tracker = 1;
-	tmp = arg->next;
 	while (tmp)
 	{
 		i = 1;
-		if (tmp->type == FLAG && tracker)
+		if (tmp->type == FLAG && *tracker)
 		{
 			while (tmp->token[i] && tmp->token[i] == 'n')
 				i++;
@@ -21,26 +16,36 @@ t_arg	*check_new_line(t_arg *arg, int *new_line)
 				*new_line = 1;
 			else
 			{
-				tracker = 0;
+				*tracker = 0;
 				tmp->type = WORD;
 			}
 		}
 		else
 		{
 			tmp->type = WORD;
-			tracker = 0;
+			*tracker = 0;
 		}
 		tmp = tmp->next;
 	}
+}
+
+t_arg	*check_new_line(t_arg *arg, int *new_line)
+{
+	int		tracker;
+	t_arg	*tmp;
+
+	tracker = 1;
+	tmp = arg->next;
+	new_line_loop(tmp, new_line, &tracker);
 	if (*new_line)
 		return (arg);
 	return (NULL);
 }
 
-int echo(t_cmd *cmd)
+int	echo(t_cmd *cmd)
 {
-	int new_line;
-	t_arg *args;
+	int		new_line;
+	t_arg	*args;
 
 	new_line = 0;
 	args = check_new_line(cmd->tokens, &new_line);

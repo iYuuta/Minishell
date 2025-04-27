@@ -4,8 +4,8 @@ t_env	*new_env(char *content)
 {
 	t_env	*strc;
 
-    if (!content)
-        return (NULL);
+	if (!content)
+		return (NULL);
 	strc = env_malloc(sizeof(t_env), 1);
 	if (!strc)
 		return (NULL);

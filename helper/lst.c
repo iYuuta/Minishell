@@ -8,7 +8,7 @@ t_arg	*ft_lstnew(void *content)
 	if (!strc)
 		return (NULL);
 	strc->token = content;
-    strc->type = 1337;
+	strc->type = 1337;
 	strc->head = NULL;
 	strc->next = NULL;
 	strc->prev = NULL;
