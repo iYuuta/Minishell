@@ -159,6 +159,7 @@ int		export_wt_args(t_cmd *arg);
 t_env	*get_env(t_env *env, char *name);
 int		is_exit_valid(char *str);
 char	**oldenv(char **env);
+char	*store_pwd(char *pwd);
 
 /*********************************** */
 

@@ -3,16 +3,16 @@
 int	pwd(t_env *env, t_cmd *cmd)
 {
 	char	pwd[PATH_MAX];
-	t_env	*back_up;
+	char	*back_up;
 
 	if (getcwd(pwd, PATH_MAX))
 		ft_putendl_fd(pwd, cmd->outfile);
 	else
 	{
-		back_up = get_env(env, "PWD");
+		back_up = store_pwd(NULL);
 		if (!back_up)
 			return (1);
-		ft_putendl_fd(back_up->arg, cmd->outfile);
+		ft_putendl_fd(back_up, cmd->outfile);
 	}
 	return (0);
 }

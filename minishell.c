@@ -1,5 +1,19 @@
 #include "minishell.h"
 
+char	*store_pwd(char *pwd)
+{
+	static char	*oldpwd;
+
+	if (!oldpwd)
+	{
+		oldpwd = env_malloc(PATH_MAX, 1);
+		getcwd(oldpwd, PATH_MAX);
+	}
+	if (pwd)
+		oldpwd = ft_env_strdup(pwd);
+	return (oldpwd);
+}
+
 char	**oldenv(char **env)
 {
 	static char	**envirement;
@@ -50,7 +64,8 @@ int	main(int ac, char **av, char **env)
 	if (!isatty(0) || !isatty(1) || !isatty(2))
 		return (ft_putendl_fd("insecure source", 2), 1);
 	oldenv(env);
-	envirement = env_init(env, NULL , 0);
+	store_pwd(NULL);
+	envirement = env_init(env, NULL, 0);
 	if (read_shell(envirement, "minishell>> ") == 1)
 		return (1);
 	return (0);

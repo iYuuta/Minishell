@@ -1,5 +1,10 @@
 #include "../minishell.h"
 
+void print_command_error(char *str)
+{
+
+}
+
 int	is_builtin(t_cmd *cmd)
 {
 	char	*name;
@@ -65,11 +70,15 @@ char	**get_args(t_cmd *cmds)
 
 char	*get_cmd(t_cmd *cmd)
 {
-	char	*tmp;
-	char	*command;
-	char	**paths;
-	t_env	*path;
+	char		*tmp;
+	char		*command;
+	char		**paths;
+	t_env		*path;
+	struct stat	info;
 
+    stat(cmd->tokens->token, &info);
+    if (S_ISDIR(info.st_mode))
+        return (NULL);
 	if (access(cmd->tokens->token, F_OK | X_OK) == 0)
 		return (cmd->tokens->token);
 	path = get_env(cmd->env, "PATH");
@@ -77,6 +86,8 @@ char	*get_cmd(t_cmd *cmd)
 		path = cmd->env;
 	paths = ft_split(path->arg, ':');
 	if (!cmd->tokens->token)
+		return (NULL);
+	if (!(*cmd->tokens->token))
 		return (NULL);
 	if (cmd->tokens->token[0] == '/' || cmd->tokens->token[0] == '.')
 	{
@@ -97,6 +108,5 @@ char	*get_cmd(t_cmd *cmd)
 	command = ft_strjoin(tmp, cmd->tokens->token);
 	if (access(command, F_OK | X_OK) == 0)
 		return (command);
-	ft_putstr_fd(cmd->tokens->token, 2);
-	return (ft_putendl_fd(": command not found", 2), NULL);
+	return (NULL);
 }

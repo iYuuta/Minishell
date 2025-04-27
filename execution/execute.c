@@ -51,7 +51,10 @@ int	child_process(t_cmd *cmd, int *new_pipe, int *prev_pipe_in)
 		args = get_args(cmd);
 		path = get_cmd(cmd);
 		if (!path || !args || !(*args))
+		{
+			ft_putstr_fd("minishell: command not found\n", 2);
 			exit(127);
+		}
 		execve(path, args, oldenv(NULL));
 		perror("execve");
 		exit(127);

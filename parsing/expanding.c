@@ -37,14 +37,14 @@ char	*selective_expanding(char *str, t_env *env)
 {
 	t_env	*variable;
 
-	variable = get_env(env, str + 1);
-	if (!ft_strcmp(str + 1, "PATH") && !variable)
-		variable = env;
-	if (!variable)
-		str = ft_strdup("");
-	else
-		str = variable->arg;
-	return (str);
+    variable = get_env(env, str + 1);
+    if (!ft_strcmp(str + 1, "PATH") && !variable)
+        variable = env;
+    if (!variable)
+        str = ft_strdup("\0");
+    else
+        str = variable->arg;
+    return (str);
 }
 
 char	*expand_str(char *str, t_env *env, int *i, int skip)
@@ -52,19 +52,21 @@ char	*expand_str(char *str, t_env *env, int *i, int skip)
 	char	*strings[4];
 	int		j;
 
-	j = -1;
-	strings[3] = ft_strdup("");
-	strings[0] = ft_substr(str, 0, *i);
-	strings[1] = ft_substr(str, *i, skip);
-	strings[2] = ft_substr(str, *i + skip, ft_strlen(str + (*i + skip)));
-	if (str[*i + 1] && str[*i + 1] == '?')
-		strings[1] = ft_itoa(return_value(0, 0));
-	else
-		strings[1] = selective_expanding(strings[1], env);
-	while (++j < 3)
-		strings[3] = ft_strjoin(strings[3], strings[j]);
-	*i = ft_strlen(strings[0]) + ft_strlen(strings[1]) - 1;
-	return (strings[3]);
+    j = -1;
+    strings[3] = ft_strdup("");
+    strings[0] = ft_substr(str, 0, *i);
+    strings[1] = ft_substr(str, *i, skip);
+    strings[2] = ft_substr(str, *i + skip, ft_strlen(str + (*i + skip)));
+    if (str[*i + 1] && str[*i + 1] == '?')
+        strings[1] = ft_itoa(return_value(0, 0));
+    else
+        strings[1] = selective_expanding(strings[1], env);
+    while (++j < 3)
+        strings[3] = ft_strjoin(strings[3], strings[j]);
+    *i = ft_strlen(strings[0]) + ft_strlen(strings[1]) - 1;
+    if (*i < 0)
+        *i = 0;
+    return (strings[3]);
 }
 
 int	skip_assigning(char *str)
