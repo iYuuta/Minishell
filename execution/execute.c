@@ -74,7 +74,7 @@ int	execute_command(t_cmd *cmd, int *prev_pipe_in, int new_pipe[2], int value)
 	if (!cmd->tokens)
 		return (close(*prev_pipe_in), close_files(0, 0), 0);
 	if (cmd->next == NULL && cmd->number == 1 && is_builtin(cmd))
-		return (execute_single_command(cmd));
+		return (return_value(execute_single_command(cmd), 1));
 	if (cmd->next && pipe(new_pipe) < 0)
 		return (perror("pipe"), 1);
 	pid = fork();

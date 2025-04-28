@@ -69,7 +69,7 @@ int	exit_shell(t_cmd *cmd)
 			|| (exit_status == 69 && ft_strcmp("69", cmd->tokens->next->token)))
 		{
 			print_error(cmd->tokens->next->token, 1);
-			free_mem(2);
+			free_mem(255);
 		}
 		if (exit_status > 255 || exit_status < 0)
 			exit_status = exit_status % 256;

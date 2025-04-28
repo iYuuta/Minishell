@@ -25,9 +25,9 @@ int	execute_builtins(t_cmd *cmd, int fd)
 	if (cmd->tokens && !ft_strcmp(cmd->tokens->token, "pwd"))
 		return (pwd(cmd->env, cmd));
 	if (cmd->tokens && !ft_strcmp(cmd->tokens->token, "unset"))
-		return (unset(cmd->tokens), 0);
+		return (unset(cmd->tokens), return_value(0, 0));
 	if (cmd->tokens && !ft_strcmp(cmd->tokens->token, "export"))
-		return (export(cmd));
+		return (export(cmd), return_value(0, 0));
 	if (cmd->tokens && !ft_strcmp(cmd->tokens->token, "exit"))
 		return (exit_shell(cmd));
 	if (cmd->tokens && !ft_strcmp(cmd->tokens->token, "cd"))
@@ -102,7 +102,10 @@ char	*get_cmd(t_cmd *cmd, char *tmp)
 	path = get_env(cmd->env, "PATH");
 	if (!path)
 		path = cmd->env;
-	paths = ft_split(path->arg, ':');
+	if (!path->arg[0])
+		paths = ft_split(store_pwd(NULL), ':');
+	else
+		paths = ft_split(path->arg, ':');
 	if (!cmd->tokens->token)
 		return (NULL);
 	if (!(*cmd->tokens->token))

@@ -41,12 +41,13 @@ static void	print_error(char *str)
 int	export_w_args(t_cmd *cmd, int append, int len)
 {
 	char	*arg[2];
+	static int value;
 
 	if (len > 0 && cmd->tokens->token[len - 1] == '+')
 		append = 1;
 	arg[0] = ft_env_sub(cmd->tokens->token, 0, len - append);
 	if (check_export_error(arg[0]))
-		return (print_error(cmd->tokens->token), -1);
+		return (print_error(cmd->tokens->token), value = 1, 0);
 	if ((len + 1) != ft_strlen(cmd->tokens->token))
 		arg[1] = ft_env_sub(cmd->tokens->token,
 				len + 1, ft_strlen(cmd->tokens->token + len + 1));
@@ -55,14 +56,13 @@ int	export_w_args(t_cmd *cmd, int append, int len)
 	if (ft_strchr(arg[1], '$'))
 		arg[1] = expand_vars(cmd->env, arg[1], 0);
 	arg[1] = polish(arg[1]);
-	if (!arg[1])
-		return (1);
 	if (!get_env(cmd->env, arg[0]))
 		append = add_env(&(cmd->env), arg[1], arg[0]);
 	else
 		append = over_write(get_env(cmd->env, arg[0]), arg[1], append);
 	if (append)
 		return (1);
+	return_value(value, 1);
 	return (0);
 }
 
