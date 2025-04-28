@@ -92,7 +92,8 @@ int	open_files(t_cmd *cmd)
 			if (cmd->infile == -1)
 				return (p_erno(cmd), close_files(0, 0), return_value(1, 1), 1);
 		}
-		check_other_cases(cmd, &tmp);
+		if (check_other_cases(cmd, &tmp))
+			return (return_value(130, 1), 1);
 		close_files(tmp, 1);
 		cmd->file = cmd->file->next;
 	}

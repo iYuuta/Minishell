@@ -63,27 +63,8 @@ char	**get_args(t_cmd *cmds)
 	return (args);
 }
 
-char	*get_cmd(t_cmd *cmd)
+char	*check_rl_ab_path(t_cmd *cmd, char *tmp, char **paths, char *command)
 {
-	char		*tmp;
-	char		*command;
-	char		**paths;
-	t_env		*path;
-	struct stat	info;
-
-	stat(cmd->tokens->token, &info);
-	if (S_ISDIR(info.st_mode))
-		return (NULL);
-	if (access(cmd->tokens->token, F_OK | X_OK) == 0)
-		return (cmd->tokens->token);
-	path = get_env(cmd->env, "PATH");
-	if (!path)
-		path = cmd->env;
-	paths = ft_split(path->arg, ':');
-	if (!cmd->tokens->token)
-		return (NULL);
-	if (!(*cmd->tokens->token))
-		return (NULL);
 	if (cmd->tokens->token[0] == '/' || cmd->tokens->token[0] == '.')
 	{
 		if (access(cmd->tokens->token, F_OK | X_OK) == 0)
@@ -104,4 +85,27 @@ char	*get_cmd(t_cmd *cmd)
 	if (access(command, F_OK | X_OK) == 0)
 		return (command);
 	return (NULL);
+}
+
+char	*get_cmd(t_cmd *cmd, char *tmp)
+{
+	char		*command;
+	char		**paths;
+	t_env		*path;
+	struct stat	info;
+
+	stat(cmd->tokens->token, &info);
+	if (S_ISDIR(info.st_mode))
+		return (NULL);
+	if (access(cmd->tokens->token, F_OK | X_OK) == 0)
+		return (cmd->tokens->token);
+	path = get_env(cmd->env, "PATH");
+	if (!path)
+		path = cmd->env;
+	paths = ft_split(path->arg, ':');
+	if (!cmd->tokens->token)
+		return (NULL);
+	if (!(*cmd->tokens->token))
+		return (NULL);
+	return (check_rl_ab_path(cmd, tmp, paths, command));
 }

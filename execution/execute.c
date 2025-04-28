@@ -49,13 +49,14 @@ int	child_process(t_cmd *cmd, int *new_pipe, int *prev_pipe_in)
 	if (value == 2)
 	{
 		args = get_args(cmd);
-		path = get_cmd(cmd);
+		path = get_cmd(cmd, NULL);
 		if (!path || !args || !(*args))
 		{
 			ft_putstr_fd("minishell: command not found\n", 2);
 			exit(127);
 		}
 		execve(path, args, oldenv(NULL));
+		ft_malloc(0, 0);
 		perror("execve");
 		exit(127);
 	}
@@ -69,9 +70,9 @@ int	execute_command(t_cmd *cmd, int *prev_pipe_in, int new_pipe[2], int value)
 	int	pid;
 
 	if (open_files(cmd))
-		return (1);
+		return (close(*prev_pipe_in), 1);
 	if (!cmd->tokens)
-		return (close_files(0, 0), 0);
+		return (close(*prev_pipe_in), close_files(0, 0), 0);
 	if (cmd->next == NULL && cmd->number == 1 && is_builtin(cmd))
 		return (execute_single_command(cmd));
 	if (cmd->next && pipe(new_pipe) < 0)

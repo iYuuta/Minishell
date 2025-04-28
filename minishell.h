@@ -92,7 +92,7 @@ void	handle_signales(int signal);
 int		execution(char *str, t_env *env);
 int		open_files(t_cmd *cmd);
 void	close_files(int file, int flag);
-char	*get_cmd(t_cmd *cmd);
+char	*get_cmd(t_cmd *cmd, char *tmp);
 char	**get_args(t_cmd *cmds);
 
 /*************************************/
