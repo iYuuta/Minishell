@@ -10,18 +10,26 @@ t_arg	*handle_redir(t_arg *token)
 
 static void	print_error(char *str, int flag)
 {
-	if (flag)
+	if (flag == 1)
 	{
 		return_value(2, 1);
 		ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
 		ft_putstr_fd(str, 2);
+	}
+	else if (flag == 0)
+	{
+		return_value(126, 1);
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(str, 2);
+		ft_putendl_fd(": Is a directory", 2);
+		return ;
 	}
 	else
 	{
 		return_value(126, 1);
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(str, 2);
-		ft_putendl_fd(": Is a directory", 2);
+		ft_putendl_fd(": Not a directory", 2);
 		return ;
 	}
 	write(2, "\n", 2);
@@ -33,8 +41,8 @@ int	check_first_arg(char *str)
 
 	if (!ft_strcmp(str, "|"))
 		return (print_error(str, 1), 1);
-	if (stat(str, &info) == -1)
-		return (0);
+	if (ft_strchr(str, '/')  && access(str, F_OK) == 0 && stat(str, &info) == -1)
+		return (print_error(str, 2), 1);
 	if (ft_strchr(str, '/') && S_ISDIR(info.st_mode))
 		return (print_error(str, 0), 1);
 	return (0);
@@ -88,3 +96,16 @@ t_arg	*tokenize_arg(char **av, t_env *env)
 		return (NULL);
 	return (head);
 }
+
+// why does the bash sometimes say different errors like this what are the cases
+// yoayedde@e2r10p3:~/Desktop/Minishell$ dwad/dwad
+// bash: dwad/dwad: No such file or directory
+// yoayedde@e2r10p3:~/Desktop/Minishell$ built_ins
+// built_ins: command not found
+// yoayedde@e2r10p3:~/Desktop/Minishell$ built_ins/
+// bash: built_ins/: Is a directory
+// yoayedde@e2r10p3:~/Desktop/Minishell$ /minishell
+// bash: /minishell: No such file or directory
+// yoayedde@e2r10p3:~/Desktop/Minishell$ /minishell/
+// bash: /minishell/: No such file or directory
+// yoayedde@e2r10p3:~/Desktop/Minishell$ minishell/
