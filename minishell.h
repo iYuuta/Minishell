@@ -17,6 +17,7 @@
 # include <sys/types.h>
 # include <sys/ioctl.h>
 # include <time.h>
+# include <termios.h>
 # include <dirent.h>
 
 # ifndef PATH_MAX
@@ -172,6 +173,7 @@ t_env	*get_env(t_env *env, char *name);
 int		is_exit_valid(char *str);
 char	**oldenv(char **env);
 char	*store_pwd(char *pwd);
+void copy_attributes(int flag);
 
 /*********************************** */
 

@@ -1,36 +1,25 @@
 #include "minishell.h"
 
-char	*store_pwd(char *pwd)
+void copy_attributes(int flag)
 {
-	static char	*oldpwd;
-
-	if (!oldpwd)
-	{
-		oldpwd = env_malloc(PATH_MAX, 1);
-		if (!getcwd(oldpwd, PATH_MAX))
-			oldpwd = NULL;
-	}
-	if (pwd)
-		oldpwd = ft_env_strdup(pwd);
-	return (oldpwd);
-}
-
-char	**oldenv(char **env)
-{
-	static char	**envirement;
-
-	if (env)
-		envirement = env;
-	return (envirement);
-}
-
-int	return_value(int value, int flag)
-{
-	static int	r_value;
+	static struct termios	term_attr;
 
 	if (flag)
-		r_value = value;
-	return (r_value);
+	{
+		if (tcgetattr(0, &term_attr) == -1)
+		{
+			ft_putstr_fd("failed to copy the current attributes of the terminal\n", 2);
+			exit(1);
+		}
+	}
+	else
+	{
+		if (tcsetattr(0, TCSANOW, &term_attr) == -1)
+		{
+			ft_putstr_fd("failed to restore the old attributes of the terminal\n", 2);
+			exit(1);
+		}
+	}
 }
 
 int	read_shell(t_env *env, char *head_line)
@@ -67,6 +56,7 @@ int	main(int ac, char **av, char **env)
 	(void)av;
 	if (!isatty(0) || !isatty(1) || !isatty(2))
 		return (ft_putendl_fd("insecure source", 2), 1);
+	copy_attributes(1);
 	oldenv(env);
 	store_pwd(NULL);
 	envirement = env_init(env, NULL, 0);

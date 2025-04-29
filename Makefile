@@ -1,6 +1,6 @@
 SRC = minishell.c
 
-helper = helper/ft_malloc.c helper/lst.c helper/env_malloc.c helper/export_helper1.c helper/export_helper2.c
+helper = helper/ft_malloc.c helper/lst.c helper/env_malloc.c helper/export_helper1.c helper/export_helper2.c helper/storage.c
 
 signals = signals/signal.c
 
@@ -32,24 +32,6 @@ $(LIBFT) :
 
 $(NAME) : $(OBJ)
 	cc $(CFLAGS) $(OBJ) $(ReadLine) $(LIBFT) -o $(NAME)
-
-parsing/%.o : parsing/%.c minishell.h
-	cc $(CFLAGS) -c $< -o $@
-
-built_ins/%.o : built_ins/%.c minishell.h
-	cc $(CFLAGS) -c $< -o $@
-
-execution/%.o : execution/%.c minishell.h
-	cc $(CFLAGS) -c $< -o $@
-
-env_vars/%.o : env_vars/%.c minishell.h
-	cc $(CFLAGS) -c $< -o $@
-
-helper/%.o : helper/%.c minishell.h
-	cc $(CFLAGS) -c $< -o $@
-
-signals/%.o : signals/%.c minishell.h
-	cc $(CFLAGS) -c $< -o $@
 
 %.o : %.c minishell.h
 	cc $(CFLAGS) -c $< -o $@

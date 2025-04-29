@@ -120,5 +120,5 @@ int	execution(char *str, t_env *env)
 			last_status = WEXITSTATUS(status);
 		return_value(last_status, 1);
 	}
-	return (last_status);
+	return (copy_attributes(0), last_status);
 }
