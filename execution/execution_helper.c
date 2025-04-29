@@ -32,6 +32,8 @@ void	command_error(char *str, char *file)
 	ft_putstr_fd("minishell: ", 2);
 	if (!ft_strcmp(str, "Permission denied"))
 		return_value(126, 1);
+	else
+		return_value(127, 1);
 	ft_putstr_fd(file, 2);
 	ft_putstr_fd(": ", 2);
 	ft_putendl_fd(str, 2);

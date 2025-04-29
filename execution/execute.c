@@ -54,7 +54,7 @@ int	child_process(t_cmd *cmd, int *new_pipe, int *prev_pipe_in)
 		args = get_args(cmd);
 		path = get_cmd(cmd, NULL);
 		if (!path || !args || !(*args))
-			exit(127);
+			exit(return_value(0, 0));
 		execve(path, args, oldenv(NULL));
 		strerror(errno);
 		ft_malloc(0, 0);
