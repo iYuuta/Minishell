@@ -27,21 +27,22 @@ void	close_files(int file, int flag)
 	index++;
 }
 
-void	print_error(char *str, char *file)
+void	command_error(char *str, char *file)
 {
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(file, 2);
+	ft_putstr_fd(": ", 2);
 	ft_putendl_fd(str, 2);
 }
 
 void	p_erno(t_cmd *cmd)
 {
 	if (errno == EACCES)
-		print_error(": Permission denied", cmd->file->file);
+		command_error("Permission denied", cmd->file->file);
 	else if (errno == ENOENT)
-		print_error(": No such file or directory", cmd->file->file);
+		command_error("No such file or directory", cmd->file->file);
 	else if (errno == EISDIR)
-		print_error(": Is a directory", cmd->file->file);
+		command_error("Is a directory", cmd->file->file);
 }
 
 int	check_other_cases(t_cmd *cmd, int *tmp)

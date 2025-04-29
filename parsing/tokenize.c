@@ -3,7 +3,12 @@
 t_arg	*handle_redir(t_arg *token)
 {
 	token = token->next;
-	if (token)
+	if (token && !ft_strcmp(token->token, "|"))
+	{
+		token->type = PIPE;
+		return (token);
+	}
+	else if (token)
 		token->type = file;
 	return (token);
 }

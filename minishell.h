@@ -8,6 +8,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <stdio.h>
+# include <string.h>
 # include <fcntl.h>
 # include <limits.h>
 # include <errno.h>
@@ -94,6 +95,8 @@ int		open_files(t_cmd *cmd);
 void	close_files(int file, int flag);
 char	*get_cmd(t_cmd *cmd, char *tmp);
 char	**get_args(t_cmd *cmds);
+void	command_error(char *str, char *file);
+
 
 /*************************************/
 

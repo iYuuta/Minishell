@@ -73,6 +73,8 @@ int	change_directory(t_cmd *cmd)
 	if (!cmd->tokens->next)
 		return (ft_putstr_fd("cd only supports relative \
 or absolute path\n", 2), 1);
+	if (cmd->tokens->next->token[0] == '\0')
+		return (0);
 	if (!getcwd(pwd, PATH_MAX))
 		return (special_case(cmd));
 	cmd->tokens = cmd->tokens->next;

@@ -51,13 +51,10 @@ int	child_process(t_cmd *cmd, int *new_pipe, int *prev_pipe_in)
 		args = get_args(cmd);
 		path = get_cmd(cmd, NULL);
 		if (!path || !args || !(*args))
-		{
-			ft_putstr_fd("minishell: command not found\n", 2);
 			exit(127);
-		}
 		execve(path, args, oldenv(NULL));
+		strerror(errno);
 		ft_malloc(0, 0);
-		perror("execve");
 		exit(127);
 	}
 	else
@@ -118,7 +115,7 @@ int	execution(char *str, t_env *env)
 	{
 		if (WIFEXITED(status))
 			last_status = WEXITSTATUS(status);
+		return_value(last_status, 1);
 	}
-	return_value(last_status, 1);
 	return (last_status);
 }

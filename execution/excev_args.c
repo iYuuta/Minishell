@@ -20,9 +20,11 @@ int	is_builtin(t_cmd *cmd)
 int	execute_builtins(t_cmd *cmd, int fd)
 {
 	cmd->outfile = fd;
-	if (cmd->tokens && !ft_strcmp(cmd->tokens->token, "env"))
+	if (cmd->tokens && (!ft_strcmp(cmd->tokens->token, "env")
+			|| !ft_strcmp(cmd->tokens->token, "ENV")))
 		return (print_env(cmd->env, cmd));
-	if (cmd->tokens && !ft_strcmp(cmd->tokens->token, "pwd"))
+	if (cmd->tokens && (!ft_strcmp(cmd->tokens->token, "pwd")
+			|| !ft_strcmp(cmd->tokens->token, "PWD")))
 		return (pwd(cmd->env, cmd));
 	if (cmd->tokens && !ft_strcmp(cmd->tokens->token, "unset"))
 		return (unset(cmd->tokens), return_value(0, 0));
@@ -30,9 +32,11 @@ int	execute_builtins(t_cmd *cmd, int fd)
 		return (export(cmd), return_value(0, 0));
 	if (cmd->tokens && !ft_strcmp(cmd->tokens->token, "exit"))
 		return (exit_shell(cmd));
-	if (cmd->tokens && !ft_strcmp(cmd->tokens->token, "cd"))
+	if (cmd->tokens && (!ft_strcmp(cmd->tokens->token, "cd"))
+		|| !ft_strcmp(cmd->tokens->token, "CD"))
 		return (change_directory(cmd));
-	if (cmd->tokens && !ft_strcmp(cmd->tokens->token, "echo"))
+	if (cmd->tokens && (!ft_strcmp(cmd->tokens->token, "echo")
+			|| !ft_strcmp(cmd->tokens->token, "ECHO")))
 		return (echo(cmd));
 	return (2);
 }
@@ -69,6 +73,11 @@ char	*check_rl_ab_path(t_cmd *cmd, char *tmp, char **paths, char *command)
 	{
 		if (access(cmd->tokens->token, F_OK | X_OK) == 0)
 			return (cmd->tokens->token);
+		if (cmd->tokens->token[0] == '/'
+			|| (cmd->tokens->token[0] == '.' && cmd->tokens->token[1] == '/'))
+			command_error("No such file or directory", cmd->tokens->token);
+		else if (cmd->tokens->token[0] == '.')
+			command_error("command not found", cmd->tokens->token);
 		return (NULL);
 	}
 	while (paths != NULL && *paths)
@@ -79,12 +88,7 @@ char	*check_rl_ab_path(t_cmd *cmd, char *tmp, char **paths, char *command)
 			return (command);
 		paths++;
 	}
-	*paths = getcwd(NULL, 0);
-	tmp = ft_strjoin(*paths, "/");
-	command = ft_strjoin(tmp, cmd->tokens->token);
-	if (access(command, F_OK | X_OK) == 0)
-		return (command);
-	return (NULL);
+	return (command_error("command not found", cmd->tokens->token), NULL);
 }
 
 char	*get_cmd(t_cmd *cmd, char *tmp)
@@ -96,9 +100,7 @@ char	*get_cmd(t_cmd *cmd, char *tmp)
 
 	stat(cmd->tokens->token, &info);
 	if (S_ISDIR(info.st_mode))
-		return (NULL);
-	if (access(cmd->tokens->token, F_OK | X_OK) == 0)
-		return (cmd->tokens->token);
+		return (command_error("is a directory", cmd->tokens->token), NULL);
 	path = get_env(cmd->env, "PATH");
 	if (!path)
 		path = cmd->env;
