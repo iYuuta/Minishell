@@ -10,9 +10,9 @@ int	skip_redirections(char *str)
 		i++;
 		if (str[i] && ft_strchr("><", str[i]))
 			i++;
-		if (str[i] && str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
+		if (str[i] && ((str[i] == ' ') || (str[i] >= 9 && str[i] <= 13)))
 		{
-			while (str[i] && str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
+			while (str[i] && ((str[i] == ' ') || (str[i] >= 9 && str[i] <= 13)))
 				i++;
 		}
 		while (str[i] && str[i] != ' ' && (str[i] < 9 || str[i] > 13))

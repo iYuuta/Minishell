@@ -68,7 +68,6 @@ int	check_file(char *file)
 int	change_directory(t_cmd *cmd)
 {
 	char	pwd[PATH_MAX];
-	int		type;
 
 	if (!cmd->tokens->next)
 		return (ft_putstr_fd("cd only supports relative \

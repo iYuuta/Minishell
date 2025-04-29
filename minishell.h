@@ -1,13 +1,13 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include <stdio.h>
 # include "libft_dyali/libft.h"
 # include <unistd.h>
 # include <stdlib.h>
 # include <signal.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-# include <stdio.h>
 # include <string.h>
 # include <fcntl.h>
 # include <limits.h>
@@ -97,13 +97,12 @@ char	*get_cmd(t_cmd *cmd, char *tmp);
 char	**get_args(t_cmd *cmds);
 void	command_error(char *str, char *file);
 
-
 /*************************************/
 
 /************** builtins *************/
 
 int		print_env(t_env *env, t_cmd *cmd);
-int		pwd(t_env *env, t_cmd *cmd);
+int		pwd(t_cmd *cmd);
 int		unset(t_arg *arg);
 int		export(t_cmd *token);
 int		exit_shell(t_cmd *arg);
@@ -112,6 +111,7 @@ int		echo(t_cmd *cmd);
 int		is_builtin(t_cmd *cmd);
 int		execute_builtins(t_cmd *cmd, int fd);
 int		change_old_pwd(t_env *env, char *str);
+t_env	*env_head(t_env *env);
 
 /*************************************/
 

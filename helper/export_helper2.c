@@ -39,7 +39,7 @@ int	export_wt_args(t_cmd *arg)
 	t_env	*head;
 
 	if (check_export_error(arg->tokens->token))
-		return (printf_error(arg->tokens->token), 1);
+		return (printf_error(arg->tokens->token), return_value(1, 1), 0);
 	head = arg->env;
 	new = new_env(arg->tokens->token);
 	new->arg = NULL;

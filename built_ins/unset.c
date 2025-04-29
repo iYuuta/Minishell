@@ -1,15 +1,5 @@
 #include "../minishell.h"
 
-t_env	*env_head(t_env *env)
-{
-	if (env && env->prev)
-	{
-		while (env->prev)
-			env = env->prev;
-	}
-	return (env);
-}
-
 t_env	*remove_env(t_env *env)
 {
 	t_env	*tmp;
@@ -50,15 +40,26 @@ t_arg	*unset_var(t_arg *head, t_env *var)
 	return (0);
 }
 
+static void	print_error(char *str)
+{
+	ft_putstr_fd("minishell: unset: `", 2);
+	ft_putstr_fd(str, 2);
+	ft_putstr_fd("': not a valid identifier\n", 2);
+}
+
 int	unset(t_arg *arg)
 {
 	t_env	*tmp;
 	t_arg	*head;
 
 	head = arg;
+	return_value(0, 1);
 	while (arg)
 	{
-		if (arg->type == WORD)
+		if (arg->type == WORD
+			&& check_export_error(arg->token) && return_value(1, 1))
+			print_error(arg->token);
+		else if (arg->type == WORD)
 		{
 			tmp = arg->env;
 			while (tmp)
@@ -66,14 +67,11 @@ int	unset(t_arg *arg)
 				if (ft_strcmp(tmp->name, "PATH"))
 					arg->head->env->arg = ft_env_strdup("");
 				if (!ft_strcmp(tmp->name, arg->token))
-				{
 					unset_var(head, tmp);
-					break ;
-				}
 				tmp = tmp->next;
 			}
 		}
 		arg = arg->next;
 	}
-	return (0);
+	return (return_value(0, 0));
 }

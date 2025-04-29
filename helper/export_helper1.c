@@ -5,20 +5,12 @@ t_env	*ft_envdup(t_env *env)
 	t_env	*new;
 
 	new = ft_malloc(sizeof(t_env), 1);
-	if (!new)
-		return (NULL);
 	new->next = NULL;
 	new->name = ft_strdup(env->name);
-	if (!new->name)
-		return (NULL);
 	if (!env->arg)
 		new->arg = NULL;
 	else
-	{
 		new->arg = ft_strdup(env->arg);
-		if (!new->arg)
-			return (NULL);
-	}
 	return (new);
 }
 

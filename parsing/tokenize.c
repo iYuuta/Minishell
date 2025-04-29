@@ -46,7 +46,8 @@ int	check_first_arg(char *str)
 
 	if (!ft_strcmp(str, "|"))
 		return (print_error(str, 1), 1);
-	if (ft_strchr(str, '/')  && access(str, F_OK) == 0 && stat(str, &info) == -1)
+	if (ft_strchr(str, '/') && access(str, F_OK) == 0
+		&& stat(str, &info) == -1)
 		return (print_error(str, 2), 1);
 	if (ft_strchr(str, '/') && S_ISDIR(info.st_mode))
 		return (print_error(str, 0), 1);
@@ -85,7 +86,6 @@ int	identify_tokens(t_arg *token)
 t_arg	*tokenize_arg(char **av, t_env *env)
 {
 	int		i;
-	char	*str;
 	t_arg	*head;
 	t_arg	*tmp;
 

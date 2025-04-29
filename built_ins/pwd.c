@@ -1,6 +1,6 @@
 #include "../minishell.h"
 
-int	pwd(t_env *env, t_cmd *cmd)
+int	pwd(t_cmd *cmd)
 {
 	char	pwd[PATH_MAX];
 	char	*back_up;

@@ -37,7 +37,7 @@ int	read_shell(t_env *env, char *head_line)
 {
 	char	*str;
 
-	signal(SIGQUIT, handle_signales);
+	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, handle_signales);
 	while (1)
 	{
@@ -62,6 +62,9 @@ int	main(int ac, char **av, char **env)
 {
 	t_env	*envirement;
 
+	if (ac > 1)
+		return (1);
+	(void)av;
 	if (!isatty(0) || !isatty(1) || !isatty(2))
 		return (ft_putendl_fd("insecure source", 2), 1);
 	oldenv(env);

@@ -85,7 +85,7 @@ t_env	*env_init(char **env, t_env *head, int i)
 	{
 		len = get_index(env[i], '=');
 		tmp = new_env(ft_env_sub(env[i], 0, len));
-		if ((len + 1) == ft_strlen(env[i]))
+		if ((len + 1) == (int)ft_strlen(env[i]))
 			tmp->arg = ft_env_strdup("");
 		else
 			tmp->arg = ft_env_sub(env[i], len + 1, ft_strlen(env[i] + len + 1));

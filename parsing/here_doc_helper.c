@@ -25,7 +25,6 @@ char	*expand_heredoc(t_env *env, char *str)
 {
 	char	*strings[4];
 	int		i;
-	int		index;
 	int		j;
 
 	i = -1;

@@ -17,11 +17,11 @@ execution = execution/execute.c execution/execution_helper.c execution/excev_arg
 OBJ = $(SRC:.c=.o) $(helper:.c=.o) $(parsing:.c=.o) $(signals:.c=.o) \
 	$(execution:.c=.o) $(env_vars:.c=.o) $(built_ins:.c=.o)
 
-CFLAGS = 
+CFLAGS = -Wall -Wextra -Werror -I$(shell brew --prefix readline)/include
+
+ReadLine = -L$(shell brew --prefix readline)/lib -lreadline
 
 LIBFT = libft_dyali/libft.a
-
-ReadLine = -lreadline
 
 NAME = minishell
 

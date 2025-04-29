@@ -25,15 +25,15 @@ int	execute_builtins(t_cmd *cmd, int fd)
 		return (print_env(cmd->env, cmd));
 	if (cmd->tokens && (!ft_strcmp(cmd->tokens->token, "pwd")
 			|| !ft_strcmp(cmd->tokens->token, "PWD")))
-		return (pwd(cmd->env, cmd));
+		return (pwd(cmd));
 	if (cmd->tokens && !ft_strcmp(cmd->tokens->token, "unset"))
 		return (unset(cmd->tokens), return_value(0, 0));
 	if (cmd->tokens && !ft_strcmp(cmd->tokens->token, "export"))
 		return (export(cmd), return_value(0, 0));
 	if (cmd->tokens && !ft_strcmp(cmd->tokens->token, "exit"))
 		return (exit_shell(cmd));
-	if (cmd->tokens && (!ft_strcmp(cmd->tokens->token, "cd"))
-		|| !ft_strcmp(cmd->tokens->token, "CD"))
+	if (cmd->tokens && (!ft_strcmp(cmd->tokens->token, "cd")
+		|| !ft_strcmp(cmd->tokens->token, "CD")))
 		return (change_directory(cmd));
 	if (cmd->tokens && (!ft_strcmp(cmd->tokens->token, "echo")
 			|| !ft_strcmp(cmd->tokens->token, "ECHO")))
@@ -67,8 +67,10 @@ char	**get_args(t_cmd *cmds)
 	return (args);
 }
 
-char	*check_rl_ab_path(t_cmd *cmd, char *tmp, char **paths, char *command)
+char	*check_rl_ab_path(t_cmd *cmd, char *tmp, char **paths)
 {
+	char *command;
+
 	if (cmd->tokens->token[0] == '/' || cmd->tokens->token[0] == '.')
 	{
 		if (access(cmd->tokens->token, F_OK | X_OK) == 0)
@@ -93,7 +95,6 @@ char	*check_rl_ab_path(t_cmd *cmd, char *tmp, char **paths, char *command)
 
 char	*get_cmd(t_cmd *cmd, char *tmp)
 {
-	char		*command;
 	char		**paths;
 	t_env		*path;
 	struct stat	info;
@@ -112,5 +113,5 @@ char	*get_cmd(t_cmd *cmd, char *tmp)
 		return (NULL);
 	if (!(*cmd->tokens->token))
 		return (NULL);
-	return (check_rl_ab_path(cmd, tmp, paths, command));
+	return (check_rl_ab_path(cmd, tmp, paths));
 }
