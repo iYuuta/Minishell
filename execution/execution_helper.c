@@ -30,6 +30,8 @@ void	close_files(int file, int flag)
 void	command_error(char *str, char *file)
 {
 	ft_putstr_fd("minishell: ", 2);
+	if (!ft_strcmp(str, "Permission denied"))
+		return_value(126, 1);
 	ft_putstr_fd(file, 2);
 	ft_putstr_fd(": ", 2);
 	ft_putendl_fd(str, 2);
@@ -59,12 +61,12 @@ int	check_other_cases(t_cmd *cmd, int *tmp)
 		cmd->file->file = read_here_doc(cmd->file->file, cmd->env);
 		if (!(cmd->file->file))
 			return (1);
-		cmd->infile = open(".HEREDOC.txt", O_CREAT | O_RDWR, 0666);
+		cmd->infile = open(".HEREDOC.txt", O_CREAT | O_WRONLY, 0666);
 		if (cmd->infile == -1)
 			return (p_erno(cmd), close_files(0, 0), return_value(1, 1), 1);
 		write(cmd->infile, cmd->file->file, ft_strlen(cmd->file->file));
 		close(cmd->infile);
-		*tmp = open(".HEREDOC.txt", O_RDWR, 0666);
+		*tmp = open(".HEREDOC.txt", O_RDONLY);
 		cmd->infile = *tmp;
 		if (cmd->infile == -1)
 			return (p_erno(cmd), close_files(0, 0), return_value(1, 1), 1);

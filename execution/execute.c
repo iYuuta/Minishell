@@ -45,6 +45,9 @@ int	child_process(t_cmd *cmd, int *new_pipe, int *prev_pipe_in)
 	char	*path;
 
 	child_redirection(cmd, new_pipe, prev_pipe_in);
+	if (cmd->tokens && cmd->tokens->token[0] == '\0')
+		return (ft_putendl_fd("minishell: : command not found", 2),
+			exit(127), 0);
 	value = execute_builtins(cmd, 1);
 	if (value == 2)
 	{
@@ -78,10 +81,7 @@ int	execute_command(t_cmd *cmd, int *prev_pipe_in, int new_pipe[2], int value)
 	if (pid < 0)
 		return (perror("fork"), 1);
 	if (pid == 0)
-	{
-		signal(SIGINT, SIG_IGN);
 		value = child_process(cmd, new_pipe, prev_pipe_in);
-	}
 	else
 	{
 		if (*prev_pipe_in != -1)

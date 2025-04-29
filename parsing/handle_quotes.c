@@ -38,15 +38,15 @@ char	*handle_normal_word(char *str, int *j)
 	return (ft_substr(str, 0, *j));
 }
 
-char	**split_args(char *str, int *size)
+t_arg	*split_args(char *str, t_env *env)
 {
 	int		i;
 	int		j;
-	char	**args;
+	t_arg	*head;
+	t_arg	*tmp;
 
 	i = 0;
-	*size = 0;
-	args = (char **)ft_malloc(sizeof(char *) * 100, 1);
+	head = NULL;
 	while (str[i])
 	{
 		j = 0;
@@ -55,14 +55,12 @@ char	**split_args(char *str, int *size)
 		if (!str[i])
 			break ;
 		if (ft_strchr("<>|&", str[i]))
-			args[*size] = handle_operators(str + i, &j);
+			tmp = ft_lstnew(handle_operators(str + i, &j));
 		else
-			args[*size] = handle_normal_word(str + i, &j);
-		if (!args[*size])
-			return (NULL);
+			tmp = ft_lstnew(handle_normal_word(str + i, &j));
+		tmp->env = env;
 		i += j;
-		(*size)++;
+		ft_lstadd_back(&head, tmp);
 	}
-	args[*size] = NULL;
-	return (args);
+	return (head);
 }

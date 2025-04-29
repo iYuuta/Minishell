@@ -33,7 +33,7 @@ int	execute_builtins(t_cmd *cmd, int fd)
 	if (cmd->tokens && !ft_strcmp(cmd->tokens->token, "exit"))
 		return (exit_shell(cmd));
 	if (cmd->tokens && (!ft_strcmp(cmd->tokens->token, "cd")
-		|| !ft_strcmp(cmd->tokens->token, "CD")))
+			|| !ft_strcmp(cmd->tokens->token, "CD")))
 		return (change_directory(cmd));
 	if (cmd->tokens && (!ft_strcmp(cmd->tokens->token, "echo")
 			|| !ft_strcmp(cmd->tokens->token, "ECHO")))
@@ -69,13 +69,16 @@ char	**get_args(t_cmd *cmds)
 
 char	*check_rl_ab_path(t_cmd *cmd, char *tmp, char **paths)
 {
-	char *command;
+	char	*command;
 
 	if (cmd->tokens->token[0] == '/' || cmd->tokens->token[0] == '.')
 	{
 		if (access(cmd->tokens->token, F_OK | X_OK) == 0)
 			return (cmd->tokens->token);
-		if (cmd->tokens->token[0] == '/'
+		else if (access(cmd->tokens->token, F_OK) == 0
+			&& (cmd->tokens->token[0] == '/' || cmd->tokens->token[0] == '.'))
+			command_error("Permission denied", cmd->tokens->token);
+		else if (cmd->tokens->token[0] == '/'
 			|| (cmd->tokens->token[0] == '.' && cmd->tokens->token[1] == '/'))
 			command_error("No such file or directory", cmd->tokens->token);
 		else if (cmd->tokens->token[0] == '.')

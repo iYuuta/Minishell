@@ -39,7 +39,6 @@ t_cmd	*parse_args(char *str, t_env *env)
 {
 	t_arg	*head;
 	t_cmd	*cmd;
-	char	**args;
 	int		size;
 
 	size = 0;
@@ -50,9 +49,8 @@ t_cmd	*parse_args(char *str, t_env *env)
 		return (NULL);
 	}
 	str = expand_vars(env, str, 1);
-	args = split_args(str, &size);
-	head = tokenize_arg(args, env);
-	if (!head)
+	head = split_args(str, env);
+	if (identify_tokens(head))
 		return (NULL);
 	cmd = finish_parse(head, env);
 	// while (cmd)
