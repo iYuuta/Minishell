@@ -80,7 +80,7 @@ int	execute_command(t_cmd *cmd, int *prev_pipe_in, int new_pipe[2], int value)
 	pid = fork();
 	if (pid < 0)
 		return (perror("fork"), 1);
-	if (pid == 0)
+	if (pid == 0 && signal(SIGQUIT, SIG_DFL) && signal(SIGINT, SIG_DFL))
 		value = child_process(cmd, new_pipe, prev_pipe_in);
 	else
 	{

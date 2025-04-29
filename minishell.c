@@ -28,6 +28,7 @@ int	read_shell(t_env *env, char *head_line)
 
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, handle_signales);
+	copy_attributes(1);
 	while (1)
 	{
 		str = readline(head_line);
@@ -56,7 +57,6 @@ int	main(int ac, char **av, char **env)
 	(void)av;
 	if (!isatty(0) || !isatty(1) || !isatty(2))
 		return (ft_putendl_fd("insecure source", 2), 1);
-	copy_attributes(1);
 	oldenv(env);
 	store_pwd(NULL);
 	envirement = env_init(env, NULL, 0);
