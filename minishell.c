@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void copy_attributes(int flag)
+void	copy_attributes(int flag)
 {
 	static struct termios	term_attr;
 
@@ -8,7 +8,8 @@ void copy_attributes(int flag)
 	{
 		if (tcgetattr(0, &term_attr) == -1)
 		{
-			ft_putstr_fd("failed to copy the current attributes of the terminal\n", 2);
+			ft_putstr_fd("failed to copy the current \
+attributes of the terminal\n", 2);
 			exit(1);
 		}
 	}
@@ -16,7 +17,8 @@ void copy_attributes(int flag)
 	{
 		if (tcsetattr(0, TCSANOW, &term_attr) == -1)
 		{
-			ft_putstr_fd("failed to restore the old attributes of the terminal\n", 2);
+			ft_putstr_fd("failed to restore the old \
+attributes of the terminal\n", 2);
 			exit(1);
 		}
 	}

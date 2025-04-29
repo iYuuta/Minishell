@@ -8,23 +8,18 @@
 # include <signal.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-# include <string.h>
 # include <fcntl.h>
-# include <limits.h>
 # include <errno.h>
-# include <sys/wait.h>
 # include <sys/stat.h>
-# include <sys/types.h>
 # include <sys/ioctl.h>
-# include <time.h>
 # include <termios.h>
-# include <dirent.h>
 
 # ifndef PATH_MAX
 #  define PATH_MAX 4096
 # endif
 
-# define DEF_PATH "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+# define DEF_PATH "/usr/local/bin:/usr/bin:/bin:/\
+usr/sbin:/sbin:/usr/local/munki:/Library/Apple/usr/bin"
 
 extern int	g_ctrl;
 
@@ -119,13 +114,11 @@ t_env	*env_head(t_env *env);
 /************** parsing **************/
 
 t_cmd	*parse_args(char *str, t_env *env);
-int		is_operator(char *str);
 int		is_flag(char *str);
 t_arg	*split_args(char *str, t_env *env);
 char	*polish(char *token);
 int		identify_tokens(t_arg *token);
 char	*read_here_doc(char *token, t_env *env);
-int		check_uncompleted_cmd(t_arg *token);
 int		is_redirection(char *str);
 int		get_index(char *str, char c);
 char	*expand_vars(t_env *env, char *str, int exp);
@@ -136,8 +129,6 @@ void	cmd_add_back(t_cmd **lst, t_cmd *new);
 t_arg	*copy_token(t_arg *token);
 char	*expand_heredoc(t_env *env, char *str);
 t_arg	*refine_token(t_arg *token);
-int		is_flag(char *str);
-int		is_redirection(char *str);
 int		is_pipe(char *str);
 
 /*************************************/
@@ -152,7 +143,6 @@ t_env	*add_to_env(t_env *env, char *var);
 t_env	*new_env(char *content);
 t_env	*last_env(t_env *lst);
 void	env_add_back(t_env **lst, t_env *new);
-t_env	*change_env(t_env *env);
 int		return_value(int value, int flag);
 
 /*************************************/
@@ -173,7 +163,7 @@ t_env	*get_env(t_env *env, char *name);
 int		is_exit_valid(char *str);
 char	**oldenv(char **env);
 char	*store_pwd(char *pwd);
-void copy_attributes(int flag);
+void	copy_attributes(int flag);
 
 /*********************************** */
 
