@@ -18,23 +18,23 @@ static void	print_error(char *str, int flag)
 	if (flag == 1)
 	{
 		return_value(2, 1);
-		ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
-		ft_putstr_fd(str, 2);
+		write(2, "minishell: syntax error near unexpected token `", 47);
+		write(2, str, ft_strlen(str));
 	}
 	else if (flag == 0)
 	{
 		return_value(126, 1);
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(str, 2);
-		ft_putendl_fd(": Is a directory", 2);
+		write(2, "minishell: ", 11);
+		write(2, str, ft_strlen(str));
+		write(2, ": Is a directory", 16);
 		return ;
 	}
 	else
 	{
 		return_value(126, 1);
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(str, 2);
-		ft_putendl_fd(": Not a directory", 2);
+		write(2, "minishell: ", 11);
+		write(2, str, ft_strlen(str));
+		write(2, ": Not a directory", 17);
 		return ;
 	}
 	write(2, "\n", 2);
@@ -101,16 +101,3 @@ t_arg	*tokenize_arg(char **av, t_env *env)
 		return (NULL);
 	return (head);
 }
-
-// why does the bash sometimes say different errors like this what are the cases
-// yoayedde@e2r10p3:~/Desktop/Minishell$ dwad/dwad
-// bash: dwad/dwad: No such file or directory
-// yoayedde@e2r10p3:~/Desktop/Minishell$ built_ins
-// built_ins: command not found
-// yoayedde@e2r10p3:~/Desktop/Minishell$ built_ins/
-// bash: built_ins/: Is a directory
-// yoayedde@e2r10p3:~/Desktop/Minishell$ /minishell
-// bash: /minishell: No such file or directory
-// yoayedde@e2r10p3:~/Desktop/Minishell$ /minishell/
-// bash: /minishell/: No such file or directory
-// yoayedde@e2r10p3:~/Desktop/Minishell$ minishell/

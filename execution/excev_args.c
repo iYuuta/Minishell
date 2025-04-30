@@ -38,7 +38,7 @@ int	execute_builtins(t_cmd *cmd, int fd)
 	if (cmd->tokens && (!ft_strcmp(cmd->tokens->token, "echo")
 			|| !ft_strcmp(cmd->tokens->token, "ECHO")))
 		return (echo(cmd));
-	return (2);
+	return (close_files(0, 0), 2);
 }
 
 char	**get_args(t_cmd *cmds)

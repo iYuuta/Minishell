@@ -12,7 +12,7 @@ int	skip_chars_heredoc(char *str)
 
 char	*get_var_heredoc(t_env *env, char *str)
 {
-	if (str && !str[0])
+	if (!ft_strcmp(env->name, str))
 		return (ft_strdup(""));
 	while (env)
 	{

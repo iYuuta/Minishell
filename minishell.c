@@ -8,8 +8,8 @@ void	copy_attributes(int flag)
 	{
 		if (tcgetattr(0, &term_attr) == -1)
 		{
-			ft_putstr_fd("failed to copy the current \
-attributes of the terminal\n", 2);
+			write(2, "failed to copy the current \
+attributes of the terminal\n", 54);
 			exit(1);
 		}
 	}
@@ -17,8 +17,8 @@ attributes of the terminal\n", 2);
 	{
 		if (tcsetattr(0, TCSANOW, &term_attr) == -1)
 		{
-			ft_putstr_fd("failed to restore the old \
-attributes of the terminal\n", 2);
+			write(2, "failed to restore the old \
+attributes of the terminal\n", 53);
 			exit(1);
 		}
 	}
@@ -37,7 +37,7 @@ int	read_shell(t_env *env, char *head_line)
 		if (!str)
 		{
 			env_malloc(0, 0);
-			ft_putendl_fd("exit", 2);
+			write(2, "exit\n", 5);
 			exit(0);
 		}
 		if (*str)
@@ -58,7 +58,7 @@ int	main(int ac, char **av, char **env)
 		return (1);
 	(void)av;
 	if (!isatty(0) || !isatty(1) || !isatty(2))
-		return (ft_putendl_fd("insecure source", 2), 1);
+		return (write(2, "insecure source", 15), 1);
 	oldenv(env);
 	store_pwd(NULL);
 	envirement = env_init(env, NULL, 0);

@@ -29,14 +29,15 @@ void	close_files(int file, int flag)
 
 void	command_error(char *str, char *file)
 {
-	ft_putstr_fd("minishell: ", 2);
+	write(2, "minishell: ", 11);
 	if (!ft_strcmp(str, "Permission denied"))
 		return_value(126, 1);
 	else
 		return_value(127, 1);
-	ft_putstr_fd(file, 2);
-	ft_putstr_fd(": ", 2);
-	ft_putendl_fd(str, 2);
+	write(2, file, ft_strlen(file));
+	write(2, ": ", 2);
+	write(2, str, ft_strlen(str));
+	write(2, "\n", 1);
 }
 
 void	p_erno(t_cmd *cmd)

@@ -47,6 +47,8 @@ char	*selective_expanding(char *str, t_env *env)
 	t_env	*variable;
 
 	variable = get_env(env, str + 1);
+	if (variable && variable == env)
+		return (ft_strdup("\0"));
 	if (!ft_strcmp(str + 1, "PATH") && !variable)
 		variable = env;
 	if (!variable)
