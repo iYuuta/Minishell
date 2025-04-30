@@ -119,6 +119,15 @@ int	execution(char *str, t_env *env)
 	{
 		if (WIFEXITED(status))
 			last_status = WEXITSTATUS(status);
+		if (WIFSIGNALED(status))
+		{
+			last_status = WTERMSIG(status);
+			if (last_status == SIGQUIT)
+			{
+				write(2, "Quit: 3\n", 8);
+				last_status = 131;
+			}
+		}
 		return_value(last_status, 1);
 	}
 	return (signal(SIGINT, handle_signales), copy_attributes(0), last_status);
