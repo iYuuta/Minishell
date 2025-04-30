@@ -28,9 +28,7 @@ char	*handle_normal_word(char *str, int *j)
 	while (str[*j] && !ft_strchr(" <>|&", str[*j])
 		&& (str[*j] < 9 || str[*j] > 13))
 	{
-		if (ft_strchr("\'\"", str[*j]) && get_index(str + *j, str[*j]) == -1)
-			return (NULL);
-		if (ft_strchr("\'\"", str[*j]))
+		if (ft_strchr("\'\"", str[*j]) && get_index(str + *j, str[*j]) != -1)
 			*j += get_index(str + *j, str[*j]) + 1;
 		else
 			(*j)++;

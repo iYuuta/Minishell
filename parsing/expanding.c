@@ -70,7 +70,7 @@ char	*expand_vars(t_env *env, char *str, int exp)
 	flag = 2;
 	while (str[++i])
 	{
-		if (flag % 2 == 0 && ft_strchr("><", str[i]))
+		if (flag % 2 == 0 && ft_strchr("><\'", str[i]))
 			i += get_skip_index(str, i);
 		else if (exp && flag % 2 == 0 && str[i] == '=')
 			i += skip_assigning(str + i);

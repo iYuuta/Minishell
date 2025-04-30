@@ -130,6 +130,7 @@ t_arg	*copy_token(t_arg *token);
 char	*expand_heredoc(t_env *env, char *str);
 t_arg	*refine_token(t_arg *token);
 int		is_pipe(char *str);
+int		check_quotes(char *str);
 
 /*************************************/
 

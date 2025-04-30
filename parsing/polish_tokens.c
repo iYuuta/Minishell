@@ -16,7 +16,8 @@ int	polished_strlen(char *token)
 			len++;
 			c = 0;
 		}
-		else if (c == 0 && (token[i] == '\'' || token[i] == '\"'))
+		else if (c == 0 && (token[i] == '\'' || token[i] == '\"')
+			&& get_index(token + i, token[i]) != -1)
 		{
 			len++;
 			c = token[i];
@@ -40,7 +41,8 @@ char	*polish(char *token)
 	quote = 0;
 	while (i < len)
 	{
-		if (quote == 0 && (*token == '\'' || *token == '\"'))
+		if (quote == 0 && (*token == '\'' || *token == '\"')
+			&& get_index(token, *token) != -1)
 			quote = *token;
 		else if (quote != 0 && quote == *token)
 			quote = 0;
