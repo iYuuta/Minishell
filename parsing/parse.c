@@ -32,6 +32,8 @@ t_cmd	*parse_args(char *str, t_env *env)
 		return (NULL);
 	}
 	str = expand_vars(env, str, 1);
+	if (str && !str[0])
+		return (return_value(0, 1), NULL);
 	head = split_args(str, env);
 	if (identify_tokens(head))
 		return (NULL);

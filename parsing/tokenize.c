@@ -26,7 +26,7 @@ static void	print_error(char *str, int flag)
 		return_value(126, 1);
 		write(2, "minishell: ", 11);
 		write(2, str, ft_strlen(str));
-		write(2, ": Is a directory", 16);
+		write(2, ": Is a directory\n", 17);
 		return ;
 	}
 	else
@@ -34,7 +34,7 @@ static void	print_error(char *str, int flag)
 		return_value(126, 1);
 		write(2, "minishell: ", 11);
 		write(2, str, ft_strlen(str));
-		write(2, ": Not a directory", 17);
+		write(2, ": Not a directory\n", 18);
 		return ;
 	}
 	write(2, "\n", 2);

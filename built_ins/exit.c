@@ -37,7 +37,7 @@ static void	print_error(char *str, int flag)
 
 int	is_exit_valid(char *str)
 {
-	if (*str && *str == '-')
+	if (*str && (*str == '-' || *str == '+'))
 		str++;
 	while (*str)
 	{

@@ -27,7 +27,6 @@ char	**oldenv(char **env)
 int	return_value(int value, int flag)
 {
 	static int	r_value;
-
 	if (flag)
 		r_value = value;
 	return (r_value);

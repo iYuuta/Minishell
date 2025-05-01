@@ -65,6 +65,7 @@ int	child_wait(void)
 	int	status;
 	int	last_status;
 
+	last_status = 0;
 	while (waitpid(-1, &status, 0) > 0)
 	{
 		if (WIFEXITED(status))
@@ -99,9 +100,11 @@ int	execution(char *str, t_env *env)
 		return (1);
 	while (cmds)
 	{
-		execute_command(cmds, &prev_pipe_in, new_pipe, 0);
+		last_status = execute_command(cmds, &prev_pipe_in, new_pipe, 0);
+		if (cmds->number == 1 && is_builtin(cmds) && !cmds->next)
+			return (signal(SIGINT, handle_signales), last_status);
 		cmds = cmds->next;
 	}
 	last_status = child_wait();
-	return (signal(SIGINT, handle_signales), copy_attributes(0), last_status);
+	return (signal(SIGINT, handle_signales), last_status);
 }

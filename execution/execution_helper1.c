@@ -56,7 +56,7 @@ int	check_other_cases(t_cmd *cmd, int *tmp)
 	{
 		*tmp = open(cmd->file->file, O_APPEND | O_CREAT | O_WRONLY, 0644);
 		cmd->outfile = *tmp;
-		if (cmd->infile == -1)
+		if (*tmp == -1)
 			return (p_erno(cmd), close_files(0, 0), return_value(1, 1), 1);
 	}
 	if (cmd->file->type == HEREDOC)
@@ -71,7 +71,7 @@ int	check_other_cases(t_cmd *cmd, int *tmp)
 		close(cmd->infile);
 		*tmp = open(".HEREDOC.txt", O_RDONLY);
 		cmd->infile = *tmp;
-		if (cmd->infile == -1)
+		if (*tmp == -1)
 			return (p_erno(cmd), close_files(0, 0), return_value(1, 1), 1);
 		unlink(".HEREDOC.txt");
 	}
@@ -99,7 +99,7 @@ int	open_files(t_cmd *cmd)
 				return (p_erno(cmd), close_files(0, 0), return_value(1, 1), 1);
 		}
 		if (check_other_cases(cmd, &tmp))
-			return (return_value(130, 1), 1);
+			return (1);
 		close_files(tmp, 1);
 		cmd->file = cmd->file->next;
 	}
