@@ -49,7 +49,7 @@ t_arg	*get_new_token(t_arg *token, int *i, int *flag)
 		(*flag) = 1;
 	}
 	tmp = copy_token(token);
-	if (!(*flag) && ft_strchr(token->token, '$'))
+	if (!(*flag) && !ft_strchr("\"\'", token->token[0]) && ft_strchr(token->token, '$'))
 		tmp = expand_token(token, tmp->token);
 	else if (!(*flag))
 		tmp->token = polish(tmp->token);

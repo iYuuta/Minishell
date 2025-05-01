@@ -69,7 +69,10 @@ int	child_wait(void)
 	while (waitpid(-1, &status, 0) > 0)
 	{
 		if (WIFEXITED(status))
+		{
 			last_status = WEXITSTATUS(status);
+			return_value(last_status, 1);
+		}
 		if (WIFSIGNALED(status))
 		{
 			last_status = WTERMSIG(status);
@@ -77,9 +80,9 @@ int	child_wait(void)
 			{
 				write(2, "Quit: 3\n", 8);
 				last_status = 131;
+				return_value(last_status, 1);
 			}
 		}
-		return_value(last_status, 1);
 	}
 	return (last_status);
 }
