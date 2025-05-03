@@ -10,6 +10,7 @@
 # include <readline/history.h>
 # include <fcntl.h>
 # include <errno.h>
+# include <string.h>
 # include <sys/stat.h>
 # include <sys/ioctl.h>
 # include <termios.h>
