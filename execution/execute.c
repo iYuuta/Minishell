@@ -5,6 +5,7 @@ int	execute_single_command(t_cmd *cmd)
 	int	value;
 
 	value = execute_builtins(cmd, cmd->outfile);
+	close_files(0, 0);
 	return (value);
 }
 
@@ -48,6 +49,7 @@ int	execute_command(t_cmd *cmd, int *prev_pipe_in, int new_pipe[2], int value)
 		value = child_process(cmd, new_pipe, prev_pipe_in);
 	else
 	{
+		save_pid(pid, 0, 1);
 		signal(SIGINT, SIG_IGN);
 		if (*prev_pipe_in != -1)
 			close(*prev_pipe_in);
@@ -63,10 +65,15 @@ int	child_wait(void)
 {
 	int	status;
 	int	last_status;
+	int	*pid;
+	int	i;
 
+	i = -1;
+	pid = save_pid(0, 0, 0);
 	last_status = 0;
-	while (waitpid(-1, &status, 0) > 0)
+	while (pid[++i])
 	{
+		waitpid(pid[i], &status, 0);
 		if (WIFEXITED(status))
 		{
 			last_status = WEXITSTATUS(status);
@@ -76,14 +83,12 @@ int	child_wait(void)
 		{
 			last_status = WTERMSIG(status);
 			if (last_status == SIGQUIT)
-			{
 				write(2, "Quit: 3\n", 8);
-				last_status = 131;
-				return_value(last_status, 1);
-			}
+			last_status += 128;
+			return_value(last_status, 1);
 		}
 	}
-	return (last_status);
+	return (save_pid(0, 0, 2), last_status);
 }
 
 int	execution(char *str, t_env *env)

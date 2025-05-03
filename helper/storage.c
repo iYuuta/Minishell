@@ -1,5 +1,26 @@
 #include "../minishell.h"
 
+int *save_pid(int pid, int size, int flag)
+{
+	static int *pids;
+	static int index;
+
+	if (flag == 2)
+	{
+		pids = NULL;
+		index = 0;
+	}
+	if (!pids)
+	{
+		pids = ft_malloc(sizeof(int) * (size + 1), 1);
+		return (NULL);
+	}
+	if (flag)
+		pids[index++] = pid;
+	pids[index] = 0;
+	return (pids);
+}
+
 char	*store_pwd(char *pwd)
 {
 	static char	*oldpwd;

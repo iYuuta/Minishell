@@ -95,5 +95,6 @@ t_env	*env_init(char **env, t_env *head, int i)
 	tmp = get_env(head, "SHLVL");
 	if (tmp)
 		tmp->arg = ft_itoa(ft_atoi(tmp->arg) + 1);
+	
 	return (head);
 }

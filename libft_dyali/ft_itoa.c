@@ -1,4 +1,4 @@
-#include "../minishell.h"
+#include "libft.h"
 
 static int	size(long n)
 {

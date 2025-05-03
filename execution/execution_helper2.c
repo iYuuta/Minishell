@@ -15,6 +15,7 @@ int	check_failure(t_cmd *cmd, int **prev_pipe, int **new_pipe)
 		return (close(**prev_pipe), close_files(0, 0), 0);
 	if (cmd->next == NULL && cmd->number == 1 && is_builtin(cmd))
 		return (return_value(execute_single_command(cmd), 1), 1);
+
 	return (0);
 }
 

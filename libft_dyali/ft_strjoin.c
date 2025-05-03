@@ -1,4 +1,4 @@
-#include "../minishell.h"
+#include "libft.h"
 
 char	*ft_strjoin(char *s1, char const *s2)
 {
