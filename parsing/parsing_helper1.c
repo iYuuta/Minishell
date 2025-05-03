@@ -55,6 +55,8 @@ char	*selective_expanding(char *str, t_env *env)
 		str = ft_strdup("\0");
 	else
 		str = variable->arg;
+	str = ft_strjoin("\"", str);
+	str = ft_strjoin(str, "\"");
 	return (str);
 }
 

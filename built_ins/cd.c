@@ -17,6 +17,7 @@ int	change_pwd(t_env *env, char *pwd)
 int	special_case(t_cmd *cmd)
 {
 	char	*pwd;
+	char	PATH[PATH_MAX];
 
 	pwd = store_pwd(NULL);
 	if (!pwd)
@@ -29,7 +30,7 @@ int	special_case(t_cmd *cmd)
 			return (0);
 		change_pwd(cmd->env, ft_strjoin(ft_strjoin(pwd, "/"),
 				cmd->tokens->next->token));
-		if (!getcwd(NULL, 0))
+		if (!getcwd(PATH, PATH_MAX))
 			ft_putendl_fd("cd: error retrieving current directory: getcwd: \
 cannot access parent directories: No such file or directory", 2);
 	}

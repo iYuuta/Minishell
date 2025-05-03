@@ -1,15 +1,3 @@
-mini git:(e8a5640) ✗ ./minishell
-minishell>> exit 22 1 14
-exit
-minishell: exit: too many argments
-➜  mini git:(e8a5640) ✗ bash
----------------------------------
-minishell>> >> $x
-minishell: ambiguous redirect
-minishell>> echo $?
-0
-
-
 ---------------------------------
 
 minishell>> cat << l | cat << j | ls | cat | ls ****
@@ -27,64 +15,12 @@ built_ins               libft_dyali             parsing
 
 (with file leak)
 ---------------------------------
-bash-3.2$ gfjkdgjk
-bash: gfjkdgjk: command not found
-bash-3.2$ exit
-minishell>> echo $?
-127
-minishell>> dfsk
-minishell: dfsk: command not found
-minishell>> 
-exit
-➜  mini git:(e8a5640) ✗ echo $?
-0
----------------------------------
+
 minishell>> $L $P $L | ls
 minishell: syntax error near unexpected token `|
 
 ---------------------------------
-minishell>> export x="|"
-minishell>> ls $x ls
-2004l                   env_vars                minishell               signals
-Makefile                execution               minishell.c             t.c
-TODO                    folder                  minishell.h
-a.out                   helper                  minishell_tester
-built_ins               libft_dyali             parsing
----------------------------------
-minishell>> export x=" '    '"
-minishell>> echo $x
 
-minishell>> bash
-
-The default interactive shell is now zsh.
-To update your account to use zsh, please run `chsh -s /bin/zsh`.
-For more details, please visit https://support.apple.com/kb/HT208050.
-bash-3.2$ export x=" '    '"
-bash-3.2$ echo $x
-' '
-bash-3.2$ 
----------------------------------
-minishell>> pwd
-/mnt/homes/yoayedde/Desktop/mini/1/2/3/4/5
-minishell>> ls
-minishell>> unset HOME PWD OLDPWD PATH
-minishell>> cd ..
-cd: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
-minishell>> cd ..
-cd: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
-minishell>> cd ..
-cd: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
-minishell>> pwd
-/mnt/homes/yoayedde/Desktop/mini/1/2/3/4/5/../../..
-minishell>> cd ..
-cd: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
-minishell>> pwd
-/mnt/homes/yoayedde/Desktop/mini/1/2/3/4/5/../../../..
-minishell>> cd ..
-minishell>> 
-
-memory leak
----------------------------------
 minishell>> cp /bin/ls folder/ls
 minishell>> ls
 2004l           a.out          env_vars      helper           minishell.c       parsing

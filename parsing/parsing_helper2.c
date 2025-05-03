@@ -83,7 +83,7 @@ int	get_files(t_arg *token, t_cmd **node)
 
 	(*node)->file = NULL;
 	if (check_files(token))
-		return (1);
+		return (return_value(1, 1));
 	while (token && token->type != PIPE)
 	{
 		if (token->type == REDIR_IN || token->type == REDIR_OUT

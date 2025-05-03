@@ -35,9 +35,9 @@ char	*polish(char *token)
 	char	*new_token;
 
 	len = polished_strlen(token);
+	i = 0;
 	new_token = ft_malloc(len + 1, 1);
 	new_token[len] = '\0';
-	i = 0;
 	quote = 0;
 	while (i < len)
 	{

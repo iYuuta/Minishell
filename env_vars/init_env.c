@@ -15,7 +15,7 @@ char	*get_str(int i)
 	if (i == 3)
 		return (str);
 	if (i == 4)
-		return ("SHLVL");
+		return (free(str), "SHLVL");
 	if (i == 5)
 		return ("1");
 	if (i == 6)
@@ -92,9 +92,5 @@ t_env	*env_init(char **env, t_env *head, int i)
 		env_add_back(&head, tmp);
 		i++;
 	}
-	tmp = get_env(head, "SHLVL");
-	if (tmp)
-		tmp->arg = ft_itoa(ft_atoi(tmp->arg) + 1);
-	
 	return (head);
 }

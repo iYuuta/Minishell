@@ -61,7 +61,8 @@ void	update_heredoc_attr(char **stop, int *flag, char **str, char *token)
 		*flag = 0;
 	*stop = polish(token);
 	*str = ft_strdup("");
-	g_ctrl = 3;
+	if (g_ctrl != 2)
+		g_ctrl = 3;
 }
 
 char	*read_here_doc(char *token, t_env *env)
@@ -72,13 +73,13 @@ char	*read_here_doc(char *token, t_env *env)
 	int		flag;
 
 	update_heredoc_attr(&stop, &flag, &str, token);
-	while (1)
+	while (1 && g_ctrl != 2)
 	{
 		tmp[0] = readline("> ");
 		if (!tmp[0])
 			return (ft_putendl_fd("minishell: warning: here-document \
 delimited by end-of-file", 2), token = str, token);
-		if (g_ctrl == 1)
+		if (g_ctrl == 2)
 			return (free(tmp[0]), NULL);
 		if (!ft_strcmp(tmp[0], stop))
 			return (token = str, free(tmp[0]), token);

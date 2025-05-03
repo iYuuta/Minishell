@@ -8,13 +8,13 @@ void	handle_signales(int signal)
 	{
 		ft_putendl_fd("", STDOUT_FILENO);
 		rl_on_new_line();
-		// rl_replace_line("", 0);
+		rl_replace_line("", 0);
 		rl_redisplay();
 		return_value(1, 1);
 		if (g_ctrl == 3)
 		{
 			ioctl(STDIN_FILENO, TIOCSTI, "\n");
-			g_ctrl = 1;
+			g_ctrl = 2;
 		}
 		close_files(0, 0);
 	}

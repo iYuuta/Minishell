@@ -59,7 +59,7 @@ int	exit_shell(t_cmd *cmd)
 {
 	long	exit_status;
 
-	exit_status = 0;
+	exit_status = return_value(0, 0);
 	if (!cmd->next && cmd->number == 1)
 		ft_putendl_fd("exit", 1);
 	if (cmd->tokens->next)
@@ -75,7 +75,7 @@ int	exit_shell(t_cmd *cmd)
 			exit_status = exit_status % 256;
 	}
 	if (cmd->tokens->next && cmd->tokens->next->next)
-		return (print_error(" too many argments", 0), exit(1), 1);
+		return (print_error(" too many argments", 0), 1);
 	else
 		return (ft_malloc(0, 0), env_malloc(0, 0), free_mem(exit_status), 0);
 	return (0);

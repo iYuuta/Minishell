@@ -118,5 +118,6 @@ int	execution(char *str, t_env *env)
 	child_wait();
 	if (fail_status != -1)
 		return_value(fail_status, 1);
+	g_ctrl = 1;
 	return (signal(SIGINT, handle_signales), copy_attributes(0), 0);
 }
