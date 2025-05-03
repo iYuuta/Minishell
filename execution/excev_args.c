@@ -70,8 +70,8 @@ char	**get_args(t_cmd *cmds)
 char	*check_rl_ab_path(t_cmd *cmd, char *tmp, char **paths)
 {
 	char	*command;
-
-	if (cmd->tokens->token[0] == '/' || cmd->tokens->token[0] == '.')
+	
+	if (ft_strchr(cmd->tokens->token, '/') || ft_strchr(cmd->tokens->token, '.'))
 	{
 		if (access(cmd->tokens->token, F_OK | X_OK) == 0)
 			return (cmd->tokens->token);
@@ -81,7 +81,7 @@ char	*check_rl_ab_path(t_cmd *cmd, char *tmp, char **paths)
 		else if (cmd->tokens->token[0] == '/'
 			|| (cmd->tokens->token[0] == '.' && cmd->tokens->token[1] == '/'))
 			command_error("No such file or directory", cmd->tokens->token);
-		else if (cmd->tokens->token[0] == '.')
+		else
 			command_error("command not found", cmd->tokens->token);
 		return (NULL);
 	}
@@ -104,12 +104,16 @@ char	*get_cmd(t_cmd *cmd, char *tmp)
 
 	stat(cmd->tokens->token, &info);
 	if (S_ISDIR(info.st_mode))
-		return (command_error("is a directory", cmd->tokens->token), NULL);
+		return (command_error("command not found", cmd->tokens->token), NULL);
 	path = get_env(cmd->env, "PATH");
 	if (!path)
 		path = cmd->env;
 	if (!path->arg[0])
+	{
 		paths = ft_split(store_pwd(NULL), ':');
+		if (access(cmd->tokens->token, F_OK | X_OK) == 0)
+			return (cmd->tokens->token);
+	}
 	else
 		paths = ft_split(path->arg, ':');
 	if (!cmd->tokens->token)

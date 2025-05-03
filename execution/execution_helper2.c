@@ -8,6 +8,7 @@ int	check_failure(t_cmd *cmd, int **prev_pipe, int **new_pipe, int *fail_status)
 	{
 		if (!cmd->next)
 			*fail_status = 1;
+		close(**prev_pipe);
 		**prev_pipe = **new_pipe;
 		(*new_pipe)++;
 		close(**new_pipe);
