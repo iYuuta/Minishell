@@ -1,4 +1,4 @@
-#include "libft.h"
+#include "../minishell.h"
 
 static size_t	cwords(char *str, char sep)
 {

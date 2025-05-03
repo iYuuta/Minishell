@@ -5,7 +5,6 @@ int	execute_single_command(t_cmd *cmd)
 	int	value;
 
 	value = execute_builtins(cmd, cmd->outfile);
-	close_files(0, 0);
 	return (value);
 }
 
@@ -109,5 +108,5 @@ int	execution(char *str, t_env *env)
 		cmds = cmds->next;
 	}
 	last_status = child_wait();
-	return (signal(SIGINT, handle_signales), last_status);
+	return (signal(SIGINT, handle_signales), copy_attributes(0), last_status);
 }
