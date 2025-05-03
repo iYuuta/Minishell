@@ -36,17 +36,20 @@ int	child_process(t_cmd *cmd, int *new_pipe, int *prev_pipe_in)
 	return (value);
 }
 
-int	execute_command(t_cmd *cmd, int *prev_pipe_in, int new_pipe[2], int value)
+void	execute_command(t_cmd *cmd, int *prev_pipe_in, int new_pipe[2], int *fail_status)
 {
 	int	pid;
 
-	if (check_failure(cmd, &prev_pipe_in, &new_pipe))
-		return (1);
+	if (check_failure(cmd, &prev_pipe_in, &new_pipe, fail_status))
+		return ;
 	pid = fork();
 	if (pid < 0)
-		return (perror("fork"), 1);
+	{
+		perror("fork");
+		return ;
+	}
 	if (pid == 0 && signal(SIGQUIT, SIG_DFL))
-		value = child_process(cmd, new_pipe, prev_pipe_in);
+		child_process(cmd, new_pipe, prev_pipe_in);
 	else
 	{
 		save_pid(pid, 0, 1);
@@ -58,7 +61,7 @@ int	execute_command(t_cmd *cmd, int *prev_pipe_in, int new_pipe[2], int value)
 		if (new_pipe[1] != -1)
 			close(new_pipe[1]);
 	}
-	return (close_files(0, 0), value);
+	close_files(0, 0);
 }
 
 int	child_wait(void)
@@ -95,23 +98,25 @@ int	execution(char *str, t_env *env)
 {
 	t_cmd	*cmds;
 	int		prev_pipe_in;
-	int		last_status;
 	int		new_pipe[2];
+	int		fail_status;
 
 	prev_pipe_in = -1;
-	last_status = 0;
 	new_pipe[0] = -1;
 	new_pipe[1] = -1;
+	fail_status = -1;
 	cmds = parse_args(str, env);
 	if (!cmds)
 		return (1);
 	while (cmds)
 	{
-		last_status = execute_command(cmds, &prev_pipe_in, new_pipe, 0);
+		execute_command(cmds, &prev_pipe_in, new_pipe, &fail_status);
 		if (cmds->number == 1 && is_builtin(cmds) && !cmds->next)
-			return (signal(SIGINT, handle_signales), last_status);
+			return (signal(SIGINT, handle_signales), 0);
 		cmds = cmds->next;
 	}
-	last_status = child_wait();
-	return (signal(SIGINT, handle_signales), copy_attributes(0), last_status);
+	child_wait();
+	if (fail_status != -1)
+		return_value(fail_status, 1);
+	return (signal(SIGINT, handle_signales), copy_attributes(0), 0);
 }

@@ -9,6 +9,7 @@ int *save_pid(int pid, int size, int flag)
 	{
 		pids = NULL;
 		index = 0;
+		return (NULL);
 	}
 	if (!pids)
 	{

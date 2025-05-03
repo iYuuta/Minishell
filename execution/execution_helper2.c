@@ -1,11 +1,13 @@
 #include "../minishell.h"
 
-int	check_failure(t_cmd *cmd, int **prev_pipe, int **new_pipe)
+int	check_failure(t_cmd *cmd, int **prev_pipe, int **new_pipe, int *fail_status)
 {
 	if (cmd->next && pipe(*new_pipe) < 0)
 		return (perror("pipe"), 1);
 	if (open_files(cmd))
 	{
+		if (!cmd->next)
+			*fail_status = 1;
 		**prev_pipe = **new_pipe;
 		(*new_pipe)++;
 		close(**new_pipe);

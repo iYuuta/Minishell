@@ -10,6 +10,7 @@
 # include <readline/history.h>
 # include <fcntl.h>
 # include <errno.h>
+# include <string.h>
 # include <sys/stat.h>
 # include <sys/ioctl.h>
 # include <termios.h>
@@ -93,7 +94,7 @@ char	*get_cmd(t_cmd *cmd, char *tmp);
 char	**get_args(t_cmd *cmds);
 void	command_error(char *str, char *file);
 void	child_redirection(t_cmd *cmd, int *new_pipe, int *prev_pipe_in);
-int		check_failure(t_cmd *cmd, int **prev_pipe, int **new_pipe);
+int		check_failure(t_cmd *cmd, int **prev_pipe, int **new_pipe, int *fail_status);
 int		execute_single_command(t_cmd *cmd);
 
 /*************************************/
