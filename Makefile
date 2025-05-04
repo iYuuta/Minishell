@@ -19,7 +19,7 @@ execution = execution/execute.c execution/execution_helper1.c execution/excev_ar
 OBJ = $(SRC:.c=.o) $(helper:.c=.o) $(parsing:.c=.o) $(signals:.c=.o) \
 	$(execution:.c=.o) $(env_vars:.c=.o) $(built_ins:.c=.o)
 
-CFLAGS = -Wall -Wextra -Werror -I$(shell brew --prefix readline)/include -g -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -I$(shell brew --prefix readline)/include
 
 ReadLine = -L$(shell brew --prefix readline)/lib -lreadline
 
