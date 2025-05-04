@@ -2,7 +2,7 @@
 # define MINISHELL_H
 
 # include <stdio.h>
-# include "libft_dyali/libft.h"
+# include "libft/libft.h"
 # include <unistd.h>
 # include <stdlib.h>
 # include <signal.h>
@@ -176,6 +176,7 @@ char	**oldenv(char **env);
 char	*store_pwd(char *pwd);
 void	copy_attributes(int flag);
 int		*save_pid(int pid, int size, int flag);
+int		get_flag(int flag);
 
 /*********************************** */
 

@@ -53,16 +53,23 @@ int	skip_assigning(char *str)
 	return (i);
 }
 
-int	get_skip_index(char *str, int i)
+int    get_skip_index(char *str, int i)
 {
-	if (ft_strchr("><", str[i]))
-		return (skip_redirections(str + i));
-	else if (str[i] && str[i] == '\'')
-	{
-		while (str[i] && str[i] == '\'' && str[i + 1])
-			i += get_index(str + i, '\'');
-	}
-	return (i);
+    int yuta;
+
+    if (ft_strchr("><", str[i]))
+        return (skip_redirections(str + i));
+    else if (str[i] && str[i] == '\'')
+    {
+        while (str[i] && str[i] == '\'' && str[i + 1])
+        {
+            yuta = get_index(str + i, '\'');
+            if (yuta < 0)
+                return (i);
+            i += yuta;
+        }
+    }
+    return (i);
 }
 
 char	*expand_vars(t_env *env, char *str, int exp)
@@ -72,7 +79,7 @@ char	*expand_vars(t_env *env, char *str, int exp)
 
 	i = -1;
 	flag = 2;
-	while (str[++i])
+	while (i < (int)ft_strlen(str) && str[++i])
 	{
 		if (str[i] && flag % 2 == 0 && ft_strchr("><\'", str[i]))
 			i += get_skip_index(str, i);

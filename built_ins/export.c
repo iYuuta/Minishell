@@ -50,6 +50,7 @@ int	export_w_args(t_cmd *cmd, int append, int len)
 				len + 1, ft_strlen(cmd->tokens->token + len + 1));
 	else
 		arg[1] = ft_env_strdup("");
+	get_flag(1);
 	if (ft_strchr(arg[1], '$'))
 		arg[1] = expand_vars(cmd->env, arg[1], 0);
 	arg[1] = polish(arg[1]);

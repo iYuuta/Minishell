@@ -85,6 +85,6 @@ int	syntax_error(char *str, t_env *env)
 
 	head = split_args(str, env);
 	if (check_error(head))
-		return (1);
+		return (return_value(2, 1), 1);
 	return (0);
 }

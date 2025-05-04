@@ -56,7 +56,8 @@ char	*selective_expanding(char *str, t_env *env)
 	else
 	{
 		str = variable->arg;
-		str = safe_expand(str);
+		if (get_flag(0))
+			str = safe_expand(str);
 	}
 	return (str);
 }

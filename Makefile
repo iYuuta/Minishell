@@ -1,7 +1,7 @@
 SRC = minishell.c
 
 helper = helper/ft_malloc.c helper/lst.c helper/env_malloc.c helper/export_helper1.c \
-			helper/export_helper2.c helper/storage.c
+			helper/export_helper2.c helper/storage.c helper/expand_flag.c
 
 signals = signals/signal.c
 
@@ -19,18 +19,18 @@ execution = execution/execute.c execution/execution_helper1.c execution/excev_ar
 OBJ = $(SRC:.c=.o) $(helper:.c=.o) $(parsing:.c=.o) $(signals:.c=.o) \
 	$(execution:.c=.o) $(env_vars:.c=.o) $(built_ins:.c=.o)
 
-CFLAGS = -Wall -Wextra -Werror -I$(shell brew --prefix readline)/include #-g -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -I$(shell brew --prefix readline)/include -g -fsanitize=address
 
 ReadLine = -L$(shell brew --prefix readline)/lib -lreadline
 
-LIBFT = libft_dyali/libft.a
+LIBFT = libft/libft.a
 
 NAME = minishell
 
 all : $(LIBFT) $(NAME)
 
 $(LIBFT) :
-	make -C libft_dyali
+	make -C libft
 
 $(NAME) : $(OBJ)
 	cc $(CFLAGS) $(OBJ) $(ReadLine) $(LIBFT) -o $(NAME)
@@ -40,10 +40,10 @@ $(NAME) : $(OBJ)
 
 clean:
 	$(RM) $(OBJ)
-	make -C libft_dyali clean
+	make -C libft clean
 
 fclean: clean
 	$(RM) $(NAME)
-	make -C libft_dyali fclean
+	make -C libft fclean
 
 re : fclean all
