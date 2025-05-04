@@ -1,5 +1,14 @@
 #include "../minishell.h"
 
+int	get_flag(int flag)
+{
+	static int	newflag;
+
+	if (flag)
+		newflag = flag;
+	return (flag);
+}
+
 int	*save_pid(int pid, int size, int flag)
 {
 	static int	*pids;

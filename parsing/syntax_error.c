@@ -4,7 +4,7 @@ static void	print_error(char *str, int flag)
 {
 	if (flag == 1)
 	{
-		return_value(2, 1);
+		return_value(258, 1);
 		write(2, "minishell: syntax error near unexpected token `", 47);
 		write(2, str, ft_strlen(str));
 	}
@@ -61,7 +61,7 @@ int	check_error(t_arg *arg)
 	while (arg)
 	{
 		if (!ft_strcmp(arg->token, "||") || !ft_strcmp(arg->token, "&&"))
-			return (1);
+			return (return_value(258, 1), 1);
 		if (is_redirection(arg->token))
 		{
 			if (!arg->next)
@@ -72,8 +72,9 @@ int	check_error(t_arg *arg)
 			if (!arg)
 				break ;
 		}
-		if (is_pipe(arg->token) && !arg->next)
-			return (1);
+		arg->type = is_pipe(arg->token);
+		if (arg->type == PIPE && !arg->next)
+			return (print_error(arg->token, 1), 1);
 		arg = arg->next;
 	}
 	return (0);
@@ -85,6 +86,6 @@ int	syntax_error(char *str, t_env *env)
 
 	head = split_args(str, env);
 	if (check_error(head))
-		return (return_value(2, 1), 1);
+		return (1);
 	return (0);
 }

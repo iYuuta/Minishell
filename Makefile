@@ -1,7 +1,7 @@
 SRC = minishell.c
 
 helper = helper/ft_malloc.c helper/lst.c helper/env_malloc.c helper/export_helper1.c \
-			helper/export_helper2.c helper/storage.c helper/expand_flag.c
+			helper/export_helper2.c helper/storage.c
 
 signals = signals/signal.c
 

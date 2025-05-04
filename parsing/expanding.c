@@ -53,23 +53,23 @@ int	skip_assigning(char *str)
 	return (i);
 }
 
-int    get_skip_index(char *str, int i)
+int	get_skip_index(char *str, int i)
 {
-    int yuta;
+	int	yuta;
 
-    if (ft_strchr("><", str[i]))
-        return (skip_redirections(str + i));
-    else if (str[i] && str[i] == '\'')
-    {
-        while (str[i] && str[i] == '\'' && str[i + 1])
-        {
-            yuta = get_index(str + i, '\'');
-            if (yuta < 0)
-                return (i);
-            i += yuta;
-        }
-    }
-    return (i);
+	if (ft_strchr("><", str[i]))
+		return (skip_redirections(str + i));
+	else if (str[i] && str[i] == '\'')
+	{
+		while (str[i] && str[i] == '\'' && str[i + 1])
+		{
+			yuta = get_index(str + i, '\'');
+			if (yuta < 0)
+				return (i);
+			i += yuta;
+		}
+	}
+	return (i);
 }
 
 char	*expand_vars(t_env *env, char *str, int exp)

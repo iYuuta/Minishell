@@ -33,13 +33,14 @@ int	read_shell(t_env *env, char *head_line)
 	copy_attributes(1);
 	while (1)
 	{
+		g_ctrl = 1;
 		save_pid(0, 0, 2);
 		str = readline(head_line);
 		if (!str)
 		{
 			env_malloc(0, 0);
 			write(2, "exit\n", 5);
-			exit(0);
+			exit(return_value(0, 0));
 		}
 		if (*str)
 		{
