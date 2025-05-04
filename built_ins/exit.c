@@ -62,6 +62,8 @@ int	exit_shell(t_cmd *cmd)
 	exit_status = return_value(0, 0);
 	if (!cmd->next && cmd->number == 1)
 		ft_putendl_fd("exit", 1);
+	else
+		return_value(0, 1);
 	if (cmd->tokens->next)
 	{
 		exit_status = custom_atoi(cmd->tokens->next->token);

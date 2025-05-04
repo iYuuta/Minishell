@@ -1,9 +1,9 @@
 #include "../minishell.h"
 
-int *save_pid(int pid, int size, int flag)
+int	*save_pid(int pid, int size, int flag)
 {
-	static int *pids;
-	static int index;
+	static int	*pids;
+	static int	index;
 
 	if (flag == 2)
 	{

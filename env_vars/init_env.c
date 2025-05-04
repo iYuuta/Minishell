@@ -13,7 +13,7 @@ char	*get_str(int i)
 	if (i == 2)
 		return ("PWD");
 	if (i == 3)
-		return (str);
+		return (ft_env_strdup(str));
 	if (i == 4)
 		return (free(str), "SHLVL");
 	if (i == 5)

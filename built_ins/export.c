@@ -53,6 +53,8 @@ int	export_w_args(t_cmd *cmd, int append, int len)
 	if (ft_strchr(arg[1], '$'))
 		arg[1] = expand_vars(cmd->env, arg[1], 0);
 	arg[1] = polish(arg[1]);
+	if (arg[1][0] == '\n')
+		arg[1] = ft_strdup("");
 	if (!get_env(cmd->env, arg[0]))
 		append = add_env(&(cmd->env), arg[1], arg[0]);
 	else

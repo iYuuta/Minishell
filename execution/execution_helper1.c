@@ -30,7 +30,8 @@ void	close_files(int file, int flag)
 void	command_error(char *str, char *file)
 {
 	write(2, "minishell: ", 11);
-	if (!ft_strcmp(str, "Permission denied"))
+	if (!ft_strcmp(str, "Permission denied")
+		|| !ft_strcmp(str, "Is a directory"))
 		return_value(126, 1);
 	else
 		return_value(127, 1);

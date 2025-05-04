@@ -16,6 +16,8 @@ int	child_process(t_cmd *cmd, int *new_pipe, int *prev_pipe_in)
 	char	*path;
 
 	child_redirection(cmd, new_pipe, prev_pipe_in);
+	if (!cmd->tokens)
+		exit(0);
 	if (cmd->tokens && cmd->tokens->token[0] == '\0')
 		return (write(2, "minishell: : command not found\n", 31),
 			exit(127), 0);
@@ -31,12 +33,11 @@ int	child_process(t_cmd *cmd, int *new_pipe, int *prev_pipe_in)
 		ft_malloc(0, 0);
 		exit(127);
 	}
-	else
-		exit(value);
-	return (value);
+	return (exit(value), value);
 }
 
-void	execute_command(t_cmd *cmd, int *prev_pipe_in, int new_pipe[2], int *fail_status)
+void	execute_command(t_cmd *cmd, int *prev_pipe_in, \
+int new_pipe[2], int *fail_status)
 {
 	int	pid;
 
@@ -85,13 +86,12 @@ int	child_wait(void)
 		if (WIFSIGNALED(status))
 		{
 			last_status = WTERMSIG(status);
-			if (last_status == SIGQUIT)
+			if (last_status == SIGQUIT && !pid[i + 1])
 				write(2, "Quit: 3\n", 8);
-			last_status += 128;
-			return_value(last_status, 1);
+			return_value(last_status + 128, 1);
 		}
 	}
-	return (save_pid(0, 0, 2), last_status);
+	return (last_status);
 }
 
 int	execution(char *str, t_env *env)

@@ -33,6 +33,7 @@ int	read_shell(t_env *env, char *head_line)
 	copy_attributes(1);
 	while (1)
 	{
+		save_pid(0, 0, 2);
 		str = readline(head_line);
 		if (!str)
 		{
@@ -59,6 +60,7 @@ int	main(int ac, char **av, char **env)
 	(void)av;
 	if (!isatty(0) || !isatty(1) || !isatty(2))
 		return (write(2, "insecure source", 15), 1);
+	return_value(0, 1);
 	oldenv(env);
 	store_pwd(NULL);
 	envirement = env_init(env, NULL, 0);

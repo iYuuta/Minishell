@@ -67,33 +67,33 @@ char	**get_args(t_cmd *cmds)
 	return (args);
 }
 
-char	*check_rl_ab_path(t_cmd *cmd, char *tmp, char **paths)
+char	*check_rl_ab_path(char *cmd, char *tmp, char **paths)
 {
 	char	*command;
-	
-	if (ft_strchr(cmd->tokens->token, '/') || ft_strchr(cmd->tokens->token, '.'))
+
+	if (ft_strchr(cmd, '/') || ft_strchr(cmd, '.'))
 	{
-		if (access(cmd->tokens->token, F_OK | X_OK) == 0)
-			return (cmd->tokens->token);
-		else if (access(cmd->tokens->token, F_OK) == 0
-			&& (cmd->tokens->token[0] == '/' || cmd->tokens->token[0] == '.'))
-			command_error("Permission denied", cmd->tokens->token);
-		else if (cmd->tokens->token[0] == '/'
-			|| (cmd->tokens->token[0] == '.' && cmd->tokens->token[1] == '/'))
-			command_error("No such file or directory", cmd->tokens->token);
+		if (access(cmd, F_OK | X_OK) == 0)
+			return (cmd);
+		else if (access(cmd, F_OK) == 0
+			&& (cmd[0] == '/' || cmd[0] == '.'))
+			command_error("Permission denied", cmd);
+		else if (cmd[0] == '/'
+			|| (cmd[0] == '.' && cmd[1] == '/'))
+			command_error("No such file or directory", cmd);
 		else
-			command_error("command not found", cmd->tokens->token);
+			command_error("command not found", cmd);
 		return (NULL);
 	}
 	while (paths != NULL && *paths)
 	{
 		tmp = ft_strjoin(*paths, "/");
-		command = ft_strjoin(tmp, cmd->tokens->token);
+		command = ft_strjoin(tmp, cmd);
 		if (access(command, F_OK | X_OK) == 0)
 			return (command);
 		paths++;
 	}
-	return (command_error("command not found", cmd->tokens->token), NULL);
+	return (command_error("command not found", cmd), NULL);
 }
 
 char	*get_cmd(t_cmd *cmd, char *tmp)
@@ -103,6 +103,8 @@ char	*get_cmd(t_cmd *cmd, char *tmp)
 	struct stat	info;
 
 	stat(cmd->tokens->token, &info);
+	if (ft_strchr(cmd->tokens->token, '/') && S_ISDIR(info.st_mode))
+		return (command_error("Is a directory", cmd->tokens->token), NULL);
 	if (S_ISDIR(info.st_mode))
 		return (command_error("command not found", cmd->tokens->token), NULL);
 	path = get_env(cmd->env, "PATH");
@@ -120,5 +122,5 @@ char	*get_cmd(t_cmd *cmd, char *tmp)
 		return (NULL);
 	if (!(*cmd->tokens->token))
 		return (NULL);
-	return (check_rl_ab_path(cmd, tmp, paths));
+	return (check_rl_ab_path(cmd->tokens->token, tmp, paths));
 }

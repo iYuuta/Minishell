@@ -31,12 +31,13 @@ t_cmd	*parse_args(char *str, t_env *env)
 		ft_malloc(0, 0);
 		return (NULL);
 	}
+	if (syntax_error(str, env))
+		return (NULL);
 	str = expand_vars(env, str, 1);
 	if (str && !str[0])
 		return (return_value(0, 1), NULL);
 	head = split_args(str, env);
-	if (identify_tokens(head))
-		return (NULL);
+	identify_tokens(head);
 	cmd = finish_parse(head, env);
 	return (cmd);
 }
