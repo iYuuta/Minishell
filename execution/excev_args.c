@@ -78,8 +78,7 @@ char	*check_rl_ab_path(char *cmd, char *tmp, char **paths)
 		else if (access(cmd, F_OK) == 0
 			&& (cmd[0] == '/' || cmd[0] == '.'))
 			command_error("Permission denied", cmd);
-		else if (cmd[0] == '/'
-			|| (cmd[0] == '.' && cmd[1] == '/'))
+		else if (ft_strchr(cmd, '/'))
 			command_error("No such file or directory", cmd);
 		else
 			command_error("command not found", cmd);
