@@ -7,6 +7,8 @@ char	*ft_env_join(char *s1, char const *s2)
 	size_t	size;
 	char	*str;
 
+	if (!s1)
+		return (ft_env_strdup(s2));
 	if (!s2)
 		return (ft_env_strdup(s1));
 	if (s1[0] == '\0' && s2[0] == '\0')

@@ -64,6 +64,7 @@ int	main(int ac, char **av, char **env)
 	return_value(0, 1);
 	oldenv(env);
 	store_pwd(NULL);
+	rl_catch_signals = 0;
 	envirement = env_init(env, NULL, 0);
 	if (read_shell(envirement, "minishell>> ") == 1)
 		return (1);

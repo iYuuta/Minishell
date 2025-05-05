@@ -61,13 +61,10 @@ int	get_skip_index(char *str, int i)
 		return (skip_redirections(str + i));
 	else if (str[i] && str[i] == '\'')
 	{
-		while (str[i] && str[i] == '\'' && str[i + 1])
-		{
-			yuta = get_index(str + i, '\'');
-			if (yuta < 0)
-				return (i);
-			i += yuta;
-		}
+		yuta = get_index(str + i, '\'');
+		if (yuta < 0)
+			return (i);
+		i = yuta;
 	}
 	return (i);
 }

@@ -20,11 +20,9 @@ int	is_builtin(t_cmd *cmd)
 int	execute_builtins(t_cmd *cmd, int fd)
 {
 	cmd->outfile = fd;
-	if (cmd->tokens && (!ft_strcmp(cmd->tokens->token, "env")
-			|| !ft_strcmp(cmd->tokens->token, "ENV")))
+	if (cmd->tokens && (!ft_strcmp(cmd->tokens->token, "env")))
 		return (print_env(cmd->env, cmd));
-	if (cmd->tokens && (!ft_strcmp(cmd->tokens->token, "pwd")
-			|| !ft_strcmp(cmd->tokens->token, "PWD")))
+	if (cmd->tokens && (!ft_strcmp(cmd->tokens->token, "pwd")))
 		return (pwd(cmd));
 	if (cmd->tokens && !ft_strcmp(cmd->tokens->token, "unset"))
 		return (unset(cmd->tokens), return_value(0, 0));
@@ -32,13 +30,11 @@ int	execute_builtins(t_cmd *cmd, int fd)
 		return (export(cmd), return_value(0, 0));
 	if (cmd->tokens && !ft_strcmp(cmd->tokens->token, "exit"))
 		return (exit_shell(cmd));
-	if (cmd->tokens && (!ft_strcmp(cmd->tokens->token, "cd")
-			|| !ft_strcmp(cmd->tokens->token, "CD")))
+	if (cmd->tokens && (!ft_strcmp(cmd->tokens->token, "cd")))
 		return (change_directory(cmd));
-	if (cmd->tokens && (!ft_strcmp(cmd->tokens->token, "echo")
-			|| !ft_strcmp(cmd->tokens->token, "ECHO")))
+	if (cmd->tokens && (!ft_strcmp(cmd->tokens->token, "echo")))
 		return (echo(cmd));
-	return (close_files(0, 0), 2);
+	return (2);
 }
 
 char	**get_args(t_cmd *cmds)
