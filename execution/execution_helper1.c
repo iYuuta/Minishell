@@ -7,9 +7,9 @@ void	close_files(int file, int flag)
 	int			i;
 
 	i = -1;
-	if (flag && !fd)
-		fd = malloc(sizeof(int) * 1024);
-	if (flag && !fd)
+	if (!fd)
+		fd = ft_malloc(sizeof(int) * 1024, 1);
+	if (!fd)
 	{
 		ft_putendl_fd("malloc failed", 2);
 		ft_malloc(0, 0);
@@ -65,16 +65,16 @@ int	check_other_cases(t_cmd *cmd, int *tmp)
 		cmd->file->file = read_here_doc(cmd->file->file, cmd->env);
 		if (!(cmd->file->file))
 			return (1);
-		cmd->infile = open(".HEREDOC.txt", O_CREAT | O_WRONLY, 0666);
+		cmd->infile = open("/tmp/.HEREDOC.txt", O_CREAT | O_WRONLY, 0666);
 		if (cmd->infile == -1)
 			return (p_erno(cmd), close_files(0, 0), return_value(1, 1), 1);
 		write(cmd->infile, cmd->file->file, ft_strlen(cmd->file->file));
 		close(cmd->infile);
-		*tmp = open(".HEREDOC.txt", O_RDONLY);
+		*tmp = open("/tmp/.HEREDOC.txt", O_RDONLY);
 		cmd->infile = *tmp;
 		if (*tmp == -1)
 			return (p_erno(cmd), close_files(0, 0), return_value(1, 1), 1);
-		unlink(".HEREDOC.txt");
+		unlink("/tmp/.HEREDOC.txt");
 	}
 	return (0);
 }

@@ -12,7 +12,7 @@ int	check_failure(t_cmd *cmd, int **prev_pipe, int **new_pipe, int *fail_status)
 		**prev_pipe = **new_pipe;
 		(*new_pipe)++;
 		close(**new_pipe);
-		return (1);
+		return (close_files(0, 0), 1);
 	}
 	if (!cmd->tokens)
 		return (close(**prev_pipe), close_files(0, 0), 0);
