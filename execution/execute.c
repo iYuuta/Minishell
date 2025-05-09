@@ -74,6 +74,8 @@ int	child_wait(void)
 
 	i = -1;
 	pid = save_pid(0, 0, 0);
+	if (!pid)
+		return (1);
 	last_status = 0;
 	while (pid[++i])
 	{

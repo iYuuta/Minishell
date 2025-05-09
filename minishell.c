@@ -60,7 +60,7 @@ int	main(int ac, char **av, char **env)
 		return (1);
 	(void)av;
 	if (!isatty(0) || !isatty(1) || !isatty(2))
-		return (write(2, "insecure source", 15), 1);
+		return (write(2, "insecure source\n", 16), 1);
 	return_value(0, 1);
 	oldenv(env);
 	store_pwd(NULL);

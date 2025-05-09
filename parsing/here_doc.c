@@ -65,7 +65,7 @@ void	update_heredoc_attr(char **stop, int *flag, char **str, char *token)
 		g_ctrl = 3;
 }
 
-char	*read_here_doc(char *token, t_env *env)
+char	*read_here_doc(char *token, t_env *env, int pipe[2])
 {
 	char	*stop;
 	char	*str;
@@ -79,7 +79,7 @@ char	*read_here_doc(char *token, t_env *env)
 		if (!tmp[0])
 			return (token = str, token);
 		if (g_ctrl == 2)
-			return (free(tmp[0]), NULL);
+			return (free(tmp[0]), close(pipe[0]), close(pipe[1]), NULL);
 		if (!ft_strcmp(tmp[0], stop))
 			return (token = str, free(tmp[0]), token);
 		if (flag)

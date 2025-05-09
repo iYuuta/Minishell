@@ -1,6 +1,6 @@
 #include "../minishell.h"
 
-int is_after_pipe(char *str, int index)
+int	is_after_pipe(char *str, int index)
 {
 	int	i;
 	int	j;

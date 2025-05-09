@@ -52,7 +52,7 @@ void	p_erno(t_cmd *cmd)
 		command_error("Is a directory", cmd->file->file);
 }
 
-int	check_other_cases(t_cmd *cmd, int *tmp)
+int	check_other_cases(t_cmd *cmd, int *tmp, int pipe[2])
 {
 	if (cmd->file->type == REDIR_APPEND)
 	{
@@ -63,7 +63,7 @@ int	check_other_cases(t_cmd *cmd, int *tmp)
 	}
 	if (cmd->file->type == HEREDOC)
 	{
-		cmd->file->file = read_here_doc(cmd->file->file, cmd->env);
+		cmd->file->file = read_here_doc(cmd->file->file, cmd->env, pipe);
 		if (!(cmd->file->file))
 			return (1);
 		cmd->infile = open("/tmp/.HEREDOC.txt", O_CREAT | O_WRONLY, 0666);
@@ -80,7 +80,7 @@ int	check_other_cases(t_cmd *cmd, int *tmp)
 	return (0);
 }
 
-int	open_files(t_cmd *cmd)
+int	open_files(t_cmd *cmd, int pipe[2])
 {
 	int	tmp;
 
@@ -100,7 +100,7 @@ int	open_files(t_cmd *cmd)
 			if (cmd->infile == -1)
 				return (p_erno(cmd), close_files(0, 0), return_value(1, 1), 1);
 		}
-		if (check_other_cases(cmd, &tmp))
+		if (check_other_cases(cmd, &tmp, pipe))
 			return (1);
 		close_files(tmp, 1);
 		cmd->file = cmd->file->next;

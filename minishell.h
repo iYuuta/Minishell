@@ -89,7 +89,7 @@ void	handle_signales(int signal);
 /************* execution *************/
 
 int		execution(char *str, t_env *env);
-int		open_files(t_cmd *cmd);
+int		open_files(t_cmd *cmd, int pipe[2]);
 void	close_files(int file, int flag);
 char	*get_cmd(t_cmd *cmd, char *tmp);
 char	**get_args(t_cmd *cmds);
@@ -124,7 +124,7 @@ int		is_flag(char *str);
 t_arg	*split_args(char *str, t_env *env);
 char	*polish(char *token);
 int		identify_tokens(t_arg *token);
-char	*read_here_doc(char *token, t_env *env);
+char	*read_here_doc(char *token, t_env *env, int pipe[2]);
 int		is_redirection(char *str);
 int		get_index(char *str, char c);
 char	*expand_vars(t_env *env, char *str, int exp);

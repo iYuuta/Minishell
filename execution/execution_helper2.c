@@ -4,7 +4,7 @@ int	check_failure(t_cmd *cmd, int **prev_pipe, int **new_pipe, int *fail_status)
 {
 	if (cmd->next && pipe(*new_pipe) < 0)
 		return (perror("pipe"), 1);
-	if (open_files(cmd))
+	if (open_files(cmd, *new_pipe))
 	{
 		if (!cmd->next)
 			*fail_status = 1;

@@ -41,21 +41,21 @@ t_arg	*expand_token(t_arg *token, char *str)
 
 t_arg    *get_new_token(t_arg *token, int *i, int *flag)
 {
-    t_arg    *tmp;
+	t_arg    *tmp;
 
-    if (*i == 0 && !ft_strcmp(token->token, "export"))
-    {
-        (*i)++;
-        (*flag) = 1;
-    }
-    tmp = copy_token(token);
-    if (!(*flag) && ft_strchr(token->token, '$')
-        && !ft_strchr(token->token, '\'')
-        && !ft_strchr(token->token, '\"'))
-        tmp = expand_token(token, tmp->token);
-    else if (!(*flag))
-        tmp->token = polish(tmp->token);
-    return (tmp);
+	if (*i == 0 && !ft_strcmp(token->token, "export"))
+	{
+		(*i)++;
+		(*flag) = 1;
+	}
+	tmp = copy_token(token);
+	if (!(*flag) && ft_strchr(token->token, '$')
+		&& !ft_strchr(token->token, '\'')
+		&& !ft_strchr(token->token, '\"'))
+		tmp = expand_token(token, tmp->token);
+	else if (!(*flag))
+		tmp->token = polish(tmp->token);
+	return (tmp);
 }
 
 t_cmd	*get_cmd_arg(t_arg *token)
