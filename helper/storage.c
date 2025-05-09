@@ -6,7 +6,7 @@ int	get_flag(int flag)
 
 	if (flag)
 		newflag = flag;
-	return (flag);
+	return (newflag);
 }
 
 int	*save_pid(int pid, int size, int flag)

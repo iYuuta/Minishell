@@ -73,7 +73,12 @@ char	*expand_str(char *str, t_env *env, int *i, int skip)
 	strings[1] = ft_substr(str, *i, skip);
 	strings[2] = ft_substr(str, *i + skip, ft_strlen(str + (*i + skip)));
 	if (str[*i + 1] && str[*i + 1] == '?')
-		strings[1] = ft_itoa(return_value(0, 0));
+	{
+		if (is_after_pipe(str, *i))
+			strings[1] = ft_itoa(0);
+		else
+			strings[1] = ft_itoa(return_value(0, 0));
+	}
 	else
 		strings[1] = selective_expanding(strings[1], env);
 	while (++j < 3)

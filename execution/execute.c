@@ -112,7 +112,7 @@ int	execution(char *str, t_env *env)
 	{
 		execute_command(cmds, &prev_pipe_in, new_pipe, &fail_status);
 		if (cmds->number == 1 && is_builtin(cmds) && !cmds->next)
-			return (signal(SIGINT, handle_signales), 0);
+			return (signal(SIGINT, handle_signales), copy_attributes(0), 0);
 		if (g_ctrl == 2)
 			break ;
 		cmds = cmds->next;

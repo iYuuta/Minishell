@@ -21,6 +21,7 @@ void	close_files(int file, int flag)
 		while (++i < index)
 			close(fd[i]);
 		index = 0;
+		fd = NULL;
 		return ;
 	}
 	fd[index] = file;

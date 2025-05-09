@@ -137,6 +137,7 @@ char	*expand_heredoc(t_env *env, char *str);
 t_arg	*handle_redir(t_arg *token);
 t_arg	*refine_token(t_arg *token);
 int		is_pipe(char *str);
+int		is_after_pipe(char *str, int index);
 int		check_quotes(char *str);
 char	*safe_expand(char *str);
 char	*safe_trim(char *str);

@@ -34,7 +34,7 @@ void	update_env(t_arg *head, t_env *env)
 
 t_arg	*unset_var(t_arg *head, t_env *var)
 {
-	head->env = remove_env(var);
+	remove_env(var);
 	update_env(head->head, head->head->env);
 	head = head->head;
 	return (0);
@@ -61,10 +61,10 @@ int	unset(t_arg *arg)
 			print_error(arg->token);
 		else if (arg->type == WORD)
 		{
-			tmp = arg->env;
+			tmp = head->env;
 			while (tmp)
 			{
-				if (ft_strcmp(tmp->name, "PATH"))
+				if (!ft_strcmp(arg->token, "PATH"))
 					arg->head->env->arg = ft_env_strdup("");
 				if (!ft_strcmp(tmp->name, arg->token))
 					unset_var(head, tmp);

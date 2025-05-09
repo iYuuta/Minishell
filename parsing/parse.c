@@ -22,9 +22,7 @@ t_cmd	*parse_args(char *str, t_env *env)
 {
 	t_arg	*head;
 	t_cmd	*cmd;
-	int		size;
 
-	size = 0;
 	if (check_quotes(str))
 	{
 		ft_putstr_fd("minishell: syntax error unclosed quotes\n", 2);

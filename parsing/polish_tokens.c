@@ -1,5 +1,28 @@
 #include "../minishell.h"
 
+int is_after_pipe(char *str, int index)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (str[i])
+	{
+		if (ft_strchr("\'\"", str[i]))
+		{
+			j = get_index(str, str[i]);
+			if (j == -1)
+				return (0);
+			i += j;
+		}
+		if (str[i] == '|' && i < index)
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 t_cmd	*new_cmd(void)
 {
 	t_cmd	*node;
